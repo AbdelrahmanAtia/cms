@@ -1,0 +1,8 @@
+package org.javaworld.cmsbackend.dao;
+
+import org.javaworld.cmsbackend.entity.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
+
+}
