@@ -76,6 +76,7 @@ public class Category {
 		this.description = description;
 	}
 
+	@JsonIgnore
 	public byte[] getImage() {
 		return image;
 	}
