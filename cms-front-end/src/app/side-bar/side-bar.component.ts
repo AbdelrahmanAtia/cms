@@ -9,19 +9,15 @@ import { Router } from '@angular/router';
 export class SideBarComponent implements OnInit {
 
 
-  //constructor(private router:Router) { }
+  constructor(private router:Router) { }
 
   ngOnInit() {
   }
 
-  /*
-  viewCourses():void {
-    this.router.navigate(['courses']);
+  
+  viewProducts():void {
+    this.router.navigate(['products']);
   }
 
-  viewPrograms():void {
-    console.log('programs btn clicked');
-    this.router.navigate(['programs']);
-  }
-  */
+
 }

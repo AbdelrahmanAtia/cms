@@ -1,0 +1,43 @@
+
+<br>
+<button class="btn" (click)="addNewProduct()">+ Add Product</button>
+<br><br>
+
+<div *ngIf="products.length == 0">
+    <div class="jumbotron">
+        <p>Use Add Product button to add products</p>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let p of products">
+        <tr > 
+        <td>{{p.id}}</td>
+        <td><img width="84px" height="60px" src="{{p.imageUrl}}"></td>
+        <td>{{p.name}}</td>
+        <td>the category</td>
+        <td>{{p.price}}</td>
+        <td>{{p.active}}</td>
+        <td>
+            <button>edit</button>
+            <button>delete</button>
+        </td>
+    </tr>
+    </tbody>
+   
+
+</table>
+
+<br>  
+
