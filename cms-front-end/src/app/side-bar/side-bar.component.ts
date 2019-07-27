@@ -19,5 +19,9 @@ export class SideBarComponent implements OnInit {
     this.router.navigate(['products']);
   }
 
+  viewCategories():void{
+    this.router.navigate(['categories']);
+  }
+
 
 }
