@@ -1,38 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../_models/Product';
+import { Observable } from 'rxjs';
+import { Config } from '../_models/Config ';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  products: Product[] = [];
+  baseUrl: string = new Config().baseUrl;
+  
+  constructor(private http: HttpClient) { }
 
-  p1:Product = {
-    id: 1,
-    name: "p1Name",
-    description: "p1Desc",
-    price: 25,
-    active: true,
-    imageUrl: "http://www.thegatenewcastle.co.uk/images/tenants/headers/pizza-hut-mobile.jpg"
-
+  getProducts(): Observable<Product[]> {
+    let url: string = this.baseUrl + "/products";
+    return this.http.get<Product[]>(url);
   }
 
-  p2:Product = {
-    id: 2,
-    name: "p2Name",
-    description: "p2Desc",
-    price: 30,
-    active: true,
-    imageUrl: "http://www.thegatenewcastle.co.uk/images/tenants/headers/pizza-hut-mobile.jpg"
-  }
 
-  constructor() { 
-    this.products.push(this.p1);
-    this.products.push(this.p2);
-  }
-
-  getProducts():Product[] {
-    return this.products;
-  }
 }

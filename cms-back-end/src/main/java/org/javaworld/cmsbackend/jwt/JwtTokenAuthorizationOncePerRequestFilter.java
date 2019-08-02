@@ -42,6 +42,16 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         
     	logger.debug("Authentication Request For '{}'", request.getRequestURL());
+    	
+    	
+		//browser will block responses coming from outside domain [localhost:4200] of the request..
+		//we can overcome this by setting 'Access-Control-Allow-Origin'
+    	//these headers solves cors policy problem
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Allow-Headers", "content-type");
+
 
         final String requestTokenHeader = request.getHeader(this.tokenHeader);
 

@@ -1,31 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Category } from '../_models/Category';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Config } from '../_models/Config ';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
+  baseUrl: string = new Config().baseUrl;
 
-  categories: Category[] = [];
+  constructor(private http:HttpClient) {}
 
-  c1: Category = {
-    id: 1,
-    name: "category1Name",
-    description: "category1Desc"
+ getCategories():Observable<Category[]> {
+    let url: string = this.baseUrl + "/categories";
+    return this.http.get<Category[]>(url );
   }
 
-  c2: Category = {
-    id: 2,
-    name: "category2Name",
-    description: "category2Desc"
-  }
-  constructor() {
-    this.categories.push(this.c1);
-    this.categories.push(this.c2);
-  }
-
-  getCategories(): Category[] {
-    return this.categories;
-  }
 }

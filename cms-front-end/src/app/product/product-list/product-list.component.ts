@@ -9,18 +9,17 @@ import { ProductService } from 'src/app/_services/product.service';
 })
 export class ProductListComponent implements OnInit {
 
-
   products: Product[] = [];
-  constructor(private productService: ProductService) {
 
-  }
+  constructor(private productService: ProductService) {}
 
   ngOnInit() {
-    this.products = this.productService.getProducts();
+    this.productService.getProducts().subscribe(
+      (response: Product[]) => { this.products = response; },
+      (error) => {console.log(error)}
+    );
   }
   
-  addNewProduct(): void {
-    
-  }
+  addNewProduct(): void { }
 
 }
