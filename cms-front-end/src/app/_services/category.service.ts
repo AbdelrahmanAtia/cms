@@ -11,11 +11,16 @@ export class CategoryService {
 
   baseUrl: string = new Config().baseUrl;
 
-  constructor(private http:HttpClient) {}
+  constructor(private http: HttpClient) { }
 
- getCategories():Observable<Category[]> {
+  getCategories(): Observable<Category[]> {
     let url: string = this.baseUrl + "/categories";
-    return this.http.get<Category[]>(url );
+    return this.http.get<Category[]>(url);
+  }
+
+  addNewCategory(category:Category):Observable<Category> {
+    let url: string = this.baseUrl + "/categories";
+    return this.http.post<Category>(url, category);
   }
 
 }

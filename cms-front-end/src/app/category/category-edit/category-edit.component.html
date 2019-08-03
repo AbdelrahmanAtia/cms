@@ -1,0 +1,47 @@
+<br>
+<form [formGroup]="categoryForm" (ngSubmit)="submitCategoryForm()">
+
+    
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="categoryName">Category title</label>
+            </div>
+            <div class="col-sm-9">
+                <input id="categoryName" 
+                       type="text" 
+                       class="form-control" 
+                       formControlName="categoryName">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="categoryDescription">Description:</label>
+            </div>
+            <div class="col-sm-9">
+                <textarea id="categoryDescription" 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="categoryDescription"
+                          rows="6">
+                </textarea>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="categoryForm.invalid">Save</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-info btn-block btn-block" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+
+</form>
+<br>

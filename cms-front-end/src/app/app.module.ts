@@ -10,6 +10,8 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { CategoryComponent } from './category/category.component';
 import { CategoryListComponent } from './category/category-list/category-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CategoryEditComponent } from './category/category-edit/category-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,15 @@ import { HttpClientModule } from '@angular/common/http';
     ProductComponent,
     ProductListComponent,
     CategoryComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    CategoryEditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule 
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
