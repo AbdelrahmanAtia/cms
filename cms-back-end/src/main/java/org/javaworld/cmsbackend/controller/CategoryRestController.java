@@ -1,7 +1,10 @@
 package org.javaworld.cmsbackend.controller;
 
 import java.util.List;
+
+import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.entity.Category;
+import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,15 +51,16 @@ public class CategoryRestController {
 	}
 
 	@DeleteMapping("/categories/{categoryId}")
-	public String deleteCategory(@PathVariable int categoryId) {
+	public Response deleteCategory(@PathVariable int categoryId) {
 		Category tempCategory = categoryService.findById(categoryId);
 
 		if (tempCategory == null) {
-			throw new RuntimeException("Category id not found - " + categoryId);
+			return new Response(Constants.NOT_FOUND_STATUS, "Category id not found - " + categoryId);
+			// throw new RuntimeException("Category id not found - " + categoryId);
 		}
 
 		categoryService.deleteById(categoryId);
-		return "Deleted category id - " + categoryId;
+		return new Response(Constants.OK_STATUS, "Deleted category id - " + categoryId);
 	}
 
 	/*

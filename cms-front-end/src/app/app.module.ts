@@ -12,6 +12,7 @@ import { CategoryListComponent } from './category/category-list/category-list.co
 import { HttpClientModule } from '@angular/common/http';
 import { CategoryEditComponent } from './category/category-edit/category-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
