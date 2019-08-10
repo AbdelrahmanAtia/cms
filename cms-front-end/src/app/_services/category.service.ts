@@ -19,9 +19,19 @@ export class CategoryService {
     return this.http.get<Category[]>(url);
   }
 
+  getCategory(categoryId:number): Observable<Category> {
+    let url: string = this.baseUrl + "/categories/" + categoryId;
+    return this.http.get<Category>(url);
+  }
+
   addNewCategory(category: Category): Observable<Category> {
     let url: string = this.baseUrl + "/categories";
     return this.http.post<Category>(url, category);
+  }
+
+  updateCategory(category: Category) : Observable<Category> {
+    let url: string = this.baseUrl + "/categories";
+    return this.http.put<Category>(url, category);
   }
 
   deleteCategory(categoryId: number): Observable<Response> {
@@ -29,7 +39,4 @@ export class CategoryService {
     return this.http.delete<Response>(url);
   }
 
-  
 }
-
-

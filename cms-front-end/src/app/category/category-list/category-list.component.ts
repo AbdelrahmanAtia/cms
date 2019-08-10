@@ -25,8 +25,12 @@ export class CategoryListComponent implements OnInit {
     this.router.navigate(['categories', 'new']);
   }
 
+  editCategory(categoryId: number): void {
+    this.router.navigate(['categories', categoryId, 'edit']);
+  }
+
   deleteCategory(categoryId: number): void {
-    if(!confirm("Are you sure you want to delete selected record?")){
+    if (!confirm("Are you sure you want to delete selected record?")) {
       return;
     }
     this.categoryService.deleteCategory(categoryId).subscribe(
@@ -42,5 +46,7 @@ export class CategoryListComponent implements OnInit {
       (error) => { console.log(error); }
     );
   }
+
+
 
 }
