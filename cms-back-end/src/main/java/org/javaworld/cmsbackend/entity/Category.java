@@ -1,6 +1,5 @@
 package org.javaworld.cmsbackend.entity;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -26,24 +25,25 @@ public class Category {
 	private int id;
 
 	@Column(name = "name")
-	private String name; 
+	private String name;
 
-	@Column(name = "description") 
+	@Column(name = "description")
 	private String description;
 
-	@Lob
+	// @Lob
+	// @Column(name = "image")
+	// private byte[] image;
+
 	@Column(name = "image")
-	private byte[] image;
-	
-	
+	private String image; // base64 string
+
 	/*
-
-	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY, 
-			   cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-					   	   CascadeType.REFRESH, CascadeType.DETACH })
-	private List<Product> products;
-
-	*/
+	 * 
+	 * @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = {
+	 * CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+	 * CascadeType.DETACH }) private List<Product> products;
+	 * 
+	 */
 	public Category() {
 	}
 
@@ -76,39 +76,32 @@ public class Category {
 		this.description = description;
 	}
 
-	@JsonIgnore
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
-	
-	
-	/*
-	@JsonIgnore
-	public List<Product> getProducts() {
-		return products;
-	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-	
-	public void add(Product product) {
-		if(products == null) {
-			products = new ArrayList<>();
-		}
-		products.add(product);
-		product.setCategory(this);
-	}
-	*/
+	/*
+	 * //@JsonIgnore public byte[] getImage() { return image; }
+	 * 
+	 * public void setImage(byte[] image) { this.image = image; }
+	 */
+
+	/*
+	 * @JsonIgnore public List<Product> getProducts() { return products; }
+	 * 
+	 * public void setProducts(List<Product> products) { this.products = products; }
+	 * 
+	 * public void add(Product product) { if(products == null) { products = new
+	 * ArrayList<>(); } products.add(product); product.setCategory(this); }
+	 */
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", description=" + description
-				+ "]";
+		return "Category [id=" + id + ", name=" + name + ", description=" + description + "]";
 	}
 
 }
