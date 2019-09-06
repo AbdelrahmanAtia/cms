@@ -8,34 +8,32 @@
     </div>
 </div>
 
-<div *ngIf="categories.length > 0">
-    <table class="table">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Category title</th>
-                <th>Products</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let c of categories">
-            <tr>
+<table class="table" *ngIf="categories.length > 0">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Category title</th>
+            <th>Products</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let c of categories">
+        <tr>
 
-                <td>{{c.id}}</td>
-                <td>{{c.name}}</td>
-                <td>products count</td>
-                <td>
-                    <span (click)="editCategory(c.id)">
-                        <i class="fa fa-edit fa-2x col-sm-3"></i>
-                    </span>
-                    
-                    <span (click)="deleteCategory(c.id)">
-                        <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
-                    </span>
+            <td>{{c.id}}</td>
+            <td>{{c.name}}</td>
+            <td>products count</td>
+            <td>
+                <span (click)="editCategory(c.id)">
+                    <i class="fa fa-edit fa-2x col-sm-3"></i>
+                </span>
+                
+                <span (click)="deleteCategory(c.id)">
+                    <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
+                </span>
 
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 <br>

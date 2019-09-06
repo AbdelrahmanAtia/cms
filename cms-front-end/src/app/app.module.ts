@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CategoryEditComponent } from './category/category-edit/category-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { ProductEditComponent } from './product/product-edit/product-edit.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     ProductListComponent,
     CategoryComponent,
     CategoryListComponent,
-    CategoryEditComponent
+    CategoryEditComponent,
+    ProductEditComponent
   ],
   imports: [
     BrowserModule,

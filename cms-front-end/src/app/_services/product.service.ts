@@ -18,5 +18,25 @@ export class ProductService {
     return this.http.get<Product[]>(url);
   }
 
+  getProduct(productId:number): Observable<Product> {
+    let url: string = this.baseUrl + "/products/" + productId;
+    return this.http.get<Product>(url);
+  }
+
+  addNewProduct(product: Product): Observable<Product> {
+    let url: string = this.baseUrl + "/products";
+    return this.http.post<Product>(url, product);
+  }
+
+  updateProduct(product: Product) : Observable<Product> {
+    let url: string = this.baseUrl + "/products";
+    return this.http.put<Product>(url, product);
+  }
+
+  deleteProduct(productId: number): Observable<Response> {
+    let url: string = this.baseUrl + "/products/" + productId;
+    return this.http.delete<Response>(url);
+  }
+
 
 }

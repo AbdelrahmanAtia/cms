@@ -39,9 +39,13 @@ public class Product {
 	@Column(name = "active")
 	private boolean active;
 
-	@Lob
+	//@Lob
+	//@Column(name = "image")
+	//private byte[] image;
+	
 	@Column(name = "image")
-	private byte[] image;
+	private String image; // base64 string	
+	
 
 	@ManyToOne(fetch = FetchType.EAGER, 
 			   cascade = { CascadeType.DETACH, CascadeType.MERGE, 
@@ -110,6 +114,7 @@ public class Product {
 		this.active = active;
 	}
 
+	/*
 	@JsonIgnore
 	public byte[] getImage() {
 		return image;
@@ -118,6 +123,15 @@ public class Product {
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
+	*/
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}	
 
 	public Category getCategory() {
 		return category;

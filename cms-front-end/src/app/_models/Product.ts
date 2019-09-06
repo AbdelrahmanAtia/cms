@@ -5,7 +5,6 @@ export class Product {
     description: string;
     price: number;
     active: boolean;
-    //private byte[] image;
-    imageUrl: string;
+    image: string | ArrayBuffer;
     //private Category category;
 }

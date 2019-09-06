@@ -5,22 +5,26 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { CategoryComponent } from './category/category.component';
 import { CategoryListComponent } from './category/category-list/category-list.component';
 import { CategoryEditComponent } from './category/category-edit/category-edit.component';
+import { ProductEditComponent } from './product/product-edit/product-edit.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
 
-  { path: 'products', component: ProductComponent, children: 
+  {
+    path: 'products', component: ProductComponent, children:
       [
-        { path: '', component: ProductListComponent }
+        { path: '', component: ProductListComponent },
+        { path: 'new', component: ProductEditComponent }
       ]
   },
 
-  { path: 'categories', component: CategoryComponent, children: 
+  {
+    path: 'categories', component: CategoryComponent, children:
       [
         { path: '', component: CategoryListComponent },
-        { path: 'new', component: CategoryEditComponent},
-        { path: ':id/edit', component: CategoryEditComponent}
+        { path: 'new', component: CategoryEditComponent },
+        { path: ':id/edit', component: CategoryEditComponent }
       ]
   }
 
