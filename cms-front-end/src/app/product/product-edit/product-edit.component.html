@@ -30,6 +30,41 @@
             </div>
         </div>
     </div>
+   
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="productCategory">Category</label>
+            </div>
+            <div class="col-sm-4">
+                <select id="productCategory"
+                        class="form-control"
+                        formControlName="productCategory">
+
+                        <option disabled [attr.selected] = "true">-- choose category --</option>
+                        <option *ngFor="let c of categories" [attr.value]="c.name">
+                            {{c.name}}
+                        </option>
+                        
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="productPrice">Price</label>
+            </div>
+            <div class="col-sm-2">
+                <input id="productPrice" 
+                       type="number" 
+                       class="form-control" 
+                       formControlName="productPrice">
+            </div>
+        </div>     
+    </div>
+
 
     <div class="form-group">
         <div class="row">
@@ -49,6 +84,25 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="productStatus">Status</label>
+            </div>
+            <div class="col-sm-3">
+
+                <select id="productStatus"
+                        class="form-control"
+                        formControlName="productStatus">
+                       <option disabled [attr.selected] = "true">-- choose --</option>
+                       <option value="false">Inactive</option>
+                       <option value="true">Active</option>
+               </select>
+            </div>
+        </div>     
+    </div>
+
     
     <div class="row">
         <div class="col-sm-8"></div>
@@ -62,3 +116,4 @@
 
 </form>
 <br>
+

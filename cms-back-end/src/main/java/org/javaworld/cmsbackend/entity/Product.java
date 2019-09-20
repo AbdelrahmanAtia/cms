@@ -48,8 +48,8 @@ public class Product {
 	
 
 	@ManyToOne(fetch = FetchType.EAGER, 
-			   cascade = { CascadeType.DETACH, CascadeType.MERGE, 
-				           CascadeType.PERSIST,CascadeType.REFRESH })
+			   cascade = { CascadeType.DETACH, 
+				           CascadeType.REFRESH })
 	@JoinColumn(name = "category_id")
 	private Category category;
  

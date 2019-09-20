@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/_models/Product';
 import { ProductService } from 'src/app/_services/product.service';
 import { Router } from '@angular/router';
-
+import { Response } from 'src/app/_models/Response';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -28,5 +28,28 @@ export class ProductListComponent implements OnInit {
   addNewProduct(): void { 
     this.router.navigate(['products', 'new']);
   }
+
+  editProduct(productId: number): void {
+    this.router.navigate(['products', productId, 'edit']);
+  }
+
+  deleteProduct(productId: number): void {
+    if (!confirm("Are you sure you want to delete selected record?")) {
+      return;
+    }
+    this.productService.deleteProduct(productId).subscribe(
+      (response: Response) => {
+        if (response.status = "200") {
+          console.log(response.message);
+          this.ngOnInit();
+        }
+        else if (response.status = "404") {
+          throw new Error(response.message);
+        }
+      },
+      (error) => { console.log(error); }
+    );
+  }
+
 
 }
