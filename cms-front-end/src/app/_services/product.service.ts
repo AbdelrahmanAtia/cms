@@ -10,15 +10,23 @@ import { Response } from 'src/app/_models/Response';
 export class ProductService {
 
   baseUrl: string = new Config().baseUrl;
-  
+
   constructor(private http: HttpClient) { }
 
-  getProducts(): Observable<Product[]> {
-    let url: string = this.baseUrl + "/products";
+
+  getProducts(searchMode: boolean, searchTerm: string): Observable<Product[]> {
+    if (searchMode)
+      return this.searchForProductByName(searchTerm);
+    else
+      return this.getAllProducts();
+  }
+
+  getAllProducts(): Observable<Product[]> {
+    let url: string = this.baseUrl + "/products/all";
     return this.http.get<Product[]>(url);
   }
 
-  getProduct(productId:number): Observable<Product> {
+  getProduct(productId: number): Observable<Product> {
     let url: string = this.baseUrl + "/products/" + productId;
     return this.http.get<Product>(url);
   }
@@ -28,7 +36,7 @@ export class ProductService {
     return this.http.post<Product>(url, product);
   }
 
-  updateProduct(product: Product) : Observable<Product> {
+  updateProduct(product: Product): Observable<Product> {
     let url: string = this.baseUrl + "/products";
     return this.http.put<Product>(url, product);
   }
@@ -36,6 +44,11 @@ export class ProductService {
   deleteProduct(productId: number): Observable<Response> {
     let url: string = this.baseUrl + "/products/" + productId;
     return this.http.delete<Response>(url);
+  }
+
+  searchForProductByName(searchTerm: string): Observable<Product[]> {
+    let url: string = this.baseUrl + "/products?searchTerm=" + searchTerm;
+    return this.http.get<Product[]>(url);
   }
 
 

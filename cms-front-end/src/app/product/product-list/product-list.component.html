@@ -1,11 +1,28 @@
-
 <br>
-<button class="btn" (click)="addNewProduct()">+ Add Product</button>
-<br><br>
+<div class="row">
+    <div class="col-sm-2">
+        <button class="btn" (click)="addNewProduct()">+ Add Product</button>
+    </div>
+    <div class="col-sm-4">
+        <form [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
+            <input id="searchTerm" 
+                   type="text" 
+                   class="form-control" 
+                   formControlName="searchTerm"
+                   placeholder="Search" />
+        </form>
+    </div>
+</div>
+<br> 
+<br>
 
 <div *ngIf="products.length == 0">
-    <div class="jumbotron">
+    <div class="jumbotron" *ngIf="!searchMode">
         <p>Use Add Product button to add products</p>
+    </div>
+
+    <div class="jumbotron" *ngIf="searchMode">
+        <p>No Records Found</p>
     </div>
 </div>
 
@@ -22,7 +39,7 @@
         </tr>
     </thead>
     <tbody *ngFor="let p of products">
-        <tr > 
+        <tr>
             <td>{{p.id}}</td>
             <td><img width="84px" height="60px" [src]="p.image"></td>
             <td>{{p.name}}</td>
@@ -33,7 +50,7 @@
                 <span (click)="editProduct(p.id)">
                     <i class="fa fa-edit fa-2x col-sm-5"></i>
                 </span>
-                
+
                 <span (click)="deleteProduct(p.id)">
                     <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
                 </span>
@@ -41,5 +58,4 @@
         </tr>
     </tbody>
 </table>
-<br>  
-
+<br>

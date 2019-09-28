@@ -9,6 +9,8 @@ public interface ProductService {
 	public List<Product> findAll();
 
 	public Product findById(int id);
+	
+	public List<Product> findByNameIgnoreCaseContaining(String name);
 
 	public void save(Product product);
 

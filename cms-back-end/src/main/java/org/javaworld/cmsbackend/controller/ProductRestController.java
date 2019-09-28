@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,7 +23,7 @@ public class ProductRestController {
 	@Autowired
 	private ProductService productService;
 
-	@GetMapping("/products")
+	@GetMapping("/products/all")
 	public List<Product> getProducts() {
 		return productService.findAll();
 	}
@@ -61,7 +62,11 @@ public class ProductRestController {
 		productService.deleteById(productId);
 		return new Response(Constants.OK_STATUS, "Deleted product id - " + productId);
 	}
-
+	
+	@GetMapping("/products")
+	public List<Product> searchForProductsByName(@RequestParam String searchTerm) {
+		return productService.findByNameIgnoreCaseContaining(searchTerm);
+	}
 
 
 }

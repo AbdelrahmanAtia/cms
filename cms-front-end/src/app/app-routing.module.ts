@@ -7,7 +7,7 @@ import { CategoryListComponent } from './category/category-list/category-list.co
 import { CategoryEditComponent } from './category/category-edit/category-edit.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 
-
+ 
 const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
 
@@ -16,6 +16,7 @@ const routes: Routes = [
       [
         { path: '', component: ProductListComponent },
         { path: 'new', component: ProductEditComponent },
+        { path: ':searchTerm', component: ProductListComponent },
         { path: ':id/edit', component: ProductEditComponent }
 
       ]

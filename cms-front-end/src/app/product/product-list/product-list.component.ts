@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/_models/Product';
 import { ProductService } from 'src/app/_services/product.service';
-import { Router } from '@angular/router';
 import { Response } from 'src/app/_models/Response';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -10,22 +12,53 @@ import { Response } from 'src/app/_models/Response';
 })
 export class ProductListComponent implements OnInit {
 
+  searchTerm: string;
+  searchMode: boolean = false;
+
   products: Product[] = [];
+  searchForm: FormGroup;
 
   constructor(private productService: ProductService,
-              private router: Router) {}
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.productService.getProducts().subscribe(
-      (response: Product[]) => { 
-        this.products = response; 
-        console.log(this.products);
+    this.initializeSearchForm();
+    this.listenToRouteParamChanges();
+  }
+
+  // called when any route param changes
+  listenToRouteParamChanges() {
+    this.route.params.subscribe(
+      params => {
+        this.searchTerm = params['searchTerm'];
+        this.searchMode = this.searchTerm != null;
+        this.initializeProductsList();
+      });
+  }
+
+  initializeSearchForm(): void {
+    this.searchForm = new FormGroup({
+      'searchTerm': new FormControl("", Validators.required)
+    });
+  }
+
+  initializeProductsList(): void {
+    console.log('initializeProductsList() called..')
+    this.productService.getProducts(this.searchMode, this.searchTerm).subscribe(
+      (response: Product[]) => {
+        this.products = response;
       },
-      (error) => {console.log(error)}
+      (error) => { console.log(error) }
     );
   }
-  
-  addNewProduct(): void { 
+
+  submitSearchForm(): void {
+    let searchTerm: string = this.searchForm.value.searchTerm;
+    this.router.navigate(['products', { 'searchTerm': searchTerm }]);
+  }
+
+  addNewProduct(): void {
     this.router.navigate(['products', 'new']);
   }
 
@@ -41,7 +74,7 @@ export class ProductListComponent implements OnInit {
       (response: Response) => {
         if (response.status = "200") {
           console.log(response.message);
-          this.ngOnInit();
+          this.router.navigate(['products']);
         }
         else if (response.status = "404") {
           throw new Error(response.message);
@@ -50,6 +83,5 @@ export class ProductListComponent implements OnInit {
       (error) => { console.log(error); }
     );
   }
-
 
 }
