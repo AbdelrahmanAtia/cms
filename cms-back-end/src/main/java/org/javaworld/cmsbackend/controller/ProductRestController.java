@@ -2,6 +2,7 @@ package org.javaworld.cmsbackend.controller;
 
 import java.util.List;
 import org.javaworld.cmsbackend.constants.Constants;
+import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.entity.Product;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.ProductService;
@@ -66,6 +67,14 @@ public class ProductRestController {
 	@GetMapping("/products")
 	public List<Product> searchForProductsByName(@RequestParam String searchTerm) {
 		return productService.findByNameIgnoreCaseContaining(searchTerm);
+	}
+	
+	@GetMapping("/products/category/{categoryId}")
+	public List<Product> getProductsByCategory(@PathVariable int categoryId){
+		if(categoryId == 0) {
+			return productService.findAll();
+		}
+		return productService.findByCategory(new Category(categoryId));
 	}
 
 

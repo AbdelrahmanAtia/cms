@@ -12,6 +12,21 @@
                    placeholder="Search" />
         </form>
     </div>
+
+
+    <div class="col-sm-3 text-right" >
+            Filter by
+    </div>
+
+    <div class="col-sm-3">
+        <select (change)="onChange($event)" class="form-control">
+            <option [attr.selected] = "true"  [attr.value]="0">-- All categories --</option>
+            <option *ngFor="let c of categories" [attr.value]="c.id">
+                {{c.name}}
+            </option>    
+        </select>
+    </div>
+
 </div>
 <br> 
 <br>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.javaworld.cmsbackend.dao.ProductRepository;
+import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> findByNameIgnoreCaseContaining(String name) {
 		return productRepository.findByNameIgnoreCaseContaining(name);
+	}
+
+	@Override
+	public List<Product> findByCategory(Category category) {
+		return productRepository.findByCategory(category);
 	}
 
 }

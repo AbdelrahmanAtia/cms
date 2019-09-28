@@ -44,7 +44,13 @@ public class Category {
 	 * CascadeType.DETACH }) private List<Product> products;
 	 * 
 	 */
+	
 	public Category() {
+	
+	}
+	
+	public Category(int id) {
+		this.id = id;
 	}
 
 	public Category(String name, String description) {

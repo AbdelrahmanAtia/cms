@@ -4,6 +4,8 @@ import { ProductService } from 'src/app/_services/product.service';
 import { Response } from 'src/app/_models/Response';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Category } from 'src/app/_models/Category';
+import { CategoryService } from 'src/app/_services/category.service';
 
 @Component({
   selector: 'app-product-list',
@@ -18,13 +20,27 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   searchForm: FormGroup;
 
+  categories: Category[] = [];
+
   constructor(private productService: ProductService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+    private categoryService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.initializeSearchForm();
+    this.initializeCategoriesList();
     this.listenToRouteParamChanges();
+  }
+
+  initializeCategoriesList() {
+    //initialize categories drop down list..
+    this.categoryService.getCategories().subscribe(
+      (response: Category[]) => {
+        this.categories = response;
+      },
+      (error) => { console.log(error) }
+    );
   }
 
   // called when any route param changes
@@ -81,6 +97,18 @@ export class ProductListComponent implements OnInit {
         }
       },
       (error) => { console.log(error); }
+    );
+  }
+
+  onChange(event): void {
+    console.log(event.target.value);
+    let categoryId: number = event.target.value;
+    this.productService.getProductsByCategoryId(categoryId).subscribe(
+      (response: Product[]) => {
+        this.products = response;
+      }, (error) => {
+        console.log(error);
+      }
     );
   }
 

@@ -51,5 +51,10 @@ export class ProductService {
     return this.http.get<Product[]>(url);
   }
 
+  getProductsByCategoryId(categoryId: number): Observable<Product[]> {
+    let url: string = this.baseUrl + "/products/category/" + categoryId;
+    return this.http.get<Product[]>(url);
+  }
+
 
 }
