@@ -63,12 +63,4 @@ public class CategoryRestController {
 		return new Response(Constants.OK_STATUS, "Deleted category id - " + categoryId);
 	}
 
-	/*
-	 * //retrieve products for category with id :categoryId
-	 * 
-	 * @GetMapping("/categories/{categoryId}/products") public List<Product>
-	 * getProducts(@PathVariable int categoryId){ return
-	 * categoryService.getProducts(categoryId); }
-	 */
-
 }

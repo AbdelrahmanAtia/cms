@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Product } from '../_models/Product';
 import { Observable } from 'rxjs';
 import { Config } from '../_models/Config ';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Response } from 'src/app/_models/Response';
 @Injectable({
   providedIn: 'root'
@@ -13,17 +13,18 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
+  getProducts(categoryId: number, pageNumber: number): Observable<HttpResponse<Product[]>> {
+    pageNumber--; // cause pageNumber starts at zero not 1 according to backend..
+    let url: string = this.baseUrl + "/products";
 
-  getProducts(searchMode: boolean, searchTerm: string): Observable<Product[]> {
-    if (searchMode)
-      return this.searchForProductByName(searchTerm);
-    else
-      return this.getAllProducts();
-  }
-
-  getAllProducts(): Observable<Product[]> {
-    let url: string = this.baseUrl + "/products/all";
-    return this.http.get<Product[]>(url);
+    return this.http.get<any>(url, {
+      params: {
+        categoryId: categoryId.toString(),
+        pageNumber: pageNumber.toString(),
+        pageSize: new Config().pageSize.toString()
+      }
+      , observe: 'response'
+    });
   }
 
   getProduct(productId: number): Observable<Product> {
@@ -50,11 +51,5 @@ export class ProductService {
     let url: string = this.baseUrl + "/products?searchTerm=" + searchTerm;
     return this.http.get<Product[]>(url);
   }
-
-  getProductsByCategoryId(categoryId: number): Observable<Product[]> {
-    let url: string = this.baseUrl + "/products/category/" + categoryId;
-    return this.http.get<Product[]>(url);
-  }
-
 
 }

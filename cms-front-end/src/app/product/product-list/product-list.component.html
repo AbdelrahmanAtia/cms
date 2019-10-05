@@ -1,9 +1,11 @@
+
 <br>
 <div class="row">
     <div class="col-sm-2">
         <button class="btn" (click)="addNewProduct()">+ Add Product</button>
     </div>
     <div class="col-sm-4">
+        <!--
         <form [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
             <input id="searchTerm" 
                    type="text" 
@@ -11,6 +13,7 @@
                    formControlName="searchTerm"
                    placeholder="Search" />
         </form>
+        -->
     </div>
 
 
@@ -19,7 +22,7 @@
     </div>
 
     <div class="col-sm-3">
-        <select (change)="onChange($event)" class="form-control">
+        <select (change)="onCategoryChange($event)" class="form-control">
             <option [attr.selected] = "true"  [attr.value]="0">-- All categories --</option>
             <option *ngFor="let c of categories" [attr.value]="c.id">
                 {{c.name}}
@@ -31,6 +34,15 @@
 <br> 
 <br>
 
+
+<div *ngIf="products.length == 0">
+    <div class="jumbotron">
+        <p>No Records Found</p>
+    </div>
+</div>
+
+
+<!--
 <div *ngIf="products.length == 0">
     <div class="jumbotron" *ngIf="!searchMode">
         <p>Use Add Product button to add products</p>
@@ -40,6 +52,7 @@
         <p>No Records Found</p>
     </div>
 </div>
+-->
 
 <table class="table" *ngIf="products.length > 0">
     <thead>
@@ -73,4 +86,28 @@
         </tr>
     </tbody>
 </table>
+
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-7">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" style="cursor: pointer">
+
+                <li class="page-item" *ngIf="pageNumber > 1">
+                    <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link">{{pageNumber}}</a>
+                </li>
+
+                <li class="page-item" *ngIf="pageNumber < totalPages">
+                    <a class="page-link" (click)="onPageChange(1)">Next</a>
+                </li>
+
+            </ul>
+        </nav>
+    </div> 
+</div>
+
 <br>

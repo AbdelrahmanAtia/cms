@@ -16,7 +16,7 @@ const routes: Routes = [
       [
         { path: '', component: ProductListComponent },
         { path: 'new', component: ProductEditComponent },
-        { path: ':searchTerm', component: ProductListComponent },
+        /*{ path: ':searchTerm', component: ProductListComponent },*/
         { path: ':id/edit', component: ProductEditComponent }
 
       ]

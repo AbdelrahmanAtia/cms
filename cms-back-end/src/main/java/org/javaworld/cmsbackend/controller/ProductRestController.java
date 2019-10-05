@@ -2,7 +2,6 @@ package org.javaworld.cmsbackend.controller;
 
 import java.util.List;
 import org.javaworld.cmsbackend.constants.Constants;
-import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.entity.Product;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.ProductService;
@@ -24,10 +23,15 @@ public class ProductRestController {
 	@Autowired
 	private ProductService productService;
 
-	@GetMapping("/products/all")
-	public List<Product> getProducts() {
-		return productService.findAll();
+	@GetMapping("/products")
+	public List<Product> getProducts(@RequestParam int categoryId,
+									 @RequestParam int pageNumber, 
+									 @RequestParam int pageSize) {
+
+		return productService.getProducts(categoryId, pageNumber, pageSize);
 	}
+
+
 
 	@GetMapping("/products/{productId}")
 	public Product getProduct(@PathVariable int productId) {
@@ -50,32 +54,26 @@ public class ProductRestController {
 		productService.save(product);
 		return product;
 	}
-	
+
 	@DeleteMapping("/products/{productId}")
 	public Response deleteProduct(@PathVariable int productId) {
 		Product tempProduct = productService.findById(productId);
 
 		if (tempProduct == null) {
 			return new Response(Constants.NOT_FOUND_STATUS, "Product id not found - " + productId);
-			//throw new RuntimeException("Product id not found - " + productId);
+			// throw new RuntimeException("Product id not found - " + productId);
 		}
 
 		productService.deleteById(productId);
 		return new Response(Constants.OK_STATUS, "Deleted product id - " + productId);
 	}
-	
+
+	/*
 	@GetMapping("/products")
 	public List<Product> searchForProductsByName(@RequestParam String searchTerm) {
 		return productService.findByNameIgnoreCaseContaining(searchTerm);
 	}
-	
-	@GetMapping("/products/category/{categoryId}")
-	public List<Product> getProductsByCategory(@PathVariable int categoryId){
-		if(categoryId == 0) {
-			return productService.findAll();
-		}
-		return productService.findByCategory(new Category(categoryId));
-	}
+	*/
 
 
 }

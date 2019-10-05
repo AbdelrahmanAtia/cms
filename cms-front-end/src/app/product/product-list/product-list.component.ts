@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/_models/Category';
 import { CategoryService } from 'src/app/_services/category.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-list',
@@ -14,13 +15,16 @@ import { CategoryService } from 'src/app/_services/category.service';
 })
 export class ProductListComponent implements OnInit {
 
-  searchTerm: string;
-  searchMode: boolean = false;
+  pageNumber: number = 1;
+  totalPages: number;
+  categoryId: number = 0;
 
   products: Product[] = [];
-  searchForm: FormGroup;
-
   categories: Category[] = [];
+
+  //searchTerm: string;
+  //searchMode: boolean = false;
+  //searchForm: FormGroup;
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService,
@@ -28,9 +32,11 @@ export class ProductListComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.initializeSearchForm();
     this.initializeCategoriesList();
-    this.listenToRouteParamChanges();
+    this.initializeProductsList();
+
+    //this.initializeSearchForm();
+    //this.listenToRouteParamChanges();
   }
 
   initializeCategoriesList() {
@@ -43,35 +49,14 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  // called when any route param changes
-  listenToRouteParamChanges() {
-    this.route.params.subscribe(
-      params => {
-        this.searchTerm = params['searchTerm'];
-        this.searchMode = this.searchTerm != null;
-        this.initializeProductsList();
-      });
-  }
-
-  initializeSearchForm(): void {
-    this.searchForm = new FormGroup({
-      'searchTerm': new FormControl("", Validators.required)
-    });
-  }
-
   initializeProductsList(): void {
-    console.log('initializeProductsList() called..')
-    this.productService.getProducts(this.searchMode, this.searchTerm).subscribe(
-      (response: Product[]) => {
-        this.products = response;
+    this.productService.getProducts(this.categoryId, this.pageNumber).subscribe(
+      (response:HttpResponse<Product []>) => {
+        this.totalPages = +response.headers.get('totalPages');
+        this.products = response.body;
       },
       (error) => { console.log(error) }
     );
-  }
-
-  submitSearchForm(): void {
-    let searchTerm: string = this.searchForm.value.searchTerm;
-    this.router.navigate(['products', { 'searchTerm': searchTerm }]);
   }
 
   addNewProduct(): void {
@@ -100,16 +85,43 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  onChange(event): void {
-    console.log(event.target.value);
-    let categoryId: number = event.target.value;
-    this.productService.getProductsByCategoryId(categoryId).subscribe(
-      (response: Product[]) => {
-        this.products = response;
-      }, (error) => {
-        console.log(error);
-      }
-    );
+  onCategoryChange(event): void {
+    this.pageNumber = 1;
+    this.categoryId = event.target.value;
+    this.initializeProductsList();
   }
+
+
+  onPageChange(i: number): void {
+    this.pageNumber = this.pageNumber + i;
+    this.initializeProductsList();
+  }
+
+  /*
+  // called when any route param changes
+  listenToRouteParamChanges() {
+    this.route.params.subscribe(
+      params => {
+        this.searchTerm = params['searchTerm'];
+        this.searchMode = this.searchTerm != null;
+        this.initializeProductsList();
+      });
+  }
+  */
+
+  /*
+  initializeSearchForm(): void {
+    this.searchForm = new FormGroup({
+      'searchTerm': new FormControl("", Validators.required)
+    });
+  }
+  */
+
+  /*
+  submitSearchForm(): void {
+    let searchTerm: string = this.searchForm.value.searchTerm;
+    this.router.navigate(['products', { 'searchTerm': searchTerm }]);
+  }
+  */
 
 }
