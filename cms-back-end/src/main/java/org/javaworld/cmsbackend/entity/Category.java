@@ -1,19 +1,11 @@
 package org.javaworld.cmsbackend.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "category")
@@ -30,32 +22,18 @@ public class Category {
 	@Column(name = "description")
 	private String description;
 
-	// @Lob
-	// @Column(name = "image")
-	// private byte[] image;
-
 	@Column(name = "image")
 	private String image; // base64 string
 
-	/*
-	 * 
-	 * @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = {
-	 * CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
-	 * CascadeType.DETACH }) private List<Product> products;
-	 * 
-	 */
-	
+	@Column(name = "product_count")
+	private int productCount;
+
 	public Category() {
-	
-	}
-	
-	public Category(int id) {
-		this.id = id;
+
 	}
 
-	public Category(String name, String description) {
-		this.name = name;
-		this.description = description;
+	public Category(int id) {
+		this.id = id;
 	}
 
 	public int getId() {
@@ -90,24 +68,18 @@ public class Category {
 		this.image = image;
 	}
 
-	/*
-	 * //@JsonIgnore public byte[] getImage() { return image; }
-	 * 
-	 * public void setImage(byte[] image) { this.image = image; }
-	 */
+	public int getProductCount() {
+		return productCount;
+	}
 
-	/*
-	 * @JsonIgnore public List<Product> getProducts() { return products; }
-	 * 
-	 * public void setProducts(List<Product> products) { this.products = products; }
-	 * 
-	 * public void add(Product product) { if(products == null) { products = new
-	 * ArrayList<>(); } products.add(product); product.setCategory(this); }
-	 */
+	public void setProductCount(int productCount) {
+		this.productCount = productCount;
+	}
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", description=" + description + "]";
+		return "Category [id=" + id + ", name=" + name + ", description=" + description + ", productCount="
+				+ productCount + "]";
 	}
 
 }

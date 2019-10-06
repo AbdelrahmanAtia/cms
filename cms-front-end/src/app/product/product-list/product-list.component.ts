@@ -75,7 +75,8 @@ export class ProductListComponent implements OnInit {
       (response: Response) => {
         if (response.status = "200") {
           console.log(response.message);
-          this.router.navigate(['products']);
+          this.pageNumber = 1;
+          this.initializeProductsList();
         }
         else if (response.status = "404") {
           throw new Error(response.message);
@@ -94,6 +95,15 @@ export class ProductListComponent implements OnInit {
 
   onPageChange(i: number): void {
     this.pageNumber = this.pageNumber + i;
+    this.initializeProductsList();
+  }
+
+  goToPage(i:number){
+
+    if(i < 1 || i > this.totalPages){
+      return;
+    }
+    this.pageNumber = i;
     this.initializeProductsList();
   }
 
