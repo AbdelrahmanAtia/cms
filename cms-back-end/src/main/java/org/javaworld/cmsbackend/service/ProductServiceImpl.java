@@ -25,13 +25,27 @@ public class ProductServiceImpl implements ProductService {
 	HttpServletResponse httpServletResponse;
 
 	@Override
-	public List<Product> getProducts(int categoryId, int pageNumber, int pageSize) {
+	public List<Product> getProducts(String name, int categoryId, int pageNumber, int pageSize) {
 
-		Category category = new Category(categoryId);
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Category category = new Category(categoryId);
+		Page<Product> page = null;
 
-		Page<Product> page = categoryId == 0 ? productRepository.findAll(pageable)
-				: productRepository.findByCategory(category, pageable);
+		if (categoryId == 0) {
+
+			if (name.trim().length() == 0)
+				page = productRepository.findAll(pageable);
+			else
+				page = productRepository.findByNameIgnoreCaseContaining(name, pageable);
+
+		} else {
+
+			if (name.trim().length() == 0)
+				page = productRepository.findByCategory(category, pageable);
+			else
+				page = productRepository.findByCategoryAndNameIgnoreCaseContaining(category, name, pageable);
+
+		}
 
 		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());
 
@@ -58,11 +72,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void deleteById(int id) {
 		productRepository.deleteById(id);
-	}
-
-	@Override
-	public List<Product> findByNameIgnoreCaseContaining(String name) {
-		return productRepository.findByNameIgnoreCaseContaining(name);
 	}
 
 }

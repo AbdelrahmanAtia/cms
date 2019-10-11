@@ -22,7 +22,8 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
 
-  //searchTerm: string;
+  searchTerm: string = "";
+
   //searchMode: boolean = false;
   //searchForm: FormGroup;
 
@@ -50,7 +51,7 @@ export class ProductListComponent implements OnInit {
   }
 
   initializeProductsList(): void {
-    this.productService.getProducts(this.categoryId, this.pageNumber).subscribe(
+    this.productService.getProducts(this.searchTerm, this.categoryId, this.pageNumber).subscribe(
       (response:HttpResponse<Product []>) => {
         this.totalPages = +response.headers.get('totalPages');
         this.products = response.body;
@@ -92,6 +93,13 @@ export class ProductListComponent implements OnInit {
     this.initializeProductsList();
   }
 
+  onSearchChange(event) {
+    if(event.keyCode == 13){
+      // enter key pressed
+      this.pageNumber = 1;
+      this.initializeProductsList();
+    }
+  }
 
   onPageChange(i: number): void {
     this.pageNumber = this.pageNumber + i;

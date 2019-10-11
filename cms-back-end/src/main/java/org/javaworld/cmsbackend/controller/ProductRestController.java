@@ -24,11 +24,13 @@ public class ProductRestController {
 	private ProductService productService;
 
 	@GetMapping("/products")
-	public List<Product> getProducts(@RequestParam int categoryId,
+	public List<Product> getProducts(@RequestParam String searchTerm,
+									 @RequestParam int categoryId,
 									 @RequestParam int pageNumber, 
 									 @RequestParam int pageSize) {
 
-		return productService.getProducts(categoryId, pageNumber, pageSize);
+		
+		return productService.getProducts(searchTerm, categoryId, pageNumber, pageSize);
 	}
 
 
@@ -67,13 +69,5 @@ public class ProductRestController {
 		productService.deleteById(productId);
 		return new Response(Constants.OK_STATUS, "Deleted product id - " + productId);
 	}
-
-	/*
-	@GetMapping("/products")
-	public List<Product> searchForProductsByName(@RequestParam String searchTerm) {
-		return productService.findByNameIgnoreCaseContaining(searchTerm);
-	}
-	*/
-
 
 }

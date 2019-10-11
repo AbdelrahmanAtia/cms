@@ -13,12 +13,13 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(categoryId: number, pageNumber: number): Observable<HttpResponse<Product[]>> {
+  getProducts(searchTerm:string, categoryId: number, pageNumber: number): Observable<HttpResponse<Product[]>> {
     pageNumber--; // cause pageNumber starts at zero not 1 according to backend..
     let url: string = this.baseUrl + "/products";
 
     return this.http.get<any>(url, {
       params: {
+        searchTerm: searchTerm,
         categoryId: categoryId.toString(),
         pageNumber: pageNumber.toString(),
         pageSize: new Config().pageSize.toString()

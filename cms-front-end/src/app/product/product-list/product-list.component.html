@@ -5,6 +5,14 @@
         <button class="btn" (click)="addNewProduct()">+ Add Product</button>
     </div>
     <div class="col-sm-4">
+
+        <input id="searchField" 
+               type="text" 
+               placeholder="Search" 
+               class="form-control"
+               [(ngModel)] = "searchTerm"
+               (keypress)="onSearchChange($event)">
+
         <!--
         <form [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
             <input id="searchTerm" 
