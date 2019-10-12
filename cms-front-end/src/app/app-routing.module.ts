@@ -9,16 +9,14 @@ import { ProductEditComponent } from './product/product-edit/product-edit.compon
 
  
 const routes: Routes = [
-  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: '', redirectTo: '/categories', pathMatch: 'full' },
 
   {
     path: 'products', component: ProductComponent, children:
       [
-        { path: '', component: ProductListComponent },
+        { path: ':searchTerm/:categoryId/:pageNumber', component: ProductListComponent },
         { path: 'new', component: ProductEditComponent },
-        /*{ path: ':searchTerm', component: ProductListComponent },*/
         { path: ':id/edit', component: ProductEditComponent }
-
       ]
   },
 

@@ -110,20 +110,20 @@ export class ProductEditComponent implements OnInit {
 
   addNewProduct(product: Product) {
     this.productService.addNewProduct(product).subscribe(
-      (response: Product) => this.router.navigate(['/products'])
+      (response: Product) =>  this.router.navigate(['products',' ', 0, 1])
       , (error) => console.log(error)
     );
   }
 
   updateProduct(product: Product) {
     this.productService.updateProduct(product).subscribe(
-      (response: Product) => this.router.navigate(['/products'])
+      (response: Product) => this.router.navigate(['products',' ', 0, 1])
       , (error) => console.log(error)
     );
   }
 
   cancel(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate(['products',' ', 0, 1]);
   }
 
 }

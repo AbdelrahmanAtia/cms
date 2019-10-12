@@ -29,18 +29,19 @@ public class ProductServiceImpl implements ProductService {
 
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		Category category = new Category(categoryId);
+		name = name.trim();
 		Page<Product> page = null;
 
 		if (categoryId == 0) {
 
-			if (name.trim().length() == 0)
+			if (name.length() == 0)
 				page = productRepository.findAll(pageable);
 			else
 				page = productRepository.findByNameIgnoreCaseContaining(name, pageable);
 
 		} else {
 
-			if (name.trim().length() == 0)
+			if (name.length() == 0)
 				page = productRepository.findByCategory(category, pageable);
 			else
 				page = productRepository.findByCategoryAndNameIgnoreCaseContaining(category, name, pageable);

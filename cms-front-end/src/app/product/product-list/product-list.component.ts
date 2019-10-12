@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/_models/Product';
 import { ProductService } from 'src/app/_services/product.service';
 import { Response } from 'src/app/_models/Response';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/_models/Category';
 import { CategoryService } from 'src/app/_services/category.service';
@@ -15,17 +14,13 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class ProductListComponent implements OnInit {
 
-  pageNumber: number = 1;
+  searchTerm: string;
+  categoryId: number;
+  pageNumber: number;
   totalPages: number;
-  categoryId: number = 0;
 
   products: Product[] = [];
   categories: Category[] = [];
-
-  searchTerm: string = "";
-
-  //searchMode: boolean = false;
-  //searchForm: FormGroup;
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService,
@@ -34,10 +29,18 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.initializeCategoriesList();
-    this.initializeProductsList();
+    this.listenToRouteParamChanges();
+  }
 
-    //this.initializeSearchForm();
-    //this.listenToRouteParamChanges();
+  // called when any route param changes
+  listenToRouteParamChanges() {
+    this.route.params.subscribe(
+      params => {
+        this.searchTerm = params['searchTerm'];
+        this.categoryId = +params['categoryId'];
+        this.pageNumber = +params['pageNumber'];
+        this.initializeProductsList();
+      });
   }
 
   initializeCategoriesList() {
@@ -75,9 +78,7 @@ export class ProductListComponent implements OnInit {
     this.productService.deleteProduct(productId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          console.log(response.message);
-          this.pageNumber = 1;
-          this.initializeProductsList();
+          this.ngOnInit();
         }
         else if (response.status = "404") {
           throw new Error(response.message);
@@ -87,59 +88,28 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  onCategoryChange(event): void {
-    this.pageNumber = 1;
-    this.categoryId = event.target.value;
-    this.initializeProductsList();
-  }
-
   onSearchChange(event) {
-    if(event.keyCode == 13){
-      // enter key pressed
-      this.pageNumber = 1;
-      this.initializeProductsList();
+    if(event.keyCode == 13){      // enter key pressed
+      this.router.navigate(['products', this.searchTerm, this.categoryId, '1']);
     }
   }
 
+  onCategoryChange(event): void {
+    let categoryId: number = event.target.value;
+    this.router.navigate(['products', this.searchTerm, categoryId, '1']);
+  }
+
   onPageChange(i: number): void {
-    this.pageNumber = this.pageNumber + i;
-    this.initializeProductsList();
+    let pageNumber:number = this.pageNumber + i;
+    this.router.navigate(['products', this.searchTerm, this.categoryId, pageNumber]);
   }
 
   goToPage(i:number){
-
     if(i < 1 || i > this.totalPages){
       return;
     }
     this.pageNumber = i;
     this.initializeProductsList();
   }
-
-  /*
-  // called when any route param changes
-  listenToRouteParamChanges() {
-    this.route.params.subscribe(
-      params => {
-        this.searchTerm = params['searchTerm'];
-        this.searchMode = this.searchTerm != null;
-        this.initializeProductsList();
-      });
-  }
-  */
-
-  /*
-  initializeSearchForm(): void {
-    this.searchForm = new FormGroup({
-      'searchTerm': new FormControl("", Validators.required)
-    });
-  }
-  */
-
-  /*
-  submitSearchForm(): void {
-    let searchTerm: string = this.searchForm.value.searchTerm;
-    this.router.navigate(['products', { 'searchTerm': searchTerm }]);
-  }
-  */
 
 }
