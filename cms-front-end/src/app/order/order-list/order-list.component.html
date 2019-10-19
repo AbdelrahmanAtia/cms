@@ -1,0 +1,44 @@
+<br>
+<button class="btn" (click)="addNewOrder()">+ Add Order</button>
+<br><br>
+
+<div *ngIf="orders.length == 0">
+    <div class="jumbotron">
+        <p>No Records Found</p>
+    </div>
+</div>
+
+<table class="table" *ngIf="orders.length > 0">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Delivery date & time</th>
+            <th>Name</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let o of orders">
+        <tr>
+
+            <td>{{o.id}}</td>
+            <td>delivery date</td>
+            <td>client name</td>
+            <td>{{o.totalPrice}}</td>
+            <td>order status</td>
+
+            <td>
+                <span (click)="editOrder(o.id)">
+                    <i class="fa fa-edit fa-2x col-sm-3"></i>
+                </span>
+                
+                <span (click)="deleteOrder(o.id)">
+                    <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
+                </span>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>

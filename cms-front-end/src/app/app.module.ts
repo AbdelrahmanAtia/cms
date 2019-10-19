@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-
 import { AppComponent } from './app.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { HeaderComponent } from './header/header.component';
@@ -14,6 +13,8 @@ import { CategoryEditComponent } from './category/category-edit/category-edit.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
+import { OrderComponent } from './order/order.component';
+import { OrderListComponent } from './order/order-list/order-list.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { ProductEditComponent } from './product/product-edit/product-edit.compon
     CategoryComponent,
     CategoryListComponent,
     CategoryEditComponent,
-    ProductEditComponent
+    ProductEditComponent,
+    OrderComponent,
+    OrderListComponent
   ],
   imports: [
     BrowserModule,

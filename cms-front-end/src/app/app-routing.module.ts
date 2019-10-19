@@ -6,6 +6,8 @@ import { CategoryComponent } from './category/category.component';
 import { CategoryListComponent } from './category/category-list/category-list.component';
 import { CategoryEditComponent } from './category/category-edit/category-edit.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
+import { OrderComponent } from './order/order.component';
+import { OrderListComponent } from './order/order-list/order-list.component';
 
  
 const routes: Routes = [
@@ -27,7 +29,15 @@ const routes: Routes = [
         { path: 'new', component: CategoryEditComponent },
         { path: ':id/edit', component: CategoryEditComponent }
       ]
+  },
+
+  {
+    path: 'orders', component: OrderComponent, children:
+      [
+        { path: '', component: OrderListComponent }
+      ]
   }
+
 
 ];
 

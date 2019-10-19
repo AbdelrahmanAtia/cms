@@ -8,17 +8,21 @@ import { Router } from '@angular/router';
 })
 export class SideBarComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-  viewProducts():void {
-    this.router.navigate(['products',' ', 0, 1]);
+  viewProducts(): void {
+    this.router.navigate(['products', ' ', 0, 1]);
   }
 
-  viewCategories():void{
+  viewCategories(): void {
     this.router.navigate(['categories']);
+  }
+
+  viewOrders(): void {
+    this.router.navigate(['orders']);
   }
 
 }
