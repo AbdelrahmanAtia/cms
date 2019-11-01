@@ -1,11 +1,12 @@
 package org.javaworld.cmsbackend.entity;
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,25 +17,25 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "delivery_date")
 	private String deliveryDate;
-	
+
 	@Column(name = "tax")
 	private double tax;
-	
+
 	@Column(name = "subtotal")
 	private double subtotal;
-	
+
 	@Column(name = "total_price")
 	private double totalPrice;
-	
+
 	@Column(name = "ip_address")
 	private String ipAddress;
 
-	public Order() {
-
-	}
+	@OneToOne
+	@JoinColumn(name = "client_id")
+	private Client client;
 
 	public int getId() {
 		return id;
@@ -84,10 +85,18 @@ public class Order {
 		this.ipAddress = ipAddress;
 	}
 
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", deliveryDate=" + deliveryDate + ", tax=" + tax + ", subtotal=" + subtotal
-				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + "]";
+				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", client=" + client + "]";
 	}
 
 }

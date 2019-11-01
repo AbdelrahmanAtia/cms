@@ -1,3 +1,5 @@
+import { Client } from './Client';
+
 export class Order {
 	id:number;
 	deliveryDate:string;
@@ -5,4 +7,5 @@ export class Order {
 	subtotal: number;
 	totalPrice: number;
 	ipAddress:string;
+	client:Client
 }
