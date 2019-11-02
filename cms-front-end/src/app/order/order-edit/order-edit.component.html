@@ -1,0 +1,62 @@
+<br>
+<fieldset  class="field-set-border">
+    <legend class="legend-border">Order Details</legend>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">Delivery date & time</div>
+            <div class="col-sm-4">
+                <input type="datetime-local" 
+                       class="form-control"/> 
+            </div>
+            <div class="col-sm-2">Sub-total</div>
+            <div class="col-sm-2 input-group">
+                <span class="input-group-addon">€</span>
+                <input type="text" class="form-control  input-disabled" readonly>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-sm-3">Status</div>
+            <div class="col-sm-4">
+                <select id=""
+                        class="form-control"
+                        formControlName="">
+                    <option>-- Choose --</option>
+                    <option>Cancelled</option>
+                    <option>Confirmed</option>
+                    <option>Pending</option>
+                </select>
+            </div>
+            <div class="col-sm-2">Tax</div>
+            <div class="col-sm-2 input-group">
+                <span class="input-group-addon">€</span>
+                <input type="text" class="form-control input-disabled" readonly>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-sm-3">Payment method</div>
+            <div class="col-sm-4">
+                <select id=""
+                        class="form-control"
+                        formControlName="">
+                    <option>-- Choose --</option>
+                    <option>Cash</option>
+                    <option>Credit Card</option>
+                    <option>PayPal</option>
+                </select>
+            </div>
+            <div class="col-sm-2">Total</div>
+            <div class="col-sm-2 input-group">
+                <span class="input-group-addon">€</span>
+                <input type="text" class="form-control input-disabled" readonly>
+            </div>
+        </div>  
+    </div>
+
+</fieldset>

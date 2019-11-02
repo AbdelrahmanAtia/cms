@@ -8,6 +8,7 @@ import { CategoryEditComponent } from './category/category-edit/category-edit.co
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import { OrderComponent } from './order/order.component';
 import { OrderListComponent } from './order/order-list/order-list.component';
+import { OrderEditComponent } from './order/order-edit/order-edit.component';
 
  
 const routes: Routes = [
@@ -34,7 +35,9 @@ const routes: Routes = [
   {
     path: 'orders', component: OrderComponent, children:
       [
-        { path: '', component: OrderListComponent }
+        { path: '', component: OrderListComponent },
+        { path: 'new', component: OrderEditComponent },
+        { path: ':id/edit', component: OrderEditComponent }
       ]
   }
 

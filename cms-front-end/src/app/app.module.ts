@@ -15,6 +15,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import { OrderComponent } from './order/order.component';
 import { OrderListComponent } from './order/order-list/order-list.component';
+import { OrderEditComponent } from './order/order-edit/order-edit.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { OrderListComponent } from './order/order-list/order-list.component';
     CategoryEditComponent,
     ProductEditComponent,
     OrderComponent,
-    OrderListComponent
+    OrderListComponent,
+    OrderEditComponent
   ],
   imports: [
     BrowserModule,
