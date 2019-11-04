@@ -23,7 +23,12 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	HttpServletResponse httpServletResponse;
-
+	
+	@Override
+	public List<Product> getAllProducts() {
+		return productRepository.findAll();
+	}	
+	
 	@Override
 	public List<Product> getProducts(String name, int categoryId, int pageNumber, int pageSize) {
 

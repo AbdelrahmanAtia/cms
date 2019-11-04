@@ -22,6 +22,11 @@ public class ProductRestController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@GetMapping("/products/all")
+	public List<Product> getAllProducts() {
+		return productService.getAllProducts();
+	}
 
 	@GetMapping("/products")
 	public List<Product> getProducts(@RequestParam String searchTerm,

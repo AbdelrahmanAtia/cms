@@ -60,3 +60,43 @@
     </div>
 
 </fieldset>
+
+<br>
+
+<fieldset  class="field-set-border">
+    <legend class="legend-border">Products</legend>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Size & Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ol of orderLinesList">
+                <td>
+                    <select class="form-control">
+                        <option>-- Select product --</option>
+                        <option *ngFor="let p of productsList">
+                            {{p.name}}, {{p.category.name}}
+                        </option>
+                    </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="" class="btn" (click)="addNewOrderLine()">+ Add Product</button>
+        </div>
+    </div>
+
+</fieldset>

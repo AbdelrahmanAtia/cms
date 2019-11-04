@@ -5,6 +5,8 @@ import org.javaworld.cmsbackend.entity.Product;
 
 public interface ProductService {
 
+	public List<Product> getAllProducts();
+
 	public List<Product> getProducts(String name, int categoryId, int pageNumber, int pageSize);
 
 	public Product findById(int id);
