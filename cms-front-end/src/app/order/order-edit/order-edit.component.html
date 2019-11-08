@@ -1,65 +1,93 @@
+
 <br>
-<fieldset  class="field-set-border">
-    <legend class="legend-border">Order Details</legend>
+<form [formGroup]="orderForm" (ngSubmit)="submitOrderForm()">
+    <fieldset  class="field-set-border">
+        <legend class="legend-border">Order Details</legend>
+            
+        
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">Delivery date & time</div>
+                    <div class="col-sm-4">
+                        <input id="orderDate"
+                               type="datetime-local" 
+                               class="form-control"                       
+                               formControlName="orderDate"/> 
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-3">Delivery date & time</div>
-            <div class="col-sm-4">
-                <input type="datetime-local" 
-                       class="form-control"/> 
+                <div class="form-group">
+                    <div class="col-sm-2">Sub-total</div>
+                    <div class="col-sm-2 input-group">
+                        <span class="input-group-addon">€</span>
+                        <input id="orderSubtotal"
+                               type="text" 
+                               class="form-control input-disabled" 
+                               formControlName="orderSubtotal"
+                               readonly>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-2">Sub-total</div>
-            <div class="col-sm-2 input-group">
-                <span class="input-group-addon">€</span>
-                <input type="text" class="form-control  input-disabled" readonly>
-            </div>
-        </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">Status</div>
+                    <div class="col-sm-4"> 
+                        <select id="orderStatus"
+                                class="form-control"
+                                formControlName="orderStatus">
+                            <option>-- Choose --</option>
+                            <option>Cancelled</option>
+                            <option>Confirmed</option>
+                            <option>Pending</option>
+                        </select>
+                    </div>
+                </div>
 
-        <br>
-
-        <div class="row">
-            <div class="col-sm-3">Status</div>
-            <div class="col-sm-4">
-                <select id=""
-                        class="form-control"
-                        formControlName="">
-                    <option>-- Choose --</option>
-                    <option>Cancelled</option>
-                    <option>Confirmed</option>
-                    <option>Pending</option>
-                </select>
+                <div class="form-group">
+                    <div class="col-sm-2">Tax</div>
+                    <div class="col-sm-2 input-group">
+                        <span class="input-group-addon">€</span>
+                        <input id="orderTax"
+                               formControlName="orderTax"
+                               type="text" 
+                               class="form-control input-disabled" 
+                               readonly>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-2">Tax</div>
-            <div class="col-sm-2 input-group">
-                <span class="input-group-addon">€</span>
-                <input type="text" class="form-control input-disabled" readonly>
-            </div>
-        </div>
 
-        <br>
+            <div class="row">
 
-        <div class="row">
-            <div class="col-sm-3">Payment method</div>
-            <div class="col-sm-4">
-                <select id=""
-                        class="form-control"
-                        formControlName="">
-                    <option>-- Choose --</option>
-                    <option>Cash</option>
-                    <option>Credit Card</option>
-                    <option>PayPal</option>
-                </select>
-            </div>
-            <div class="col-sm-2">Total</div>
-            <div class="col-sm-2 input-group">
-                <span class="input-group-addon">€</span>
-                <input type="text" class="form-control input-disabled" readonly>
-            </div>
-        </div>  
-    </div>
+                <div class="form-group">
+                    <div class="col-sm-3">Payment method</div>
+                    <div class="col-sm-4">
+                        <select id="orderPaymentMethod"
+                                class="form-control"
+                                formControlName="orderPaymentMethod">
+                            <option>-- Choose --</option>
+                            <option>Cash</option>
+                            <option>Credit Card</option>
+                            <option>PayPal</option>
+                        </select>
+                    </div>
+                </div>
 
-</fieldset>
+                <div class="form-group">
+                    <div class="col-sm-2">Total</div>
+                    <div class="col-sm-2 input-group">
+                        <span class="input-group-addon">€</span>
+                        <input id="orderTotalPrice"
+                               type="text" 
+                               formControlName="orderTotalPrice"
+                               class="form-control input-disabled" 
+                               readonly>
+                    </div>
+                </div>
+            </div>
+
+    </fieldset>
+</form>
 
 <br>
 
@@ -76,19 +104,38 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let ol of orderLinesList">
-                <td>
-                    <select class="form-control">
+            <tr *ngFor="let ol of orderLinesList; let i = index">
+                
+                <td class="col-md-4">
+                    <select class="form-control" (change)="onChange($event, i)">
                         <option>-- Select product --</option>
                         <option *ngFor="let p of productsList">
                             {{p.name}}, {{p.category.name}}
                         </option>
                     </select>
                 </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+
+                <td class="col-md-2">
+                    <div *ngIf="ol.price">
+                        € {{ol.price}}
+                    </div>
+                </td>
+
+                <td class="col-md-2">
+                    <input type="number"
+                           step="1" 
+                           min="1" 
+                           class="form-control" 
+                           onkeydown="return false" 
+                           value="1" 
+                           (change)="onQuantityChange($event, i)" />
+                </td>
+                <td>
+                    {{ol.totalPrice}}
+                </td>
+                <td>
+                    <button class='btn btn-sm' (click)="deleteOrderLine(i)">X</button>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -100,3 +147,16 @@
     </div>
 
 </fieldset>
+
+<div class="row">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">Save</button>
+    </div>
+    <div class="col-sm-2">
+        <button class="btn btn-info btn-block btn-block">Cancel</button>
+    </div>
+</div>
+<br>
+
+
