@@ -36,10 +36,10 @@
                         <select id="orderStatus"
                                 class="form-control"
                                 formControlName="orderStatus">
-                            <option>-- Choose --</option>
-                            <option>Cancelled</option>
-                            <option>Confirmed</option>
-                            <option>Pending</option>
+                            <option disabled [attr.selected] = "true">-- Choose --</option>
+                            <option *ngFor="let status of statusList" [attr.value]="status">
+                                {{status}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -65,10 +65,10 @@
                         <select id="orderPaymentMethod"
                                 class="form-control"
                                 formControlName="orderPaymentMethod">
-                            <option>-- Choose --</option>
-                            <option>Cash</option>
-                            <option>Credit Card</option>
-                            <option>PayPal</option>
+                            <option disabled [attr.selected] = "true">-- Choose --</option>
+                            <option *ngFor="let paymentMethod of paymentMethods" [attr.value]="paymentMethod">
+                                {{paymentMethod}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -85,10 +85,18 @@
                     </div>
                 </div>
             </div>
-
     </fieldset>
+    <div class="row">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="orderForm.invalid">Save</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-info btn-block btn-block">Cancel</button>
+        </div>
+    </div>
+    <br>
 </form>
-
 <br>
 
 <fieldset  class="field-set-border">
@@ -148,15 +156,6 @@
 
 </fieldset>
 
-<div class="row">
-    <div class="col-sm-8"></div>
-    <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">Save</button>
-    </div>
-    <div class="col-sm-2">
-        <button class="btn btn-info btn-block btn-block">Cancel</button>
-    </div>
-</div>
-<br>
+
 
 

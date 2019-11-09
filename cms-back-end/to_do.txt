@@ -1,0 +1,8 @@
+front end
+===========
+
+1- use pipes to approximate fields in order form to 2 numbers after the
+   decimal point
+   
+2- view error messages in forms of (order - category - product)
+
