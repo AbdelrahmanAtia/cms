@@ -90,7 +90,7 @@ export class CategoryEditComponent implements OnInit {
     this.categoryService.addNewCategory(category).subscribe(
       (response: Category) => this.router.navigate(['/categories'])
       , (error) => console.log(error)
-    );
+    ); 
   }
 
   updateCategory(category: Category) {

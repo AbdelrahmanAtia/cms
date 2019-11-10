@@ -23,10 +23,10 @@
         <tr>
 
             <td>{{o.id}}</td>
-            <td>delivery date</td>
+            <td>{{o.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}</td>
             <td>{{o.client.name}}</td>
             <td>{{o.totalPrice}}</td>
-            <td>order status</td>
+            <td>{{o.status}}</td>
 
             <td>
                 <span (click)="editOrder(o.id)">

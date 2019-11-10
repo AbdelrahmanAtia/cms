@@ -1,5 +1,6 @@
 package org.javaworld.cmsbackend.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class Order {
 	private int id;
 
 	@Column(name = "delivery_date")
-	private String deliveryDate;
+	private long deliveryDate;
 
 	@Column(name = "tax")
 	private double tax;
@@ -32,10 +33,17 @@ public class Order {
 
 	@Column(name = "ip_address")
 	private String ipAddress;
+	
+	@Column(name = "status")
+	private String status;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "client_id")
 	private Client client;
+
+	public Order() {
+
+	}
 
 	public int getId() {
 		return id;
@@ -45,11 +53,11 @@ public class Order {
 		this.id = id;
 	}
 
-	public String getDeliveryDate() {
+	public long getDeliveryDate() {
 		return deliveryDate;
 	}
 
-	public void setDeliveryDate(String deliveryDate) {
+	public void setDeliveryDate(long deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
 
@@ -85,6 +93,14 @@ public class Order {
 		this.ipAddress = ipAddress;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Client getClient() {
 		return client;
 	}
@@ -96,7 +112,7 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", deliveryDate=" + deliveryDate + ", tax=" + tax + ", subtotal=" + subtotal
-				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", client=" + client + "]";
+				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", status=" + status + ", client="
+				+ client + "]";
 	}
-
 }

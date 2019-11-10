@@ -25,7 +25,9 @@ public class OrderRestController {
 
 	@PostMapping("/orders")
 	public Order addOrder(@RequestBody Order order) {
-		order.setId(0); // force creating a new entity
+		order.setId(0); //force creating a new entity
+		order.getClient().setId(0); //force creating a new entity
+		System.out.println(order);
 		orderService.save(order);
 		return order;
 	}

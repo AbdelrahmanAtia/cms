@@ -21,10 +21,11 @@ end$$
 -- ------------------------------------------------------------------------------------------------
 create table client_order (
 	id int primary key auto_increment,
-    delivery_date varchar(255), 
+    delivery_date BIGINT(20), 
     tax double,
     subtotal double,
     total_price double,
+    status varchar(50),
     ip_address varchar(50),
     client_id int,
     FOREIGN KEY (client_id) REFERENCES client(id)

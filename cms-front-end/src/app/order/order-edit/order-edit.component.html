@@ -2,9 +2,7 @@
 <br>
 <form [formGroup]="orderForm" (ngSubmit)="submitOrderForm()">
     <fieldset  class="field-set-border">
-        <legend class="legend-border">Order Details</legend>
-            
-        
+        <legend class="legend-border">Order Details</legend>        
             <div class="row">
                 <div class="form-group">
                     <div class="col-sm-3">Delivery date & time</div>
@@ -86,76 +84,193 @@
                 </div>
             </div>
     </fieldset>
+
+    <fieldset  class="field-set-border">
+        <legend class="legend-border">Products</legend>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Size & Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ol of orderLinesList; let i = index">
+                    
+                    <td class="col-md-4">
+                        <select class="form-control" (change)="onChange($event, i)">
+                            <option>-- Select product --</option>
+                            <option *ngFor="let p of productsList">
+                                {{p.name}}, {{p.category.name}}
+                            </option>
+                        </select>
+                    </td>
+
+                    <td class="col-md-2">
+                        <div *ngIf="ol.price">
+                            € {{ol.price}}
+                        </div>
+                    </td>
+
+                    <td class="col-md-2">
+                        <input type="number"
+                            step="1" 
+                            min="1" 
+                            class="form-control" 
+                            onkeydown="return false" 
+                            value="1" 
+                            (change)="onQuantityChange($event, i)" />
+                    </td>
+                    <td>
+                        {{ol.totalPrice}}
+                    </td>
+                    <td>
+                        <button type="button" class='btn btn-sm' (click)="deleteOrderLine(i)">X</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <button type="button" class="btn" (click)="addNewOrderLine()">+ Add Product</button>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <fieldset  class="field-set-border">
+        <legend class="legend-border">Client Details</legend>
+    
+        
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">Name</div>
+                <div class="col-sm-7">
+                    <input id="clientName" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientName">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">Email</div>
+                <div class="col-sm-7">
+                    <input id="clientEmail" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientEmail">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">Phone</div>
+                <div class="col-sm-7">
+                    <input id="clientPhone" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientPhone">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">Company</div>
+                <div class="col-sm-7">
+                    <input id="clientCompany" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientCompany">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">Address</div>
+                <div class="col-sm-7">
+                    <input id="clientAddress" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientAddress">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">City</div>
+                <div class="col-sm-7">
+                    <input id="clientCity" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientCity">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">State</div>
+                <div class="col-sm-7">
+                    <input id="clientState" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientState">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">Zip</div>
+                <div class="col-sm-7">
+                    <input id="clientZip" 
+                            type="text" 
+                            class="form-control"  
+                            formControlName="clientZip">
+                </div>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">Special instructions</div>
+                <div class="col-sm-7">
+                    <textarea id="clientSpecialInstructions" 
+                              type="text" 
+                              class="form-control"  
+                              formControlName="clientSpecialInstructions"
+                              rows="6">
+                    
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+    </fieldset>
+
     <div class="row">
         <div class="col-sm-8"></div>
         <div class="col-sm-2">
             <button type="submit" class="btn btn-primary btn-block" [disabled]="orderForm.invalid">Save</button>
         </div>
         <div class="col-sm-2">
-            <button class="btn btn-info btn-block btn-block">Cancel</button>
+            <button class="btn btn-info btn-block btn-block" (click)="cancel()">Cancel</button>
         </div>
     </div>
     <br>
+
 </form>
-<br>
-
-<fieldset  class="field-set-border">
-    <legend class="legend-border">Products</legend>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Size & Price</th>
-                <th>Qty</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let ol of orderLinesList; let i = index">
-                
-                <td class="col-md-4">
-                    <select class="form-control" (change)="onChange($event, i)">
-                        <option>-- Select product --</option>
-                        <option *ngFor="let p of productsList">
-                            {{p.name}}, {{p.category.name}}
-                        </option>
-                    </select>
-                </td>
-
-                <td class="col-md-2">
-                    <div *ngIf="ol.price">
-                        € {{ol.price}}
-                    </div>
-                </td>
-
-                <td class="col-md-2">
-                    <input type="number"
-                           step="1" 
-                           min="1" 
-                           class="form-control" 
-                           onkeydown="return false" 
-                           value="1" 
-                           (change)="onQuantityChange($event, i)" />
-                </td>
-                <td>
-                    {{ol.totalPrice}}
-                </td>
-                <td>
-                    <button class='btn btn-sm' (click)="deleteOrderLine(i)">X</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="row">
-        <div class="col-sm-3">
-            <button type="" class="btn" (click)="addNewOrderLine()">+ Add Product</button>
-        </div>
-    </div>
-
-</fieldset>
-
 
 
 
