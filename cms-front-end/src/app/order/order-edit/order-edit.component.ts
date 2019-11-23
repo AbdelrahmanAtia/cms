@@ -69,21 +69,27 @@ export class OrderEditComponent implements OnInit {
     this.orderLinesList.push(new OrderLine());
   }
 
-  getPrice(productName: string): number{
+  getProduct(productName: string): Product{
     for(let product of this.productsList){
       if(product.name == productName){
-        return product.price;
+        return product;
       }
     }
     return null;
   }
-
   onChange(event, orderLineIndex:number){
     let str:string = event.target.value;
     let splitted:string[] = str.split(",", 2);
     let productName:string = splitted[0];
-    let productPrice:number = this.getPrice(productName);
+    let product = this.getProduct(productName);
+    let productPrice:number = product.price;
     let ol:OrderLine = this.orderLinesList[orderLineIndex];
+
+    //for orderline we need a product with id specified..we don't have to send all the 
+    //product data over the network..we need only it's id
+    let p:Product = new Product();
+    p.id = product.id;
+    ol.product = p;
     ol.price = productPrice;
     ol.totalPrice = ol.quantity * ol.price;
     this.updateOtherFields();
@@ -129,17 +135,36 @@ export class OrderEditComponent implements OnInit {
     client.specialInstructions = this.orderForm.value.clientSpecialInstructions;
     
     order.client = client;
+
+  
+    order.orderLines = this.orderLinesList;
     
-    console.log(order);
+    // save order..
     this.addNewOrder(order);
+
   }
 
   addNewOrder(order: Order) {
+    console.log(order);
     this.orderService.addNewOrder(order).subscribe(
       (response: Order) => this.router.navigate(['/orders'])
       , (error) => console.log(error)
     );
   }
+
+  /*
+  addNewOrderLines(){
+    console.log(this.orderLinesList);
+    for(let orderline of this.orderLinesList){
+
+      let order:Order = new Order();
+      order.id
+    }
+
+  }
+  */
+
+  
 
   updateOtherFields():void {
     let subTotal:number = 0;
@@ -160,5 +185,7 @@ export class OrderEditComponent implements OnInit {
   cancel(): void {
     this.router.navigate(['/orders']);
   }
+
+  
 
 }

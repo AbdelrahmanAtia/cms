@@ -1,7 +1,5 @@
 package org.javaworld.cmsbackend.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,12 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Type;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "product")
@@ -39,35 +34,20 @@ public class Product {
 	@Column(name = "active")
 	private boolean active;
 
-	//@Lob
-	//@Column(name = "image")
-	//private byte[] image;
-	
 	@Column(name = "image")
-	private String image; // base64 string	
-	
+	private String image; // base64 string
 
 	@ManyToOne(fetch = FetchType.EAGER, 
 			   cascade = { CascadeType.DETACH, 
-				           CascadeType.REFRESH })
+					       CascadeType.REFRESH })
 	@JoinColumn(name = "category_id")
 	private Category category;
- 
-	
-	
-	/*
-	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
-			   cascade = { CascadeType.DETACH, CascadeType.MERGE,
-			               CascadeType.PERSIST, CascadeType.REFRESH })
-	private List<OrderLine> orderLines;
 
-	*/
 	public Product() {
 
 	}
 
-	public Product(String name, String description, double price, 
-			       boolean active) {
+	public Product(String name, String description, double price, boolean active) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -114,24 +94,13 @@ public class Product {
 		this.active = active;
 	}
 
-	/*
-	@JsonIgnore
-	public byte[] getImage() {
-		return image;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
-	}
-	*/
-	
 	public String getImage() {
 		return image;
 	}
 
 	public void setImage(String image) {
 		this.image = image;
-	}	
+	}
 
 	public Category getCategory() {
 		return category;
@@ -140,25 +109,6 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
-	/*
-	@JsonIgnore
-	public List<OrderLine> getOrderLines() {
-		return orderLines;
-	}
-
-	public void setOrderLines(List<OrderLine> orderLines) {
-		this.orderLines = orderLines;
-	}
-	
-	public void add(OrderLine orderLine) {
-		if(this.orderLines == null) {
-			orderLines = new ArrayList<>();
-		}
-		orderLines.add(orderLine);
-		orderLine.setProduct(this);
-	}
-	*/
 
 	@Override
 	public String toString() {

@@ -19,18 +19,6 @@ begin
 end$$
 
 -- ------------------------------------------------------------------------------------------------
-create table client_order (
-	id int primary key auto_increment,
-    delivery_date BIGINT(20), 
-    tax double,
-    subtotal double,
-    total_price double,
-    status varchar(50),
-    ip_address varchar(50),
-    client_id int,
-    FOREIGN KEY (client_id) REFERENCES client(id)
-);
--- ------------------------------------------------------------------------------------------------
 create table client (
 	id int primary key auto_increment,
     title varchar(255), 
@@ -44,5 +32,28 @@ create table client (
     zip varchar(255),
     country varchar(255),
     special_instructions varchar(255)
+);
+-- ------------------------------------------------------------------------------------------------
+create table client_order (
+	id int primary key auto_increment,
+    delivery_date BIGINT(20), 
+    tax double,
+    subtotal double,
+    total_price double,
+    status varchar(50),
+    ip_address varchar(50),
+    client_id int,
+    FOREIGN KEY (client_id) REFERENCES client(id),
+);
+-- ------------------------------------------------------------------------------------------------
+create table order_line (
+	id int primary key auto_increment,
+    quantity int, 
+    price double,
+    total_price double,
+    product_id int,
+    order_id int,
+    FOREIGN KEY (product_id) REFERENCES product(id),
+    FOREIGN KEY (order_id) REFERENCES client_order(id)
 );
 -- ------------------------------------------------------------------------------------------------

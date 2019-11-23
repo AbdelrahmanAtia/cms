@@ -1,5 +1,7 @@
 package org.javaworld.cmsbackend.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,13 +36,16 @@ public class Order {
 
 	@Column(name = "ip_address")
 	private String ipAddress;
-	
+
 	@Column(name = "status")
 	private String status;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "client_id")
 	private Client client;
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
+	private List<OrderLine> orderLines;
 
 	public Order() {
 
@@ -109,10 +115,19 @@ public class Order {
 		this.client = client;
 	}
 
+	public List<OrderLine> getOrderLines() {
+		return orderLines;
+	}
+
+	public void setOrderLines(List<OrderLine> orderLines) {
+		this.orderLines = orderLines;
+	}
+
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", deliveryDate=" + deliveryDate + ", tax=" + tax + ", subtotal=" + subtotal
 				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", status=" + status + ", client="
-				+ client + "]";
+				+ client + ", orderLines=" + orderLines + "]";
 	}
+
 }

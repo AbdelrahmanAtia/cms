@@ -3,6 +3,7 @@ package org.javaworld.cmsbackend.controller;
 import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Order;
+import org.javaworld.cmsbackend.entity.OrderLine;
 import org.javaworld.cmsbackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,13 @@ public class OrderRestController {
 	public Order addOrder(@RequestBody Order order) {
 		order.setId(0); //force creating a new entity
 		order.getClient().setId(0); //force creating a new entity
-		System.out.println(order);
+		
+		List<OrderLine> orderLines = order.getOrderLines();
+		for(OrderLine orderline: orderLines) {
+			orderline.setId(0); // force creating a new entity
+			orderline.setOrder(order); // bidirectional relationship
+		}
+		
 		orderService.save(order);
 		return order;
 	}

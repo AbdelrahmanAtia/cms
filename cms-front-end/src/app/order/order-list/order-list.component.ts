@@ -28,4 +28,8 @@ export class OrderListComponent implements OnInit {
     this.router.navigate(['orders', 'new']);
   }
 
+  editOrder(orderId: number): void {
+    this.router.navigate(['orders', orderId, 'edit']);
+  }
+  
 }
