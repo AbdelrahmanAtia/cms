@@ -8,6 +8,8 @@ public interface OrderService {
 
 	public List<Order> findAll();
 
+	public Order findById(int id);
+
 	public void save(Order order);
 
 }

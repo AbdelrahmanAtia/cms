@@ -40,7 +40,10 @@ public class Order {
 	@Column(name = "status")
 	private String status;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@Column(name = "payment_method")
+	private String paymentMethod;
+
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "client_id")
 	private Client client;
 
@@ -107,6 +110,14 @@ public class Order {
 		this.status = status;
 	}
 
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
 	public Client getClient() {
 		return client;
 	}
@@ -126,8 +137,9 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", deliveryDate=" + deliveryDate + ", tax=" + tax + ", subtotal=" + subtotal
-				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", status=" + status + ", client="
-				+ client + ", orderLines=" + orderLines + "]";
+				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", status=" + status + ", paymentMethod="
+				+ paymentMethod + ", client=" + client + ", orderLines=" + orderLines + "]";
 	}
+
 
 }

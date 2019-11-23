@@ -41,9 +41,10 @@ create table client_order (
     subtotal double,
     total_price double,
     status varchar(50),
+    payment_method varchar(50),
     ip_address varchar(50),
     client_id int,
-    FOREIGN KEY (client_id) REFERENCES client(id),
+    FOREIGN KEY (client_id) REFERENCES client(id)
 );
 -- ------------------------------------------------------------------------------------------------
 create table order_line (
