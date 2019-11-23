@@ -16,6 +16,7 @@ import { ProductEditComponent } from './product/product-edit/product-edit.compon
 import { OrderComponent } from './order/order.component';
 import { OrderListComponent } from './order/order-list/order-list.component';
 import { OrderEditComponent } from './order/order-edit/order-edit.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { OrderEditComponent } from './order/order-edit/order-edit.component';
     ReactiveFormsModule,
     AngularFontAwesomeModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

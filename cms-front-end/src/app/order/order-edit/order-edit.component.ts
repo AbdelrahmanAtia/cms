@@ -8,7 +8,8 @@ import { GreaterThanZero } from 'src/app/_validators/CustomValidators';
 import { Config } from 'src/app/_models/Config ';
 import { Client } from 'src/app/_models/Client';
 import { OrderService } from 'src/app/_services/order.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-order-edit',
@@ -19,8 +20,14 @@ export class OrderEditComponent implements OnInit {
 
   constructor(private productService:ProductService,
               private orderService:OrderService,
-              private router: Router) { }
+              private route: ActivatedRoute,
+              private router: Router,
+              private datepipe: DatePipe) { }
 
+
+  editMode: boolean = false;
+  orderId: number;
+  clientId: number;
 
   productsList: Product[] = [];
   orderLinesList:OrderLine[] = [];
@@ -31,7 +38,34 @@ export class OrderEditComponent implements OnInit {
 
   ngOnInit() {
     this.initProductsList();  
-    this.initOrderForm();
+    this.initOrderForm(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+    this.orderId = this.route.snapshot.params.id;
+    this.editMode = this.orderId != null;
+
+
+    if (this.editMode) {
+      // populate order form in case of edit  mode
+      this.orderService.getOrder(this.orderId).subscribe(
+        (response: Order) => {
+          console.log(response);
+          this.orderLinesList = response.orderLines;
+          this.clientId = response.client.id;
+
+          this.initOrderForm(this.datepipe.transform(response.deliveryDate, "yyyy-MM-ddTHH:mm"),
+                             response.status, response.paymentMethod, response.subtotal,
+                             response.tax, response.totalPrice, response.client.name,
+                             response.client.email, response.client.phone,
+                             response.client.company, response.client.address,
+                             response.client.city,
+                             response.client.state,
+                             response.client.zip,
+                             response.client.specialInstructions);
+
+        }, (error) => { console.log(error); }
+      );
+    }
+
   }
 
   initProductsList(): void {
@@ -45,23 +79,38 @@ export class OrderEditComponent implements OnInit {
     );
   }
 
-  initOrderForm(): void {
+  initOrderForm(orderDate:string,
+                orderStatus:string,
+                orderPaymentMethod:string,
+                subtotal:number, 
+                tax:number, 
+                total:number, 
+                clientName:string,
+                clientEmail:string, 
+                clientPhone:string, 
+                clientCompany:string, 
+                clientAddress:string,
+                clientCity:string,
+                clientState:string,
+                clientZip:string,
+                clientSpecialInstructions:string): void {
+
     this.orderForm = new FormGroup({
-      'orderDate': new FormControl(null, Validators.required),
-      'orderSubtotal': new FormControl(null,[Validators.required, GreaterThanZero]),
-      'orderStatus': new FormControl(null, Validators.required),
-      'orderTax': new FormControl(null, Validators.required),
-      'orderPaymentMethod': new FormControl(null, Validators.required),
-      'orderTotalPrice': new FormControl(null, Validators.required),
-      'clientName': new FormControl(null, Validators.required),
-      'clientEmail': new FormControl(null, Validators.required),
-      'clientPhone': new FormControl(null, Validators.required),
-      'clientCompany': new FormControl(null, null),
-      'clientAddress': new FormControl(null, null),
-      'clientCity': new FormControl(null, null),
-      'clientState': new FormControl(null, null),
-      'clientZip': new FormControl(null, null),
-      'clientSpecialInstructions': new FormControl(null, null)
+      'orderDate': new FormControl(orderDate, Validators.required),
+      'orderSubtotal': new FormControl(subtotal,[Validators.required, GreaterThanZero]),
+      'orderStatus': new FormControl(orderStatus, Validators.required),
+      'orderTax': new FormControl(tax, Validators.required),
+      'orderPaymentMethod': new FormControl(orderPaymentMethod, Validators.required),
+      'orderTotalPrice': new FormControl(total, Validators.required),
+      'clientName': new FormControl(clientName, Validators.required),
+      'clientEmail': new FormControl(clientEmail, Validators.required),
+      'clientPhone': new FormControl(clientPhone, Validators.required),
+      'clientCompany': new FormControl(clientCompany, null),
+      'clientAddress': new FormControl(clientAddress, null),
+      'clientCity': new FormControl(clientCity, null),
+      'clientState': new FormControl(clientState, null),
+      'clientZip': new FormControl(clientZip, null),
+      'clientSpecialInstructions': new FormControl(clientSpecialInstructions, null)
     });
   }
 
@@ -77,6 +126,7 @@ export class OrderEditComponent implements OnInit {
     }
     return null;
   }
+
   onChange(event, orderLineIndex:number){
     let str:string = event.target.value;
     let splitted:string[] = str.split(",", 2);
@@ -114,7 +164,13 @@ export class OrderEditComponent implements OnInit {
     console.log("starting submitOrderForm()....")
     
     let order:Order = new Order();
+    let client:Client = new Client();
 
+    if(this.editMode){
+      order.id = this.orderId;
+      client.id = this.clientId;
+    }
+    
     order.deliveryDate = new Date(this.orderForm.value.orderDate).getTime(); //time stamp
     order.subtotal = this.orderForm.value.orderSubtotal;
     order.status = this.orderForm.value.orderStatus;
@@ -122,7 +178,6 @@ export class OrderEditComponent implements OnInit {
     order.tax = this.orderForm.value.orderTax;
     order.totalPrice = this.orderForm.value.orderTotalPrice;
     
-    let client:Client = new Client();
     
     client.name = this.orderForm.value.clientName;
     client.email = this.orderForm.value.clientEmail;
@@ -133,15 +188,15 @@ export class OrderEditComponent implements OnInit {
     client.state = this.orderForm.value.clientState;
     client.zip = this.orderForm.value.clientZip;
     client.specialInstructions = this.orderForm.value.clientSpecialInstructions;
-    
+        
     order.client = client;
-
-  
     order.orderLines = this.orderLinesList;
     
-    // save order..
-    this.addNewOrder(order);
-
+    if(this.editMode){
+      this.updateExistingOrder(order);
+    } else {
+      this.addNewOrder(order);
+    }
   }
 
   addNewOrder(order: Order) {
@@ -152,18 +207,13 @@ export class OrderEditComponent implements OnInit {
     );
   }
 
-  /*
-  addNewOrderLines(){
-    console.log(this.orderLinesList);
-    for(let orderline of this.orderLinesList){
-
-      let order:Order = new Order();
-      order.id
-    }
-
+  updateExistingOrder(order: Order) {
+    console.log(order);
+    this.orderService.updateOrder(order).subscribe(
+      (response: Order) => this.router.navigate(['/orders'])
+      , (error) => console.log(error)
+    );
   }
-  */
-
   
 
   updateOtherFields():void {
@@ -185,7 +235,5 @@ export class OrderEditComponent implements OnInit {
   cancel(): void {
     this.router.navigate(['/orders']);
   }
-
-  
 
 }
