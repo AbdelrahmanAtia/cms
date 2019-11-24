@@ -30,6 +30,7 @@ export class OrderEditComponent implements OnInit {
   clientId: number;
 
   productsList: Product[] = [];
+  productsIdsList: number[] = [];
   orderLinesList:OrderLine[] = [];
   statusList:string [] = ["Cancelled", "Confirmed", "Pending"];
   paymentMethods:string [] = ["Cash"];
@@ -37,7 +38,7 @@ export class OrderEditComponent implements OnInit {
   orderForm: FormGroup;
 
   ngOnInit() {
-    this.initProductsList();  
+    this.initProductsListAndProductsIdsList();  
     this.initOrderForm(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
     this.orderId = this.route.snapshot.params.id;
@@ -53,10 +54,16 @@ export class OrderEditComponent implements OnInit {
           this.clientId = response.client.id;
 
           this.initOrderForm(this.datepipe.transform(response.deliveryDate, "yyyy-MM-ddTHH:mm"),
-                             response.status, response.paymentMethod, response.subtotal,
-                             response.tax, response.totalPrice, response.client.name,
-                             response.client.email, response.client.phone,
-                             response.client.company, response.client.address,
+                             response.status, 
+                             response.paymentMethod, 
+                             response.subtotal,
+                             response.tax, 
+                             response.totalPrice, 
+                             response.client.name,
+                             response.client.email, 
+                             response.client.phone,
+                             response.client.company, 
+                             response.client.address,
                              response.client.city,
                              response.client.state,
                              response.client.zip,
@@ -68,10 +75,13 @@ export class OrderEditComponent implements OnInit {
 
   }
 
-  initProductsList(): void {
+  initProductsListAndProductsIdsList(): void {
     this.productService.getAllProducts().subscribe(
       (response:Product []) =>{
         this.productsList = response;
+        for(let p of response){
+          this.productsIdsList.push(p.id);
+        }
       },
       (error)=>{
         console.log(error);
@@ -118,9 +128,14 @@ export class OrderEditComponent implements OnInit {
     this.orderLinesList.push(new OrderLine());
   }
 
-  getProduct(productName: string): Product{
+  deleteOrderLine(orderLineIndex:number):void {
+    this.orderLinesList.splice(orderLineIndex, 1);
+    this.updateOtherFields();
+  }
+
+  getProduct(productId: number): Product{
     for(let product of this.productsList){
-      if(product.name == productName){
+      if(product.id == productId){
         return product;
       }
     }
@@ -128,13 +143,10 @@ export class OrderEditComponent implements OnInit {
   }
 
   onChange(event, orderLineIndex:number){
-    let str:string = event.target.value;
-    let splitted:string[] = str.split(",", 2);
-    let productName:string = splitted[0];
-    let product = this.getProduct(productName);
+    let productId:number = event.target.value;
+    let product = this.getProduct(productId);
     let productPrice:number = product.price;
     let ol:OrderLine = this.orderLinesList[orderLineIndex];
-
     //for orderline we need a product with id specified..we don't have to send all the 
     //product data over the network..we need only it's id
     let p:Product = new Product();
@@ -155,10 +167,7 @@ export class OrderEditComponent implements OnInit {
     this.updateOtherFields();
   }
 
-  deleteOrderLine(orderLineIndex:number):void {
-    this.orderLinesList.splice(orderLineIndex, 1);
-    this.updateOtherFields();
-  }
+ 
 
   submitOrderForm() {
     console.log("starting submitOrderForm()....")

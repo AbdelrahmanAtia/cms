@@ -47,11 +47,15 @@ public class Order {
 	@JoinColumn(name = "client_id")
 	private Client client;
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<OrderLine> orderLines;
 
 	public Order() {
 
+	}
+	
+	public Order(int id) {
+		this.id = id;
 	}
 
 	public int getId() {

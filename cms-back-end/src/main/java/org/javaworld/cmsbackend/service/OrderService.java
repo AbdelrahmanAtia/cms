@@ -11,5 +11,7 @@ public interface OrderService {
 	public Order findById(int id);
 
 	public void save(Order order);
+	
+	public void update(Order order);
 
 }

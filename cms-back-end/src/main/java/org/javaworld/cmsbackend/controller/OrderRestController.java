@@ -48,7 +48,7 @@ public class OrderRestController {
 	
 	@PutMapping("/orders")
 	public Order updateOrder(@RequestBody Order order) {
-		orderService.save(order);
+		orderService.update(order);
 		return order;
 	}
 

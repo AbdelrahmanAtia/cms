@@ -103,8 +103,8 @@
                     <td class="col-md-4">
                         <select class="form-control" (change)="onChange($event, i)">
                             <option>-- Select product --</option>
-                            <option *ngFor="let p of productsList">
-                                {{p.name}}, {{p.category.name}}
+                            <option *ngFor="let p of productsList" [value]="p.id" [selected]="ol.product.id == p.id">
+                                    {{p.name}}, {{p.category.name}}
                             </option>
                         </select>
                     </td>
