@@ -3,6 +3,7 @@ package org.javaworld.cmsbackend.service;
 import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Category;
+import org.javaworld.cmsbackend.model.Response;
 
 public interface CategoryService {
 
@@ -12,6 +13,6 @@ public interface CategoryService {
 
 	public void save(Category category);
 
-	public void deleteById(int id);
+	public Response deleteById(int id);
 
 }

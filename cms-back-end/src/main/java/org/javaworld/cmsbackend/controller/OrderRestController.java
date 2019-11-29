@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Order;
 import org.javaworld.cmsbackend.entity.OrderLine;
+import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,5 +53,12 @@ public class OrderRestController {
 		orderService.update(order);
 		return order;
 	}
+	
+	
+	@DeleteMapping("/orders/{orderId}")
+	public Response deleteOrder(@PathVariable int orderId) {
+		return orderService.deleteOrder(orderId);		
+	}
+	
 
 }

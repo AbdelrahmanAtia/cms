@@ -11,5 +11,5 @@ export class Order {
 	client:Client;
 	status:string;
 	paymentMethod:string;
-	orderLines:OrderLine[];
+	orderLines:OrderLine[] = [];
 }

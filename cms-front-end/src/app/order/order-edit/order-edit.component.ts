@@ -142,7 +142,7 @@ export class OrderEditComponent implements OnInit {
     return null;
   }
 
-  onChange(event, orderLineIndex:number){
+  onChange(event, orderLineIndex:number) {
     let productId:number = event.target.value;
     let product = this.getProduct(productId);
     let productPrice:number = product.price;
@@ -170,7 +170,7 @@ export class OrderEditComponent implements OnInit {
  
 
   submitOrderForm() {
-    console.log("starting submitOrderForm()....")
+    console.log("starting submitOrderForm()....");
     
     let order:Order = new Order();
     let client:Client = new Client();
@@ -199,8 +199,12 @@ export class OrderEditComponent implements OnInit {
     client.specialInstructions = this.orderForm.value.clientSpecialInstructions;
         
     order.client = client;
-    order.orderLines = this.orderLinesList;
-    
+    for(let ol of this.orderLinesList){
+      if(ol.product.id != undefined){
+        order.orderLines.push(ol);
+      }
+    }
+
     if(this.editMode){
       this.updateExistingOrder(order);
     } else {
@@ -223,7 +227,6 @@ export class OrderEditComponent implements OnInit {
       , (error) => console.log(error)
     );
   }
-  
 
   updateOtherFields():void {
     let subTotal:number = 0;

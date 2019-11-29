@@ -3,11 +3,14 @@ package org.javaworld.cmsbackend.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.OrderLineRepository;
 import org.javaworld.cmsbackend.dao.OrderRepository;
 import org.javaworld.cmsbackend.entity.Order;
 import org.javaworld.cmsbackend.entity.OrderLine;
+import org.javaworld.cmsbackend.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +56,17 @@ public class OrderServiceImpl implements OrderService {
 			orderline.setOrder(order); // bidirectional relationship
 		}
 		orderRepository.save(order);
+	}
+
+	@Override
+	@Transactional
+	public Response deleteOrder(int orderId) {
+		try {
+			orderRepository.deleteById(orderId);
+		} catch (EmptyResultDataAccessException ex) {
+			return new Response(Constants.NOT_FOUND_STATUS, "Order id not found - " + orderId);
+		}
+		return new Response(Constants.OK_STATUS, "Deleted order id - " + orderId);
 	}
 
 }

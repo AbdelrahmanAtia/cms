@@ -3,6 +3,7 @@ import { Config } from '../_models/Config ';
 import { Observable } from 'rxjs';
 import { Order } from '../_models/Order';
 import { HttpClient } from '@angular/common/http';
+import { Response } from '../_models/Response';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,9 @@ export class OrderService {
     return this.http.put<Order>(url, order);
   }
 
+  deleteOrder(orderId: number): Observable<Response> {
+    let url: string = this.baseUrl + "/orders/" + orderId;
+    return this.http.delete<Response>(url);
+  }
 
 }

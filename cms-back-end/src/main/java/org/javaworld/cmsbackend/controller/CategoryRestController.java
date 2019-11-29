@@ -52,15 +52,7 @@ public class CategoryRestController {
 
 	@DeleteMapping("/categories/{categoryId}")
 	public Response deleteCategory(@PathVariable int categoryId) {
-		Category tempCategory = categoryService.findById(categoryId);
-
-		if (tempCategory == null) {
-			return new Response(Constants.NOT_FOUND_STATUS, "Category id not found - " + categoryId);
-			// throw new RuntimeException("Category id not found - " + categoryId);
-		}
-
-		categoryService.deleteById(categoryId);
-		return new Response(Constants.OK_STATUS, "Deleted category id - " + categoryId);
+		return categoryService.deleteById(categoryId);
 	}
 
 }
