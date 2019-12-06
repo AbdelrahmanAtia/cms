@@ -18,7 +18,7 @@ export class SideBarComponent implements OnInit {
   }
 
   viewCategories(): void {
-    this.router.navigate(['categories']);
+    this.router.navigate(['categories', ' ', 1]);
   }
 
   viewOrders(): void {

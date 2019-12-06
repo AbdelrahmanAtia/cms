@@ -1,7 +1,7 @@
 package org.javaworld.cmsbackend.controller;
 
 import java.util.List;
-import org.javaworld.cmsbackend.constants.Constants;
+
 import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.CategoryService;
@@ -14,27 +14,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api", produces=MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryRestController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
-	@GetMapping("/categories")
-	public List<Category> getCategories() {
+
+	@GetMapping("/categories/all")
+	public List<Category> getAllCategories() {
 		return categoryService.findAll();
+	}
+
+	@GetMapping("/categories")
+	public List<Category> getCategories(@RequestParam String searchTerm, @RequestParam int pageNumber,
+			@RequestParam int pageSize) {
+		return categoryService.getCategories(searchTerm, pageNumber, pageSize);
 	}
 
 	@GetMapping("/categories/{categoryId}")
 	public Category getCategory(@PathVariable int categoryId) {
-		Category category = categoryService.findById(categoryId);
-		if (category == null) {
-			throw new RuntimeException("Category id not found - " + categoryId);
-		}
-		return category;
+		return categoryService.findById(categoryId);
 	}
 
 	@PostMapping("/categories")

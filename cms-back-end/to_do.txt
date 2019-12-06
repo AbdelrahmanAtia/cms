@@ -6,3 +6,5 @@ front end
    
 2- view error messages in forms of (order - category - product)
 
+3- add (search - pagging) to categories list..
+

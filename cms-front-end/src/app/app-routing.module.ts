@@ -26,9 +26,9 @@ const routes: Routes = [
   {
     path: 'categories', component: CategoryComponent, children:
       [
-        { path: '', component: CategoryListComponent },
         { path: 'new', component: CategoryEditComponent },
-        { path: ':id/edit', component: CategoryEditComponent }
+        { path: ':id/edit', component: CategoryEditComponent },
+        { path: ':searchTerm/:pageNumber', component: CategoryListComponent }
       ]
   },
 

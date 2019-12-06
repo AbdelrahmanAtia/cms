@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Category } from '../_models/Category';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Config } from '../_models/Config ';
 import { Response } from '../_models/Response';
 
@@ -14,12 +14,25 @@ export class CategoryService {
 
   constructor(private http: HttpClient) { }
 
-  getCategories(): Observable<Category[]> {
-    let url: string = this.baseUrl + "/categories";
+  getAllCategories(): Observable<Category[]> {
+    let url: string = this.baseUrl + "/categories/all";
     return this.http.get<Category[]>(url);
   }
 
-  getCategory(categoryId:number): Observable<Category> {
+  getCategories(searchTerm: string, pageNumber: number): Observable<HttpResponse<Category[]>> {
+    pageNumber--; // cause pageNumber starts at zero not 1 according to backend..
+    let url: string = this.baseUrl + "/categories";
+    return this.http.get<any>(url, {
+      params: {
+        searchTerm: searchTerm,
+        pageNumber: pageNumber.toString(),
+        pageSize: new Config().pageSize.toString()
+      }
+      , observe: 'response'
+    });
+  }
+
+  getCategory(categoryId: number): Observable<Category> {
     let url: string = this.baseUrl + "/categories/" + categoryId;
     return this.http.get<Category>(url);
   }
@@ -29,7 +42,7 @@ export class CategoryService {
     return this.http.post<Category>(url, category);
   }
 
-  updateCategory(category: Category) : Observable<Category> {
+  updateCategory(category: Category): Observable<Category> {
     let url: string = this.baseUrl + "/categories";
     return this.http.put<Category>(url, category);
   }

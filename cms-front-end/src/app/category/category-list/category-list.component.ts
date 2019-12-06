@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from 'src/app/_models/Category';
 import { CategoryService } from 'src/app/_services/category.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Response } from 'src/app/_models/Response';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-category-list',
@@ -11,12 +12,35 @@ import { Response } from 'src/app/_models/Response';
 })
 export class CategoryListComponent implements OnInit {
 
+  searchTerm: string;
+  pageNumber: number;
+  totalPages: number;
   categories: Category[] = [];
-  constructor(private categoryService: CategoryService, private router: Router) { }
+
+  constructor(private categoryService: CategoryService, 
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.categoryService.getCategories().subscribe(
-      (response: Category[]) => { this.categories = response; },
+    this.listenToRouteParamChanges();
+  }
+
+  // called when any route param changes
+  listenToRouteParamChanges() {
+    this.route.params.subscribe(
+      params => {
+        this.searchTerm = params['searchTerm'];
+        this.pageNumber = +params['pageNumber'];
+        this.initializeCategoriesList();
+    });
+  }
+
+  initializeCategoriesList(){
+    this.categoryService.getCategories(this.searchTerm, this.pageNumber).subscribe(
+      (response:HttpResponse<Category[]>) => { 
+        this.totalPages = +response.headers.get('totalPages');
+        this.categories = response.body; 
+      },
       (error) => { console.log(error) }
     );
   }
@@ -45,6 +69,17 @@ export class CategoryListComponent implements OnInit {
       },
       (error) => { console.log(error); }
     );
+  }
+
+  onSearchChange(event) {
+    if(event.keyCode == 13){      // enter key pressed
+      this.router.navigate(['categories', this.searchTerm, '1']);
+    }
+  }
+
+  onPageChange(i: number): void {
+    let pageNumber:number = this.pageNumber + i;
+    this.router.navigate(['categories', this.searchTerm, pageNumber]);
   }
 
 

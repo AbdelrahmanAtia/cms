@@ -1,10 +1,27 @@
 <br>
-<button class="btn" (click)="addNewCategory()">+ Add Category</button>
-<br><br>
+
+<div class="row">
+
+    <div class="col-sm-3">
+        <button class="btn" (click)="addNewCategory()">+ Add Category</button>
+    </div>
+
+    <div class="col-sm-4">
+        <input id="searchField" 
+               type="text" 
+               placeholder="Search" 
+               class="form-control"
+               [(ngModel)] = "searchTerm"
+               (keypress)="onSearchChange($event)"> 
+    </div>
+
+</div>
+<br>
+<br>
 
 <div *ngIf="categories.length == 0">
     <div class="jumbotron">
-        <p>Use Add Category button to add categories</p>
+        <p>No Records Found</p>
     </div>
 </div>
 
@@ -35,4 +52,27 @@
         </tr>
     </tbody>
 </table>
+
+<div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-7" *ngIf="categories.length > 0">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination" style="cursor: pointer">
+    
+                    <li class="page-item" *ngIf="pageNumber > 1">
+                        <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                    </li>
+    
+                    <li class="page-item">
+                        <a class="page-link">{{pageNumber}}</a>
+                    </li>
+    
+                    <li class="page-item" *ngIf="pageNumber < totalPages">
+                        <a class="page-link" (click)="onPageChange(1)">Next</a>
+                    </li>
+    
+                </ul>
+            </nav>
+        </div> 
+    </div>
 <br>

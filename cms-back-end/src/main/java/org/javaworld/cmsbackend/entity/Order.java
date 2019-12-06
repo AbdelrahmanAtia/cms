@@ -43,17 +43,17 @@ public class Order {
 	@Column(name = "payment_method")
 	private String paymentMethod;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "client_id")
 	private Client client;
 
-	@OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	private List<OrderLine> orderLines;
 
 	public Order() {
 
 	}
-	
+
 	public Order(int id) {
 		this.id = id;
 	}
@@ -142,8 +142,7 @@ public class Order {
 	public String toString() {
 		return "Order [id=" + id + ", deliveryDate=" + deliveryDate + ", tax=" + tax + ", subtotal=" + subtotal
 				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", status=" + status + ", paymentMethod="
-				+ paymentMethod + ", client=" + client + ", orderLines=" + orderLines + "]";
+				+ paymentMethod + "]";
 	}
-
 
 }

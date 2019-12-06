@@ -32,7 +32,7 @@ export class ProductEditComponent implements OnInit {
     this.editMode = this.productId != null;
 
     //initialize categories drop down list..
-    this.categoryService.getCategories().subscribe(
+    this.categoryService.getAllCategories().subscribe(
       (response: Category[]) => { 
         this.categories = response; 
       },

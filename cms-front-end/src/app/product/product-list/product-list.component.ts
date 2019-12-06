@@ -19,7 +19,7 @@ export class ProductListComponent implements OnInit {
   pageNumber: number;
   totalPages: number;
 
-  products: Product[] = [];
+  products: Product[] = []; 
   categories: Category[] = [];
 
   constructor(private productService: ProductService,
@@ -45,7 +45,7 @@ export class ProductListComponent implements OnInit {
 
   initializeCategoriesList() {
     //initialize categories drop down list..
-    this.categoryService.getCategories().subscribe(
+    this.categoryService.getAllCategories().subscribe(
       (response: Category[]) => {
         this.categories = response;
       },

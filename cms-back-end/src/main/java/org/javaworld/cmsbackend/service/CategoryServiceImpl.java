@@ -1,8 +1,10 @@
 package org.javaworld.cmsbackend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.javaworld.cmsbackend.constants.Constants;
@@ -11,6 +13,9 @@ import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,10 +23,30 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	HttpServletResponse httpServletResponse;
 
 	@Override
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
+	}
+	
+	@Override
+	public List<Category> getCategories(String name, int pageNumber, int pageSize) {
+		name = name.trim();
+				
+		Page<Category> page = null;
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);	
+		
+		if (name.length() == 0) {
+			page = categoryRepository.findAll(pageable);
+		} else {
+			page = categoryRepository.findByNameIgnoreCaseContaining(name, pageable);
+		}
+		
+		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());		
+		return page.hasContent() ? page.getContent() : new ArrayList<Category>();
 	}
 
 	@Override
@@ -53,5 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		return new Response(Constants.OK_STATUS, "Deleted category id - " + categoryId);
 	}
+
+
 		
 }

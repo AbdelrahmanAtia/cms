@@ -8,11 +8,14 @@ import org.javaworld.cmsbackend.model.Response;
 public interface CategoryService {
 
 	public List<Category> findAll();
+	
+	public List<Category> getCategories(String searchTerm, int pageNumber, int pageSize);
 
 	public Category findById(int id);
 
 	public void save(Category category);
 
 	public Response deleteById(int id);
+
 
 }

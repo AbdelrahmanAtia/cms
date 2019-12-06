@@ -88,7 +88,7 @@ export class CategoryEditComponent implements OnInit {
 
   addNewCategory(category: Category) {
     this.categoryService.addNewCategory(category).subscribe(
-      (response: Category) => this.router.navigate(['/categories'])
+      (response: Category) =>  this.router.navigate(['categories', ' ', '1'])
       , (error) => console.log(error)
     ); 
   }
@@ -101,7 +101,7 @@ export class CategoryEditComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/categories']);
+    this.router.navigate(['categories', ' ', '1']);
   }
 
 }
