@@ -39,7 +39,9 @@
 
             <td>{{c.id}}</td>
             <td>{{c.name}}</td>
-            <td>{{c.productCount}}</td>
+            <td>
+                <a href="/products/%20/{{c.id}}/1">{{c.productCount}}</a>
+            </td>
             <td>
                 <span (click)="editCategory(c.id)">
                     <i class="fa fa-edit fa-2x col-sm-3"></i>

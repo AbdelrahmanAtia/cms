@@ -60,10 +60,8 @@ export class CategoryListComponent implements OnInit {
     this.categoryService.deleteCategory(categoryId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          console.log(response.message);
-          this.ngOnInit();
-        }
-        else if (response.status = "404") {
+          this.router.navigate(['categories',  this.searchTerm + " ", this.pageNumber]);
+        } else if (response.status = "404") {
           throw new Error(response.message);
         }
       },

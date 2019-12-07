@@ -1,10 +1,18 @@
 front end
 ===========
 
+>>> category enhancements
+===========================  
+1- view error messages for invalid fields of category form                       (done)
+2- add (search - pagging) to categories list..                                   (done)
+
+3- set product category to null when category is removed
+
+4- handle what will be shown when a category is deleted
+========================================================================================
+
 1- use pipes to approximate fields in order form to 2 numbers after the
    decimal point
    
-2- view error messages in forms of (order - category - product)
-
-3- add (search - pagging) to categories list..
+2- write a code to initialize data base when project starts..
 

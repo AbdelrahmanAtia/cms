@@ -52,4 +52,9 @@ export class CategoryService {
     return this.http.delete<Response>(url);
   }
 
+  deleteCategoryImage(categoryId: number): Observable<Response> {
+    let url: string = this.baseUrl + "/categories/image/" + categoryId;
+    return this.http.delete<Response>(url);
+  }
+
 }

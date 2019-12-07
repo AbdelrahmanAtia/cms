@@ -1,7 +1,8 @@
 <br>
 <form [formGroup]="categoryForm" (ngSubmit)="submitCategoryForm()">
 
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-error': categoryForm.get('categoryName').invalid 
+                                       && categoryForm.get('categoryName').touched}">
         <div class="row">
             <div class="col-sm-3">
                 <label for="categoryName">Category title</label>
@@ -11,7 +12,13 @@
                        type="text" 
                        class="form-control"  
                        formControlName="categoryName">
+
+                <span *ngIf="categoryForm.get('categoryName').invalid &&  
+                             categoryForm.get('categoryName').touched && 
+                             categoryForm.get('categoryName').errors['required']"
+                      class="help-block"> Please fill out this field.</span>
             </div>
+
         </div>
     </div>
 
@@ -43,8 +50,11 @@
                        formControlName="categoryImage"
                        (change)="readUrl($event)" />
                 <br>
-                <div *ngIf="base64CategoryImage.length > 0">
-                    <img [src]="base64CategoryImage" width="165px" height="84px"> 
+                <div *ngIf="base64CategoryImage && base64CategoryImage.length > 0">
+                    <img [src]="base64CategoryImage" width="165px" height="84px" class="col-sm-4" style="padding-left: 0%;"> 
+                    <span (click)="deleteCategoryImage()">
+                        <i class="fa fa-window-close fa-2x"></i>
+                    </span>
                 </div>
             </div>
         </div>

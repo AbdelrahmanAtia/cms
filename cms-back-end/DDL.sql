@@ -58,3 +58,12 @@ create table order_line (
     FOREIGN KEY (order_id) REFERENCES client_order(id)
 );
 -- ------------------------------------------------------------------------------------------------
+-- reset data base tables
+delete  from order_line where id > 0;
+delete  from client_order where id > 0;
+delete  from client where id > 0;
+delete from product where id > 0;
+delete from category where id > 0;
+-- ------------------------------------------------------------------------------------------------
+
+

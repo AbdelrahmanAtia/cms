@@ -57,5 +57,10 @@ public class CategoryRestController {
 	public Response deleteCategory(@PathVariable int categoryId) {
 		return categoryService.deleteById(categoryId);
 	}
+	
+	@DeleteMapping("/categories/image/{categoryId}")
+	public Response deleteCategoryImage(@PathVariable int categoryId) {
+		return categoryService.deleteCategoryImage(categoryId);
+	}
 
 }

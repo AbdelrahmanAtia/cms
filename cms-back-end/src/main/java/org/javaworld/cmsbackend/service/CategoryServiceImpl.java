@@ -67,7 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
 		categoryRepository.save(category);
 	}
 
-	
 	@Override
 	@Transactional
 	public Response deleteById(int categoryId) {
@@ -79,6 +78,14 @@ public class CategoryServiceImpl implements CategoryService {
 		return new Response(Constants.OK_STATUS, "Deleted category id - " + categoryId);
 	}
 
+	@Override
+	@Transactional
+	public Response deleteCategoryImage(int categoryId) {
+		int rowsAffected = categoryRepository.deleteCategoryImage(categoryId);
+		if (rowsAffected == 0)
+			return new Response(Constants.NOT_FOUND_STATUS, "category id not found - " + categoryId);
+		return new Response(Constants.OK_STATUS, "Deleted  image for category id - " + categoryId);
+	}
 
 		
 }

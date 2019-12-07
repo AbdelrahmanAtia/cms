@@ -16,6 +16,7 @@ public interface CategoryService {
 	public void save(Category category);
 
 	public Response deleteById(int id);
-
+	
+	public Response deleteCategoryImage(int categoryId);
 
 }

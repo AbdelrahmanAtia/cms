@@ -3,6 +3,7 @@ import { CategoryService } from 'src/app/_services/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from 'src/app/_models/Category';
+import { Response } from 'src/app/_models/Response';
 
 @Component({
   selector: 'app-category-edit',
@@ -26,7 +27,7 @@ export class CategoryEditComponent implements OnInit {
     this.categoryForm = new FormGroup({
       'categoryName': new FormControl(null, Validators.required),
       'categoryDescription': new FormControl(null, null),
-      'categoryImage': new FormControl(null, null)
+      'categoryImage': new FormControl(null, null),
     });
 
     this.categoryId = this.route.snapshot.params.id;
@@ -39,7 +40,8 @@ export class CategoryEditComponent implements OnInit {
           this.categoryForm = new FormGroup({
             'categoryName': new FormControl(response.name, Validators.required),
             'categoryDescription': new FormControl(response.description, null),
-            'categoryImage': new FormControl(null, null)
+            'categoryImage': new FormControl(null, null),
+            'productCount': new FormControl(response.productCount, null)
           });
           this.base64CategoryImage = response.image;
         }, (error) => { console.log(error); }
@@ -80,6 +82,8 @@ export class CategoryEditComponent implements OnInit {
     category.name = this.categoryForm.value.categoryName;
     category.description = this.categoryForm.value.categoryDescription;
     category.image = this.base64CategoryImage;
+    category.productCount = this.categoryForm.value.productCount;
+    
     if (this.editMode)
       this.updateCategory(category);
     else
@@ -95,13 +99,38 @@ export class CategoryEditComponent implements OnInit {
 
   updateCategory(category: Category) {
     this.categoryService.updateCategory(category).subscribe(
-      (response: Category) => this.router.navigate(['/categories'])
+      (response: Category) => this.router.navigate(['categories', ' ', '1'])
       , (error) => console.log(error)
     );
   }
 
   cancel(): void {
     this.router.navigate(['categories', ' ', '1']);
+  }
+
+  deleteCategoryImage():void {
+
+    if(!this.editMode ){
+      this.base64CategoryImage = null;
+      this.categoryForm.patchValue({categoryImage: null});
+      return;
+    } 
+
+    if (!confirm("Are you sure that you want to delete this image?")) {
+      return;
+    }
+
+    this.categoryService.deleteCategoryImage(this.categoryId).subscribe(
+      (response: Response) => {
+        if(response.status == '200'){
+          this.base64CategoryImage = null;
+          this.categoryForm.patchValue({categoryImage: null});
+        } else {
+          console.log(response);
+        }
+      }, 
+      (error) => console.log(error)
+    );
   }
 
 }
