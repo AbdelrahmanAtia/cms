@@ -1,5 +1,5 @@
 <br>
-<form [formGroup]="productForm" (ngSubmit)="submitProductForm()">
+<form *ngIf="productForm" [formGroup]="productForm" (ngSubmit)="submitProductForm()">
 
     <div class="form-group">
         <div class="row">
@@ -37,15 +37,12 @@
                 <label for="productCategory">Category</label>
             </div>
             <div class="col-sm-4">
-                <select id="productCategory"
+                <select id="productCategory"  
                         class="form-control"
                         formControlName="productCategory">
-
-                        <option disabled [attr.selected] = "true">-- choose category --</option>
-                        <option *ngFor="let c of categories" [attr.value]="c.name">
+                        <option *ngFor="let c of categories" [value]="c.name" [selected]="productForm.value.productCategory == c.name">
                             {{c.name}}
                         </option>
-                        
                 </select>
             </div>
         </div>

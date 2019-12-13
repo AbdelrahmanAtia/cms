@@ -56,7 +56,11 @@
             <td>{{p.id}}</td>
             <td><img width="84px" height="60px" [src]="p.image"></td>
             <td>{{p.name}}</td>
-            <td>{{p.category.name}}</td>
+            <td>
+                <div *ngIf="p.category">
+                    {{p.category.name}}
+                </div>
+            </td>
             <td>{{p.price}}</td>
             <td>{{(p.active == true)? 'Active': 'Inactive'}}</td>
             <td>

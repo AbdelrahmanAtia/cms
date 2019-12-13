@@ -13,58 +13,60 @@ import { Category } from 'src/app/_models/Category';
 })
 export class ProductEditComponent implements OnInit {
 
-  
   editMode: boolean = false;
   productId: number;
   productForm: FormGroup;
   categories: Category[] = [];
-  
   base64ProductImage: string | ArrayBuffer = '';
 
   constructor(private productService: ProductService,
-              private categoryService: CategoryService,
-              private route: ActivatedRoute,
-              private router: Router) { }
+    private categoryService: CategoryService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
 
     this.productId = this.route.snapshot.params.id;
     this.editMode = this.productId != null;
 
-    //initialize categories drop down list..
-    this.categoryService.getAllCategories().subscribe(
-      (response: Category[]) => { 
-        this.categories = response; 
-      },
-      (error) => { console.log(error) }
-    );
-
-    //  initialize product form
-    this.productForm = new FormGroup({
-      'productName': new FormControl(null, Validators.required),
-      'productDescription': new FormControl(null, null),
-      'productCategory': new FormControl(null, Validators.required),
-      'productPrice': new FormControl(null, Validators.required),
-      'productImage': new FormControl(null, null),
-      'productStatus': new FormControl(null, Validators.required)
-    });
+    this.initCategoriesList(); //initialize categories drop down list   
 
     if (this.editMode) {
-      // populate product form in case of edit  mode
       this.productService.getProduct(this.productId).subscribe(
         (response: Product) => {
-          this.productForm = new FormGroup({
-            'productName': new FormControl(response.name, Validators.required),
-            'productDescription': new FormControl(response.description, null),
-            'productCategory': new FormControl(response.category.name, Validators.required),
-            'productPrice': new FormControl(response.price, Validators.required),
-            'productImage': new FormControl(null, null),
-            'productStatus': new FormControl(response.active, Validators.required)
-          });
+          let categoryName: string = response.category ? response.category.name : null;
+          console.log(categoryName)
+          this.initProductForm(response.name, response.description, categoryName, 
+                               response.price, null, response.active);         
           this.base64ProductImage = response.image;
         }, (error) => { console.log(error); }
       );
-    } 
+    } else {
+      this.initProductForm(null, null, null, null, null, null);
+    }
+  }
+
+  private initCategoriesList():void{
+    this.categoryService.getAllCategories().subscribe((response: Category[]) => {
+      this.categories = response;
+    }, (error) => { console.log(error); });
+  }
+
+  private initProductForm(productName:string, 
+    productDescription:string, 
+    productCategory:string,
+    productPrice:number, 
+    productImage:string, 
+    productStatus:boolean):void {
+
+      this.productForm = new FormGroup({
+        'productName': new FormControl(productName, Validators.required),
+        'productDescription': new FormControl(productDescription, null),
+        'productCategory': new FormControl(productCategory, Validators.required),
+        'productPrice': new FormControl(productPrice, Validators.required),
+        'productImage': new FormControl(productImage, null),
+        'productStatus': new FormControl(productStatus, Validators.required)
+      });
   }
 
   readUrl(event: any) {
@@ -77,10 +79,10 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
-  getCategoryId(categoryName:string):number {
-    for(let c of this.categories){
+  getCategoryId(categoryName: string): number {
+    for (let c of this.categories) {
       console.log(c);
-      if(c.name == categoryName){
+      if (c.name == categoryName) {
         console.log("match found..");
         return c.id;
       }
@@ -101,7 +103,7 @@ export class ProductEditComponent implements OnInit {
     let category: Category = new Category();
     category.id = this.getCategoryId(this.productForm.value.productCategory);
     product.category = category;
-   
+
     if (this.editMode)
       this.updateProduct(product);
     else
@@ -110,20 +112,20 @@ export class ProductEditComponent implements OnInit {
 
   addNewProduct(product: Product) {
     this.productService.addNewProduct(product).subscribe(
-      (response: Product) =>  this.router.navigate(['products',' ', 0, 1])
+      (response: Product) => this.router.navigate(['products', ' ', 0, 1])
       , (error) => console.log(error)
     );
   }
 
   updateProduct(product: Product) {
     this.productService.updateProduct(product).subscribe(
-      (response: Product) => this.router.navigate(['products',' ', 0, 1])
+      (response: Product) => this.router.navigate(['products', ' ', 0, 1])
       , (error) => console.log(error)
     );
   }
 
   cancel(): void {
-    this.router.navigate(['products',' ', 0, 1]);
+    this.router.navigate(['products', ' ', 0, 1]);
   }
 
 }

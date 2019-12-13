@@ -1,23 +1,23 @@
+use cms;
 -- ------------------------------------------------------------------------------------------------
-delimiter $$
-create trigger after_product_insert after insert on product for each row
-begin
-	update category set product_count = product_count + 1 where id = new.category_id;
-end$$
-
-delimiter $$
-create trigger after_product_update after update on product for each row
-begin
-	update category set product_count = product_count - 1 where id = old.category_id;
-	update category set product_count = product_count + 1 where id = new.category_id;
-end$$
-
-delimiter $$
-create trigger after_product_delete after delete on product for each row
-begin
-	update category set product_count = product_count - 1 where id = old.category_id;
-end$$
-
+CREATE TABLE category (
+	id int primary key auto_increment,
+	name varchar(255),
+	description varchar(255),
+	product_count int,
+	image longblob
+);
+-- ------------------------------------------------------------------------------------------------
+CREATE TABLE product (
+	id int primary key auto_increment,
+	active bit(1),
+	description varchar(255),
+	image longblob,
+	name varchar(255),
+	price double,
+	category_id int,
+	FOREIGN KEY (category_id) REFERENCES category(id)  ON DELETE SET NULL ON UPDATE CASCADE
+);
 -- ------------------------------------------------------------------------------------------------
 create table client (
 	id int primary key auto_increment,
@@ -57,6 +57,26 @@ create table order_line (
     FOREIGN KEY (product_id) REFERENCES product(id),
     FOREIGN KEY (order_id) REFERENCES client_order(id)
 );
+-- ------------------------------------------------------------------------------------------------
+-- triggers
+delimiter $$
+create trigger after_product_insert after insert on product for each row
+begin
+	update category set product_count = product_count + 1 where id = new.category_id;
+end$$
+
+delimiter $$
+create trigger after_product_update after update on product for each row
+begin
+	update category set product_count = product_count - 1 where id = old.category_id;
+	update category set product_count = product_count + 1 where id = new.category_id;
+end$$
+
+delimiter $$
+create trigger after_product_delete after delete on product for each row
+begin
+	update category set product_count = product_count - 1 where id = old.category_id;
+end$$
 -- ------------------------------------------------------------------------------------------------
 -- reset data base tables
 delete  from order_line where id > 0;
