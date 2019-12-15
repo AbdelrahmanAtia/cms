@@ -1,7 +1,8 @@
 <br>
 <form *ngIf="productForm" [formGroup]="productForm" (ngSubmit)="submitProductForm()">
 
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-error': productForm.get('productName').invalid 
+                                       && productForm.get('productName').touched}">
         <div class="row">
             <div class="col-sm-3">
                 <label for="productName">Product title</label>
@@ -11,7 +12,13 @@
                        type="text" 
                        class="form-control" 
                        formControlName="productName">
+                <span *ngIf="productForm.get('productName').invalid &&  
+                             productForm.get('productName').touched && 
+                             productForm.get('productName').errors['required']"
+                             class="help-block"> Please fill out this field.</span>
+
             </div>
+
         </div>     
     </div>
 
@@ -31,7 +38,8 @@
         </div>
     </div> 
    
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-error': productForm.get('productCategory').invalid 
+                                      && productForm.get('productCategory').touched}">
         <div class="row">
             <div class="col-sm-3">
                 <label for="productCategory">Category</label>
@@ -44,20 +52,31 @@
                             {{c.name}}
                         </option>
                 </select>
+
+                <span *ngIf="productForm.get('productCategory').invalid &&  
+                             productForm.get('productCategory').touched && 
+                             productForm.get('productCategory').errors['required']"
+                             class="help-block"> Please fill out this field.</span>
+
             </div>
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-error': productForm.get('productPrice').invalid 
+                                       && productForm.get('productPrice').touched}">
         <div class="row">
             <div class="col-sm-3">
                 <label for="productPrice">Price</label>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <input id="productPrice" 
                        type="number" 
                        class="form-control" 
                        formControlName="productPrice">
+                <span *ngIf="productForm.get('productPrice').invalid &&  
+                             productForm.get('productPrice').touched && 
+                             productForm.get('productPrice').errors['required']"
+                             class="help-block"> Please fill out this field.</span>
             </div>
         </div>     
     </div>
@@ -82,7 +101,9 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group"  [ngClass]="{'has-error': productForm.get('productStatus').invalid 
+                                        && productForm.get('productStatus').touched}">
+
         <div class="row">
             <div class="col-sm-3">
                 <label for="productStatus">Status</label>
@@ -92,10 +113,15 @@
                 <select id="productStatus"
                         class="form-control"
                         formControlName="productStatus">
-                       <option disabled [attr.selected] = "true">-- choose --</option>
+
                        <option value="false">Inactive</option>
                        <option value="true">Active</option>
                </select>
+
+               <span *ngIf="productForm.get('productStatus').invalid &&  
+                            productForm.get('productStatus').touched && 
+                            productForm.get('productStatus').errors['required']"
+                            class="help-block"> Please fill out this field.</span>
             </div>
         </div>     
     </div>

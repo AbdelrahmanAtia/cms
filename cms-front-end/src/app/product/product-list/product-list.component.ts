@@ -78,7 +78,7 @@ export class ProductListComponent implements OnInit {
     this.productService.deleteProduct(productId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          this.ngOnInit();
+          this.router.navigate(['products', this.searchTerm + " ", this.categoryId, this.pageNumber]);
         }
         else if (response.status = "404") {
           throw new Error(response.message);

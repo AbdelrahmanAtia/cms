@@ -14,3 +14,15 @@ front end
    
 2- write a code to initialize data base when project starts..
 
+3- configure app to use logger and to write logs to a file when app is deployed
+
+4- write unit tests..
+
+5- configure spring boot to use diffrent authentication mechanisms for 
+example (basic auth  -  jwt auth  - ldap auth)..
+
+
+6- log any request and response 
+
+
+

@@ -35,10 +35,12 @@ export class ProductEditComponent implements OnInit {
       this.productService.getProduct(this.productId).subscribe(
         (response: Product) => {
           let categoryName: string = response.category ? response.category.name : null;
-          console.log(categoryName)
+
           this.initProductForm(response.name, response.description, categoryName, 
                                response.price, null, response.active);         
+
           this.base64ProductImage = response.image;
+          
         }, (error) => { console.log(error); }
       );
     } else {
