@@ -1,0 +1,86 @@
+<br>
+<form [formGroup]="userForm" (ngSubmit)="submitUserForm()">
+
+    <div class="form-group" [ngClass]="{'has-error': userForm.get('userEmail').invalid 
+                                                  && userForm.get('userEmail').touched}">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="userEmail">Email</label>
+            </div>
+            <div class="col-sm-9">
+                <input id="userEmail" 
+                       type="text" 
+                       class="form-control" 
+                       formControlName="userEmail">
+
+                <span *ngIf="userForm.get('userEmail').invalid &&  
+                             userForm.get('userEmail').touched && 
+                             userForm.get('userEmail').errors['required']" class="help-block"> Please fill out this field.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': userForm.get('userPassword').invalid 
+                                                  && userForm.get('userPassword').touched}">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="userPassword">Password</label>
+            </div>
+            <div class="col-sm-9">
+                <input id="userPassword" 
+                       type="text" 
+                       class="form-control" 
+                       formControlName="userPassword">
+
+                <span *ngIf="userForm.get('userPassword').invalid &&  
+                             userForm.get('userPassword').touched && 
+                             userForm.get('userPassword').errors['required']" class="help-block"> Please fill out this field.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': userForm.get('userName').invalid 
+                                                  && userForm.get('userName').touched}">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="userName">Name</label>
+            </div>
+            <div class="col-sm-9">
+                <input id="userName" 
+                       type="text" 
+                       class="form-control" 
+                       formControlName="userName">
+
+            <span *ngIf="userForm.get('userName').invalid &&  
+                         userForm.get('userName').touched && 
+                         userForm.get('userName').errors['required']" class="help-block"> Please fill out this field.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="userPhone">Phone</label>
+            </div>
+            <div class="col-sm-9">
+                <input id="userPhone" 
+                       type="text" 
+                       class="form-control" 
+                       formControlName="userPhone">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="userForm.invalid">Save</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-info btn-block btn-block" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+
+    <br>
+</form>

@@ -1,0 +1,35 @@
+<br>
+<div class="row">
+
+    <div class="col-sm-2">
+        <button class="btn" (click)="addNewUser()">+ Add User</button>
+    </div>
+
+</div>
+<br> 
+<br>
+
+<table class="table" *ngIf="users.length > 0">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Registration date/time</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let u of users">
+        <tr>
+            <td>{{u.id}}</td>
+            <td>{{u.name}}</td>
+            <td>{{u.email}}</td>
+            <td>not yet</td>
+            <td>not yet</td>
+            <td>{{u.active}}</td>
+        </tr>
+    </tbody>
+</table>
+

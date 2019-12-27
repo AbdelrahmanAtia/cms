@@ -1,69 +1,41 @@
 package org.javaworld.cmsbackend.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 @Entity
-@Table(name = "user")
-public class User implements UserDetails {
-
-	private static final long serialVersionUID = 1L;
+@Table(name = "user_details")
+public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-
-	@Column(name = "username")
-	private String username;
-
-	@Column(name = "password")
-	private String password;
 
 	@Column(name = "email")
 	private String email;
 
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "name")
+	private String name;
+
 	@Column(name = "phone")
 	private String phone;
-	
-	@Column(name="account_non_locked")
-	private boolean accountNonLocked;
 
-	@ManyToMany(fetch = FetchType.EAGER, 
-			    cascade = { CascadeType.PERSIST, CascadeType.DETACH, 
-			    		    CascadeType.MERGE, CascadeType.REFRESH })
+	@Column(name = "active")
+	private boolean active;
 
-	@JoinTable(
-				name = "user_authority", 
-				joinColumns = @JoinColumn(name = "user_id"), 
-	            inverseJoinColumns = @JoinColumn(name = "authority_id")
-			  )
-	private List<Authority> authorities;
+	@Column(name = "register_date")
+	private String registerDate;
 
 	public User() {
-		// initialize member variables
-		accountNonLocked = true;
-	}	
 
-	public User(String username, String password, String email, String phone, boolean accountNonLocked) {
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.phone = phone;
-		this.accountNonLocked = accountNonLocked;
 	}
 
 	public int getId() {
@@ -74,12 +46,12 @@ public class User implements UserDetails {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -90,12 +62,12 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getName() {
+		return name;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPhone() {
@@ -105,47 +77,27 @@ public class User implements UserDetails {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	public boolean isAccountNonLocked() {
-		return accountNonLocked;
+
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setAccountNonLocked(boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
-	public List<Authority> getAuthorities() {
-		return authorities;
-	}	
-
-	public void setAuthorities(List<Authority> authorities) {
-		this.authorities = authorities;
+	public String getRegisterDate() {
+		return registerDate;
 	}
 
-	public void addAuthority(Authority authority) {
-		if (authorities == null) {
-			authorities = new ArrayList<Authority>();
-		}
-
-		authorities.add(authority);
-	}
-	
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	public boolean isEnabled() {
-		return true;
+	public void setRegisterDate(String registerDate) {
+		this.registerDate = registerDate;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone="
-				+ phone + ", accountNonLocked=" + accountNonLocked + ", authorities=" + authorities + "]";
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", phone=" + phone
+				+ ", active=" + active + ", registerDate=" + registerDate + "]";
 	}
 
 }

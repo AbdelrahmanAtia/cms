@@ -58,6 +58,21 @@ create table order_line (
     FOREIGN KEY (order_id) REFERENCES client_order(id)
 );
 -- ------------------------------------------------------------------------------------------------
+create table user_roles(
+	id int primary key auto_increment,
+    name varchar(255)
+);
+-- ------------------------------------------------------------------------------------------------
+create table user_details(
+	id int primary key auto_increment,
+	email varchar(255),
+    password char(60),
+    name varchar(255),
+    phone varchar(255),
+    active bit(1),
+    register_date varchar(255)
+);
+-- ------------------------------------------------------------------------------------------------
 -- triggers
 delimiter $$
 create trigger after_product_insert after insert on product for each row
@@ -84,6 +99,7 @@ delete  from client_order where id > 0;
 delete  from client where id > 0;
 delete from product where id > 0;
 delete from category where id > 0;
+delete from user_details where id > 0;
 -- ------------------------------------------------------------------------------------------------
 
 

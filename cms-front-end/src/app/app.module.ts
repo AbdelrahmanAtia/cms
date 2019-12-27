@@ -17,6 +17,9 @@ import { OrderComponent } from './order/order.component';
 import { OrderListComponent } from './order/order-list/order-list.component';
 import { OrderEditComponent } from './order/order-edit/order-edit.component';
 import { DatePipe } from '@angular/common';
+import { UserComponent } from './user/user.component';
+import { UserListComponent } from './user/user-list/user-list.component';
+import { UserEditComponent } from './user/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { DatePipe } from '@angular/common';
     ProductEditComponent,
     OrderComponent,
     OrderListComponent,
-    OrderEditComponent
+    OrderEditComponent,
+    UserComponent,
+    UserListComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,
