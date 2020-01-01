@@ -58,7 +58,7 @@ create table order_line (
     FOREIGN KEY (order_id) REFERENCES client_order(id)
 );
 -- ------------------------------------------------------------------------------------------------
-create table user_roles(
+create table user_authority(
 	id int primary key auto_increment,
     name varchar(255)
 );
@@ -70,7 +70,9 @@ create table user_details(
     name varchar(255),
     phone varchar(255),
     active bit(1),
-    register_date varchar(255)
+    register_date varchar(255),
+    authority_id int,
+    FOREIGN KEY (authority_id) REFERENCES user_authority(id)
 );
 -- ------------------------------------------------------------------------------------------------
 -- triggers

@@ -1,6 +1,29 @@
 <br>
 <form [formGroup]="userForm" (ngSubmit)="submitUserForm()">
 
+    <div class="form-group" [ngClass]="{'has-error': userForm.get('userAuthority').invalid 
+                                                  && userForm.get('userAuthority').touched}">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="userAuthority">Role</label>
+            </div>
+
+            <div class="col-sm-4">
+                <select id="userAuthority"  
+                        class="form-control"
+                        formControlName="userAuthority">
+                    <option *ngFor="let ua of userAuthorities" [value]="ua.name" [selected]="userForm.value.userAuthority == ua.name">
+                            {{ua.name}}
+                    </option>
+                </select>
+                <span *ngIf="userForm.get('userAuthority').invalid &&  
+                             userForm.get('userAuthority').touched && 
+                             userForm.get('userAuthority').errors['required']" class="help-block"> Please fill out this field.</span>
+
+            </div>
+        </div>
+    </div>
+
     <div class="form-group" [ngClass]="{'has-error': userForm.get('userEmail').invalid 
                                                   && userForm.get('userEmail').touched}">
         <div class="row">
@@ -71,6 +94,31 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group" [ngClass]="{'has-error': userForm.get('userState').invalid 
+                                                  && userForm.get('userState').touched}">
+        <div class="row">
+            
+            <div class="col-sm-3">
+                <label for="userState">Status</label>
+            </div>
+
+            <div class="col-sm-4">
+                <select id="userState"  
+                        class="form-control"
+                        formControlName="userState">
+                    <option *ngFor="let s of userStates" [value]="s" [selected]="userForm.value.userState == s">
+                        {{s}}
+                    </option>
+                </select>
+                <span *ngIf="userForm.get('userState').invalid &&  
+                             userForm.get('userState').touched && 
+                             userForm.get('userState').errors['required']" class="help-block"> Please fill out this field.</span>
+
+            </div>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="col-sm-8"></div>

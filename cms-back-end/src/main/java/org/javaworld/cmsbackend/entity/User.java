@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +35,10 @@ public class User {
 
 	@Column(name = "register_date")
 	private String registerDate;
+
+	@ManyToOne
+	@JoinColumn(name = "authority_id")
+	private Authority authority;
 
 	public User() {
 
@@ -94,10 +100,18 @@ public class User {
 		this.registerDate = registerDate;
 	}
 
+	public Authority getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", phone=" + phone
-				+ ", active=" + active + ", registerDate=" + registerDate + "]";
+				+ ", active=" + active + ", registerDate=" + registerDate + ", authority=" + authority + "]";
 	}
 
 }

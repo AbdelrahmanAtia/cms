@@ -17,4 +17,9 @@ export class UserService {
     let url: string = this.baseUrl + "/users/all";
     return this.http.get<User[]>(url);
   }
+
+    addNewUser(user: User): Observable<User> {
+    let url: string = this.baseUrl + "/users";
+    return this.http.post<User>(url, user);
+  }
 }

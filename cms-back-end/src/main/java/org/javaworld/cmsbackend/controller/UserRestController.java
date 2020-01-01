@@ -6,6 +6,8 @@ import org.javaworld.cmsbackend.entity.User;
 import org.javaworld.cmsbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +22,12 @@ public class UserRestController {
 	public List<User> getAllUsers() {
 		return userService.findAll();
 	}
+	
+	@PostMapping("/users")
+	public User addUser(@RequestBody User user) {
+		userService.save(user);
+		return user;
+	}
+
 
 }
