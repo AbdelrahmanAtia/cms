@@ -15,7 +15,7 @@ public class Authority {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "name")
 	private String name;
 
@@ -37,6 +37,11 @@ public class Authority {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Authority [id=" + id + ", name=" + name + "]";
 	}
 
 }
