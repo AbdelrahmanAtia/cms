@@ -23,30 +23,33 @@ export class CategoryEditComponent implements OnInit {
 
   ngOnInit() {
 
-    //  initialize category form
-    this.categoryForm = new FormGroup({
-      'categoryName': new FormControl(null, Validators.required),
-      'categoryDescription': new FormControl(null, null),
-      'categoryImage': new FormControl(null, null),
-    });
-
     this.categoryId = this.route.snapshot.params.id;
     this.editMode = this.categoryId != null;
+
+    //  initialize category form
+    this.initializeCategoryForm(null, null, null, null);
 
     if (this.editMode) {
       // populate category form in case of edit  mode
       this.categoryService.getCategory(this.categoryId).subscribe(
         (response: Category) => {
-          this.categoryForm = new FormGroup({
-            'categoryName': new FormControl(response.name, Validators.required),
-            'categoryDescription': new FormControl(response.description, null),
-            'categoryImage': new FormControl(null, null),
-            'productCount': new FormControl(response.productCount, null)
-          });
+          this.initializeCategoryForm(response.name, response.description, null, response.productCount);
           this.base64CategoryImage = response.image;
         }, (error) => { console.log(error); }
       );
     }
+  }
+
+  private initializeCategoryForm(categoryName:string, 
+                                 categoryDescription:string,
+                                 categoryImage:string,
+                                 productCount:number):void {
+      this.categoryForm = new FormGroup({
+        'categoryName': new FormControl(categoryName, Validators.required),
+        'categoryDescription': new FormControl(categoryDescription, null),
+        'categoryImage': new FormControl(categoryImage, null),
+        'productCount': new FormControl(productCount, null)
+      });
   }
 
   readUrl(event: any) {
@@ -90,14 +93,14 @@ export class CategoryEditComponent implements OnInit {
       this.addNewCategory(category);
   }
 
-  addNewCategory(category: Category) {
+  private addNewCategory(category: Category):void {
     this.categoryService.addNewCategory(category).subscribe(
       (response: Category) =>  this.router.navigate(['categories', ' ', '1'])
       , (error) => console.log(error)
     ); 
   }
 
-  updateCategory(category: Category) {
+  private updateCategory(category: Category):void {
     this.categoryService.updateCategory(category).subscribe(
       (response: Category) => this.router.navigate(['categories', ' ', '1'])
       , (error) => console.log(error)

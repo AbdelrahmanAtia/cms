@@ -38,15 +38,9 @@ public class ProductRestController {
 		return productService.getProducts(searchTerm, categoryId, pageNumber, pageSize);
 	}
 
-
-
 	@GetMapping("/products/{productId}")
 	public Product getProduct(@PathVariable int productId) {
-		Product product = productService.findById(productId);
-		if (product == null) {
-			throw new RuntimeException("Product id not found - " + productId);
-		}
-		return product;
+		return productService.findById(productId);
 	}
 
 	@PostMapping("/products")

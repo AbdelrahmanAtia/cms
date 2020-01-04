@@ -6,7 +6,7 @@ export class User {
     password: string;
     name: string;
     phone: string;
-    state: boolean;
+    active: boolean;
     registerDate: string;
     authority: Authority = new Authority();
 }

@@ -10,4 +10,8 @@ public interface UserService {
 
 	public void save(User user);
 
+	public User findById(int userId);
+
+	public void update(User user);
+
 }

@@ -26,9 +26,24 @@
             <td>{{u.id}}</td>
             <td>{{u.name}}</td>
             <td>{{u.email}}</td>
-            <td>not yet</td>
-            <td>not yet</td>
-            <td>{{u.active}}</td>
+            <td>{{u.registerDate}}</td>
+            <td >
+                <span [ngClass]="{'admin-class': u.authority.name === 'admin',
+                                  'editor-class': u.authority.name === 'editor'}">
+                    {{u.authority.name}}
+                </span>
+            </td>
+            <td>{{(u.active)? 'active': 'Inactive'}}</td>
+            <td>
+                <span (click)="editUser(u.id)">
+                    <i class="fa fa-edit fa-2x col-sm-5"></i>
+                </span>
+                <!--
+                <span (click)="deleteUser(u.id)">
+                    <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
+                </span>
+                -->
+            </td>
         </tr>
     </tbody>
 </table>

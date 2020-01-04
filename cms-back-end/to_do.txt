@@ -24,5 +24,10 @@ example (basic auth  -  jwt auth  - ldap auth)..
 
 6- log any request and response 
 
+7- add validations using annotations..also add not null constrains and other constrains in both
+	database and backend..
+	
+
+
 
 

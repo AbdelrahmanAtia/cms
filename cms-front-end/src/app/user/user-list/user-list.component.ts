@@ -33,6 +33,13 @@ export class UserListComponent implements OnInit {
     this.userService.getAllUsers().subscribe(
       (response: User[]) => {
         this.users = response;
+        for(let user of this.users){
+          if(user.authority.name == 'Administrator'){
+            user.authority.name = 'admin';
+          } else if(user.authority.name == 'Editor'){
+            user.authority.name = 'editor';
+          }
+        }
       },
       (error) => { console.log(error) }
     );
@@ -40,6 +47,10 @@ export class UserListComponent implements OnInit {
 
   addNewUser(): void {
     this.router.navigate(['users', 'new']);
+  }
+
+  editUser(userId:number):void {
+    this.router.navigate(['users', userId, 'edit']);
   }
 
 }

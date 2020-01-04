@@ -8,7 +8,7 @@ import { User } from '../_models/User';
   providedIn: 'root'
 })
 export class UserService {
-  
+
   baseUrl: string = new Config().baseUrl;
 
   constructor(private http: HttpClient) { }
@@ -18,8 +18,18 @@ export class UserService {
     return this.http.get<User[]>(url);
   }
 
-    addNewUser(user: User): Observable<User> {
+  getUser(userId: number): Observable<User> {
+    let url: string = this.baseUrl + "/users/" + userId;
+    return this.http.get<User>(url);
+  }
+
+  addNewUser(user: User): Observable<User> {
     let url: string = this.baseUrl + "/users";
     return this.http.post<User>(url, user);
+  }
+
+  updateUser(user: User): Observable<User> {
+    let url: string = this.baseUrl + "/users";
+    return this.http.put<User>(url, user);
   }
 }
