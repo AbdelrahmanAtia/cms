@@ -28,6 +28,9 @@ example (basic auth  -  jwt auth  - ldap auth)..
 	database and backend..
 	
 
+8- if there is a page that is the last and there is only one element in it, then after 
+deleting that elements ..it stays in the same page ..fix that issue
+
 
 
 

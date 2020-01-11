@@ -33,7 +33,7 @@ export class CategoryListComponent implements OnInit {
         this.pageNumber = +params['pageNumber'];
         this.initializeCategoriesList();
     });
-  }
+  } 
 
   initializeCategoriesList(){
     this.categoryService.getCategories(this.searchTerm, this.pageNumber).subscribe(

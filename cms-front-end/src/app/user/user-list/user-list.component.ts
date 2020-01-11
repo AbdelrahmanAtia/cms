@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 import { User } from 'src/app/_models/User';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { HttpResponse } from '@angular/common/http';
+import { Response } from 'src/app/_models/Response';
 
 @Component({
   selector: 'app-user-list',
@@ -11,6 +12,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class UserListComponent implements OnInit {
 
+  searchTerm: string;
+  pageNumber: number;
+  totalPages: number;
   users: User[] = [];
 
   constructor(private userService: UserService,
@@ -25,14 +29,17 @@ export class UserListComponent implements OnInit {
   listenToRouteParamChanges() {
     this.route.params.subscribe(
       params => {
+        this.searchTerm = params['searchTerm'];
+        this.pageNumber = +params['pageNumber'];
         this.initializeUsersList();
       });
   }
-
+ 
   initializeUsersList(): void {
-    this.userService.getAllUsers().subscribe(
-      (response: User[]) => {
-        this.users = response;
+    this.userService.getUsers(this.searchTerm, this.pageNumber).subscribe(
+      (response: HttpResponse<User[]>) => {
+        this.totalPages = +response.headers.get('totalPages');
+        this.users = response.body;
         for(let user of this.users){
           if(user.authority.name == 'Administrator'){
             user.authority.name = 'admin';
@@ -52,5 +59,38 @@ export class UserListComponent implements OnInit {
   editUser(userId:number):void {
     this.router.navigate(['users', userId, 'edit']);
   }
+
+  deleteUser(userId: number): void {
+  
+    if (!confirm("Are you sure you want to delete selected record?")) {
+      return;
+    }
+    this.userService.deleteUser(userId).subscribe(
+      (response: Response) => {
+        if (response.status = "200") {
+          if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.users.length == 1){
+            this.router.navigate(['users',  this.searchTerm + " ", this.pageNumber - 1]);
+          } else {
+            this.router.navigate(['users',  this.searchTerm + " ", this.pageNumber]);
+          }
+        } else if (response.status = "404") {
+          throw new Error(response.message);
+        }
+      },
+      (error) => { console.log(error); }
+    );
+  }
+
+  onSearchChange(event) {
+    if(event.keyCode == 13){      // enter key pressed
+      this.router.navigate(['users', this.searchTerm, '1']);
+    }
+  } 
+
+  onPageChange(i: number): void {
+    let pageNumber:number = this.pageNumber + i;
+    this.router.navigate(['users', this.searchTerm, pageNumber]);
+  }
+
 
 }

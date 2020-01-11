@@ -8,7 +8,7 @@
                 <label for="userAuthority">Role</label>
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <select id="userAuthority"  
                         class="form-control"
                         formControlName="userAuthority">
@@ -31,11 +31,13 @@
                 <label for="userEmail">Email</label>
             </div>
             <div class="col-sm-9">
-                <input id="userEmail" 
-                       type="text" 
-                       class="form-control" 
-                       formControlName="userEmail">
-
+                <div class="col-sm-5 input-group">
+                    <span class="input-group-addon">@</span>
+                    <input id="userEmail" 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="userEmail">
+                </div>
                 <span *ngIf="userForm.get('userEmail').invalid &&  
                              userForm.get('userEmail').touched && 
                              userForm.get('userEmail').errors['required']" class="help-block"> Please fill out this field.</span>
@@ -50,10 +52,13 @@
                 <label for="userPassword">Password</label>
             </div>
             <div class="col-sm-9">
-                <input id="userPassword" 
-                       type="text" 
-                       class="form-control" 
-                       formControlName="userPassword">
+                <div class="col-sm-5 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input id="userPassword" 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="userPassword">
+                </div>
 
                 <span *ngIf="userForm.get('userPassword').invalid &&  
                              userForm.get('userPassword').touched && 
@@ -68,7 +73,7 @@
             <div class="col-sm-3">
                 <label for="userName">Name</label>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-5">
                 <input id="userName" 
                        type="text" 
                        class="form-control" 
@@ -83,15 +88,24 @@
 
     <div class="form-group">
         <div class="row">
+
             <div class="col-sm-3">
                 <label for="userPhone">Phone</label>
             </div>
+
             <div class="col-sm-9">
-                <input id="userPhone" 
-                       type="text" 
-                       class="form-control" 
-                       formControlName="userPhone">
+                <div class="col-sm-5 input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-earphone"></span>
+                    </span>
+
+                    <input id="userPhone" 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="userPhone">
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -103,7 +117,7 @@
                 <label for="userState">Status</label>
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <select id="userState"  
                         class="form-control"
                         formControlName="userState">
@@ -116,6 +130,16 @@
                              userForm.get('userState').errors['required']" class="help-block"> Please fill out this field.</span>
 
             </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="editMode">
+        <div class="col-sm-3">
+            <label>Registration date/time</label>
+        </div>
+        <div class="col-sm-9">
+            {{registerDate}}
+
         </div>
     </div>
 

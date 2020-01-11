@@ -13,7 +13,7 @@
                class="form-control"
                [(ngModel)] = "searchTerm"
                (keypress)="onSearchChange($event)"> 
-    </div>
+    </div> 
 
 </div>
 <br>
@@ -56,25 +56,25 @@
 </table>
 
 <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-7" *ngIf="categories.length > 0">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination" style="cursor: pointer">
-    
-                    <li class="page-item" *ngIf="pageNumber > 1">
-                        <a class="page-link" (click)="onPageChange(-1)">Previous</a>
-                    </li>
-    
-                    <li class="page-item">
-                        <a class="page-link">{{pageNumber}}</a>
-                    </li>
-    
-                    <li class="page-item" *ngIf="pageNumber < totalPages">
-                        <a class="page-link" (click)="onPageChange(1)">Next</a>
-                    </li>
-    
-                </ul>
-            </nav>
-        </div> 
-    </div>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-7" *ngIf="categories.length > 0">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" style="cursor: pointer">
+
+                <li class="page-item" *ngIf="pageNumber > 1">
+                    <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link">{{pageNumber}}</a>
+                </li>
+
+                <li class="page-item" *ngIf="pageNumber < totalPages">
+                    <a class="page-link" (click)="onPageChange(1)">Next</a>
+                </li>
+
+            </ul>
+        </nav>
+    </div> 
+</div>
 <br>

@@ -5,9 +5,24 @@
         <button class="btn" (click)="addNewUser()">+ Add User</button>
     </div>
 
+    <div class="col-sm-4">
+        <input id="searchField" 
+               type="text" 
+               placeholder="Search" 
+               class="form-control"
+               [(ngModel)] = "searchTerm"
+               (keypress)="onSearchChange($event)"> 
+    </div>
+
 </div>
 <br> 
 <br>
+
+<div *ngIf="users.length == 0">
+    <div class="jumbotron">
+        <p>No Records Found</p>
+    </div>
+</div>
 
 <table class="table" *ngIf="users.length > 0">
     <thead>
@@ -38,13 +53,35 @@
                 <span (click)="editUser(u.id)">
                     <i class="fa fa-edit fa-2x col-sm-5"></i>
                 </span>
-                <!--
+                
                 <span (click)="deleteUser(u.id)">
                     <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
                 </span>
-                -->
+                
             </td>
         </tr>
     </tbody>
 </table>
 
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-7" *ngIf="users.length > 0">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" style="cursor: pointer">
+
+                <li class="page-item" *ngIf="pageNumber > 1">
+                    <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link">{{pageNumber}}</a>
+                </li>
+
+                <li class="page-item" *ngIf="pageNumber < totalPages">
+                    <a class="page-link" (click)="onPageChange(1)">Next</a>
+                </li>
+
+            </ul>
+        </nav>
+    </div> 
+</div>

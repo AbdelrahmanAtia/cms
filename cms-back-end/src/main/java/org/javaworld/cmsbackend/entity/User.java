@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "user_details")
@@ -18,6 +20,8 @@ public class User {
 	@Column(name = "id")
 	private int id;
 
+	@Email
+	@NotBlank
 	@Column(name = "email")
 	private String email;
 

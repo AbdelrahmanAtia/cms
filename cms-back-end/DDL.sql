@@ -65,7 +65,7 @@ create table user_authority(
 -- ------------------------------------------------------------------------------------------------
 create table user_details(
 	id int primary key auto_increment,
-	email varchar(255),
+	email varchar(255) not null unique check(email like '%_@_%'),
     password char(60),
     name varchar(255),
     phone varchar(255),
@@ -94,6 +94,7 @@ create trigger after_product_delete after delete on product for each row
 begin
 	update category set product_count = product_count - 1 where id = old.category_id;
 end$$
+delimiter ;
 -- ------------------------------------------------------------------------------------------------
 -- reset data base tables
 delete  from order_line where id > 0;
@@ -103,5 +104,6 @@ delete from product where id > 0;
 delete from category where id > 0;
 delete from user_details where id > 0;
 -- ------------------------------------------------------------------------------------------------
-
+-- drop tables
+drop table user_details;
 

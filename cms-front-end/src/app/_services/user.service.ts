@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Config } from '../_models/Config ';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { User } from '../_models/User';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Response } from 'src/app/_models/Response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
+ 
   baseUrl: string = new Config().baseUrl;
 
   constructor(private http: HttpClient) { }
@@ -16,6 +17,19 @@ export class UserService {
   getAllUsers(): Observable<User[]> {
     let url: string = this.baseUrl + "/users/all";
     return this.http.get<User[]>(url);
+  } 
+
+  getUsers(searchTerm: string, pageNumber: number): Observable<HttpResponse<User[]>> {
+    pageNumber--; // cause pageNumber starts at zero not 1 according to backend..
+    let url: string = this.baseUrl + "/users";
+    return this.http.get<any>(url, {
+      params: {
+        searchTerm: searchTerm,
+        pageNumber: pageNumber.toString(),
+        pageSize: new Config().pageSize.toString()
+      }
+      , observe: 'response'
+    });
   }
 
   getUser(userId: number): Observable<User> {
@@ -32,4 +46,11 @@ export class UserService {
     let url: string = this.baseUrl + "/users";
     return this.http.put<User>(url, user);
   }
+
+  deleteUser(userId: number): Observable<Response> {
+    let url: string = this.baseUrl + "/users/" + userId;
+    return this.http.delete<Response>(url);
+  }
+
+
 }

@@ -47,9 +47,9 @@ const routes: Routes = [
   {
     path: 'users', component: UserComponent, children:
       [
-        { path: '', component: UserListComponent },
         { path: 'new', component: UserEditComponent },
-        { path: ':id/edit', component: UserEditComponent }
+        { path: ':id/edit', component: UserEditComponent },
+        { path: ':searchTerm/:pageNumber', component: UserListComponent }
       ]
   }
 

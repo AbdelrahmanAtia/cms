@@ -19,6 +19,7 @@ export class UserEditComponent implements OnInit {
 
   userAuthorities: Authority[] = [];
   userStates: string[] = ['Active', 'InActive'];
+  registerDate:string;
 
   constructor(private userService: UserService,
     private authorityService: AuthorityService,
@@ -41,6 +42,7 @@ export class UserEditComponent implements OnInit {
       this.userService.getUser(this.userId).subscribe(
         (response: User) => {
           console.log(response);
+          this.registerDate = response.registerDate;
           this.initializeUsersForm(response.email,
             response.password,
             response.name,
@@ -99,14 +101,14 @@ export class UserEditComponent implements OnInit {
 
   private addNewUser(user: User): void {
     this.userService.addNewUser(user).subscribe(
-      (response: User) => this.router.navigate(['users'])
+      (response: User) => this.router.navigate(['users', ' ', '1'])
       , (error) => console.log(error)
     );
   }
 
   private updateUser(user: User): void {
     this.userService.updateUser(user).subscribe(
-      (response: User) => this.router.navigate(['users'])
+      (response: User) => this.router.navigate(['users', ' ', '1'])
       , (error) => console.log(error)
     );
   }
@@ -120,8 +122,8 @@ export class UserEditComponent implements OnInit {
     return null;
   }
 
-  cancel(): void {
-    this.router.navigate(['users']);
+  cancel(): void { 
+    this.router.navigate(['users', ' ' ,'1']);
   }
 
 } 
