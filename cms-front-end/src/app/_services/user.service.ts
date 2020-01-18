@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { User } from '../_models/User';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Response } from 'src/app/_models/Response';
+import { map } from 'rxjs/operators';
+import { ValidationErrors } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +54,13 @@ export class UserService {
     return this.http.delete<Response>(url);
   }
 
+  isUniqueEmail(email: string): Observable<ValidationErrors> {
+    let url: string = this.baseUrl + "/users/isEmailExist/" + email;
+    return this.http.get<boolean>(url).pipe(
+        map((response:boolean) => {
+          return response ? null : {"uniqueEmail": true};
+        })
+    );
+  }
 
 }

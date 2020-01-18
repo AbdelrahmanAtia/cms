@@ -4,7 +4,7 @@ import { ProductService } from 'src/app/_services/product.service';
 import { OrderLine } from 'src/app/_models/OrderLine';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Order } from 'src/app/_models/Order';
-import { GreaterThanZero } from 'src/app/_validators/CustomValidators';
+import { GreaterThanZero } from 'src/app/_validators/CustomValidator';
 import { Config } from 'src/app/_models/Config ';
 import { Client } from 'src/app/_models/Client';
 import { OrderService } from 'src/app/_services/order.service';

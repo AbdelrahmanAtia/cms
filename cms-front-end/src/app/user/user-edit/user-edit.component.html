@@ -41,6 +41,15 @@
                 <span *ngIf="userForm.get('userEmail').invalid &&  
                              userForm.get('userEmail').touched && 
                              userForm.get('userEmail').errors['required']" class="help-block"> Please fill out this field.</span>
+
+                <span *ngIf="userForm.get('userEmail').invalid &&  
+                             userForm.get('userEmail').touched && 
+                             userForm.get('userEmail').errors['email']" class="help-block">Please enter a valid email address.</span>
+                
+                <span *ngIf="userForm.get('userEmail').invalid &&  
+                             userForm.get('userEmail').touched && 
+                             userForm.get('userEmail').errors['uniqueEmail']" class="help-block">User with such email address exists.</span>
+
             </div>
         </div>
     </div>
@@ -61,8 +70,14 @@
                 </div>
 
                 <span *ngIf="userForm.get('userPassword').invalid &&  
-                             userForm.get('userPassword').touched && 
-                             userForm.get('userPassword').errors['required']" class="help-block"> Please fill out this field.</span>
+                             userForm.get('userPassword').touched &&
+                             userForm.get('userPassword').errors['required']" class="help-block">Please fill out this field.</span>
+            
+                <span *ngIf="userForm.get('userPassword').invalid &&  
+                             userForm.get('userPassword').touched &&
+                             userForm.get('userPassword').errors['blank'] &&
+                             !userForm.get('userPassword').errors['required']" class="help-block">Password can't be blank.</span>
+
             </div>
         </div>
     </div>
@@ -82,6 +97,11 @@
             <span *ngIf="userForm.get('userName').invalid &&  
                          userForm.get('userName').touched && 
                          userForm.get('userName').errors['required']" class="help-block"> Please fill out this field.</span>
+            
+            <span *ngIf="userForm.get('userName').invalid &&  
+                         userForm.get('userName').touched && 
+                         userForm.get('userName').errors['blank'] &&
+                         !userForm.get('userName').errors['required']" class="help-block">Name Can't be blank.</span>
             </div>
         </div>
     </div>

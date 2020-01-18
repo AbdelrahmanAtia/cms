@@ -64,6 +64,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void save(User user) {
+		
+		if(!isUniqueEmail(user.getEmail())) {
+			throw new RuntimeException("email already exists");
+		}
 		user.setId(0); // force creating a new entity
 		String registerDate = DateUtil.getCurrentDate("dd-MM-yyyy, HH:mm:ss");
 		user.setRegisterDate(registerDate);
@@ -86,6 +90,14 @@ public class UserServiceImpl implements UserService {
 			return new Response(Constants.NOT_FOUND_STATUS, "user id not found - " + userId);
 		}
 		return new Response(Constants.OK_STATUS, "Deleted user id - " + userId);
+	}
+	
+	@Override
+	public boolean isUniqueEmail(String email) {
+		User user = userRepository.findByEmail(email);
+		if (user == null)
+			return true;
+		return false;
 	}
 
 }

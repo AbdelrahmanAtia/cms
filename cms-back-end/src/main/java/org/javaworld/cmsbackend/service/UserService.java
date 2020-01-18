@@ -19,4 +19,6 @@ public interface UserService {
 
 	public Response deleteById(int userId);
 
+	public boolean isUniqueEmail(String email);
+
 }

@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/app/_models/User';
 import { AuthorityService } from 'src/app/_services/authority.service';
 import { Authority } from 'src/app/_models/Authority';
+import { CustomValidator } from 'src/app/_validators/CustomValidator';
 
 @Component({
   selector: 'app-user-edit',
@@ -69,9 +70,9 @@ export class UserEditComponent implements OnInit {
     userAuthority: string): void {
 
     this.userForm = new FormGroup({
-      'userEmail': new FormControl(userEmail, Validators.required),
-      'userPassword': new FormControl(userPassword, Validators.required),
-      'userName': new FormControl(userName, Validators.required),
+      'userEmail': new FormControl(userEmail, [Validators.required, Validators.email],CustomValidator.uniqueEmail(this.userService)),
+      'userPassword': new FormControl(userPassword, [Validators.required, CustomValidator.notBlank]),
+      'userName': new FormControl(userName, [Validators.required, CustomValidator.notBlank]),
       'userPhone': new FormControl(userPhone, null),
       'userState': new FormControl(userState, Validators.required),
       'userAuthority': new FormControl(userAuthority, Validators.required)

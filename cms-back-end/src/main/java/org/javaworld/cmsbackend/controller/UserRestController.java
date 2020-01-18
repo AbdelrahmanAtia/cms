@@ -55,5 +55,10 @@ public class UserRestController {
 	public Response deleteUser(@PathVariable int userId) {
 		return userService.deleteById(userId);
 	}
+	
+	@GetMapping("/users/isEmailExist/{email}")
+	public boolean isUniqueEmail(@PathVariable String email) {
+		return userService.isUniqueEmail(email);
+	}
 
 }

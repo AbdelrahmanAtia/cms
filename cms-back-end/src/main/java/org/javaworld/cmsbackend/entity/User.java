@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user_details")
@@ -25,21 +26,25 @@ public class User {
 	@Column(name = "email")
 	private String email;
 
+	@NotBlank
 	@Column(name = "password")
 	private String password;
 
+	@NotBlank
 	@Column(name = "name")
 	private String name;
 
 	@Column(name = "phone")
 	private String phone;
 
+	@NotNull
 	@Column(name = "active")
-	private boolean active;
+	private Boolean active;
 
 	@Column(name = "register_date")
 	private String registerDate;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "authority_id")
 	private Authority authority;
@@ -88,11 +93,11 @@ public class User {
 		this.phone = phone;
 	}
 
-	public boolean isActive() {
+	public Boolean getActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 

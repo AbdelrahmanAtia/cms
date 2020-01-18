@@ -66,12 +66,12 @@ create table user_authority(
 create table user_details(
 	id int primary key auto_increment,
 	email varchar(255) not null unique check(email like '%_@_%'),
-    password char(60),
-    name varchar(255),
+    password char(60) not null,
+    name varchar(255) not null,
     phone varchar(255),
-    active bit(1),
-    register_date varchar(255),
-    authority_id int,
+    active bit(1) not null,
+    register_date varchar(255) not null,
+    authority_id int not null,
     FOREIGN KEY (authority_id) REFERENCES user_authority(id)
 );
 -- ------------------------------------------------------------------------------------------------
