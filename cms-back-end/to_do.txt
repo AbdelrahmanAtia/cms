@@ -1,13 +1,21 @@
-front end
-===========
-
->>> category enhancements
-===========================  
-1- view error messages for invalid fields of category form              (done)
-2- add (search - pagging) to categories list..                          (done)
-3- set product category to null when category is removed                (done)
-4- handle what will be shown when a category is deleted                 (done)
+done
+==========
+1- view error messages for invalid fields of category form              
+2- add (search - pagging) to categories list..                          
+3- set product category to null when category is removed                
+4- handle what will be shown when a category is deleted                 
+5- add field validation in (FE, BE, DB) for user form
 ========================================================================================
+to do
+======
+
+>> add filters (ALL - Active - Inactive) for user list
+
+>> fix email already exist issue when trying to edit user..
+
+>> save user password encrypted in the data base
+
+>> control who can see user password according to their authority..
 
 1- use pipes to approximate fields in order form to 2 numbers after the
    decimal point
@@ -24,12 +32,12 @@ example (basic auth  -  jwt auth  - ldap auth)..
 
 6- log any request and response 
 
-7- add validations using annotations..also add not null constrains and other constrains in both
-	database and backend..
-	
-
 8- if there is a page that is the last and there is only one element in it, then after 
 deleting that elements ..it stays in the same page ..fix that issue
+
+9- add field validation in (FE, BE, DB) for (category - product - order)..
+
+
 
 
 
