@@ -64,11 +64,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void save(User user) {
-		
-		if(!isUniqueEmail(user.getEmail())) {
+		user.setId(0); // force creating a new entity
+		if(!isUniqueEmail(user.getEmail(), 0)) {
 			throw new RuntimeException("email already exists");
 		}
-		user.setId(0); // force creating a new entity
 		String registerDate = DateUtil.getCurrentDate("dd-MM-yyyy, HH:mm:ss");
 		user.setRegisterDate(registerDate);
 		userRepository.save(user);
@@ -76,6 +75,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void update(User user) {
+		if(!isUniqueEmail(user.getEmail(), user.getId())) {
+			throw new RuntimeException("email already exists");
+		}
 		String registerDate = this.findById(user.getId()).getRegisterDate();
 		user.setRegisterDate(registerDate);
 		userRepository.save(user);
@@ -93,9 +95,9 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean isUniqueEmail(String email) {
+	public boolean isUniqueEmail(String email, int userId) {
 		User user = userRepository.findByEmail(email);
-		if (user == null)
+		if (user == null || user.getId() == userId)
 			return true;
 		return false;
 	}

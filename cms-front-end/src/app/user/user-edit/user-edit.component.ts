@@ -70,7 +70,7 @@ export class UserEditComponent implements OnInit {
     userAuthority: string): void {
 
     this.userForm = new FormGroup({
-      'userEmail': new FormControl(userEmail, [Validators.required, Validators.email],CustomValidator.uniqueEmail(this.userService)),
+      'userEmail': new FormControl(userEmail, [Validators.required, Validators.email],CustomValidator.uniqueEmail(this.userService, this.userId)),
       'userPassword': new FormControl(userPassword, [Validators.required, CustomValidator.notBlank]),
       'userName': new FormControl(userName, [Validators.required, CustomValidator.notBlank]),
       'userPhone': new FormControl(userPhone, null),

@@ -54,8 +54,8 @@ export class UserService {
     return this.http.delete<Response>(url);
   }
 
-  isUniqueEmail(email: string): Observable<ValidationErrors> {
-    let url: string = this.baseUrl + "/users/isEmailExist/" + email;
+  isUniqueEmail(email: string, userId: number): Observable<ValidationErrors> {
+    let url: string = this.baseUrl + "/users/isEmailExist/" + email + "/" + userId;
     return this.http.get<boolean>(url).pipe(
         map((response:boolean) => {
           return response ? null : {"uniqueEmail": true};

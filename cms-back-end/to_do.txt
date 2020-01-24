@@ -9,9 +9,7 @@ done
 to do
 ======
 
->> add filters (ALL - Active - Inactive) for user list
-
->> fix email already exist issue when trying to edit user..
+>> add filters (ALL - Active - Inactive) for user list...
 
 >> save user password encrypted in the data base
 
