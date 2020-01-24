@@ -9,7 +9,7 @@ public interface UserService {
 
 	public List<User> findAll();
 
-	public List<User> getUsers(String searchTerm, int pageNumber, int pageSize);
+	public List<User> getUsers(String searchTerm, int pageNumber, int pageSize, String status);
 
 	public void save(User user);
 

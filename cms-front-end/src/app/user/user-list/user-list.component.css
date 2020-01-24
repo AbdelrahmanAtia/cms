@@ -11,3 +11,8 @@
     padding: 2px;
     color:white;
 }
+
+.status-btn {
+    width: 30%;
+    margin-right: 3px;
+}

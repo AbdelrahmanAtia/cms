@@ -11,7 +11,7 @@ import { ValidationErrors } from '@angular/forms';
   providedIn: 'root'
 })
 export class UserService {
- 
+
   baseUrl: string = new Config().baseUrl;
 
   constructor(private http: HttpClient) { }
@@ -19,14 +19,15 @@ export class UserService {
   getAllUsers(): Observable<User[]> {
     let url: string = this.baseUrl + "/users/all";
     return this.http.get<User[]>(url);
-  } 
+  }
 
-  getUsers(searchTerm: string, pageNumber: number): Observable<HttpResponse<User[]>> {
+  getUsers(searchTerm: string, userStatus: string, pageNumber: number): Observable<HttpResponse<User[]>> {
     pageNumber--; // cause pageNumber starts at zero not 1 according to backend..
     let url: string = this.baseUrl + "/users";
     return this.http.get<any>(url, {
       params: {
         searchTerm: searchTerm,
+        userStatus: userStatus,
         pageNumber: pageNumber.toString(),
         pageSize: new Config().pageSize.toString()
       }
@@ -57,9 +58,9 @@ export class UserService {
   isUniqueEmail(email: string, userId: number): Observable<ValidationErrors> {
     let url: string = this.baseUrl + "/users/isEmailExist/" + email + "/" + userId;
     return this.http.get<boolean>(url).pipe(
-        map((response:boolean) => {
-          return response ? null : {"uniqueEmail": true};
-        })
+      map((response: boolean) => {
+        return response ? null : { "uniqueEmail": true };
+      })
     );
   }
 

@@ -49,7 +49,7 @@ const routes: Routes = [
       [
         { path: 'new', component: UserEditComponent },
         { path: ':id/edit', component: UserEditComponent },
-        { path: ':searchTerm/:pageNumber', component: UserListComponent }
+        { path: ':searchTerm/:userStatus/:pageNumber', component: UserListComponent }
       ]
   }
 

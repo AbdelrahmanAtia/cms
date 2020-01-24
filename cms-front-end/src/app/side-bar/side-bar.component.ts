@@ -26,7 +26,7 @@ export class SideBarComponent implements OnInit {
   }
 
   viewUsers(): void {
-    this.router.navigate(['users', ' ', 1]);
+    this.router.navigate(['users', ' ', "All", 1]);
   }
 
 

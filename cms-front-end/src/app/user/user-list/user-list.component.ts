@@ -13,6 +13,7 @@ import { Response } from 'src/app/_models/Response';
 export class UserListComponent implements OnInit {
 
   searchTerm: string;
+  userStatus: string;
   pageNumber: number;
   totalPages: number;
   users: User[] = [];
@@ -30,13 +31,14 @@ export class UserListComponent implements OnInit {
     this.route.params.subscribe(
       params => {
         this.searchTerm = params['searchTerm'];
+        this.userStatus = params['userStatus'];
         this.pageNumber = +params['pageNumber'];
         this.initializeUsersList();
       });
   }
  
   initializeUsersList(): void {
-    this.userService.getUsers(this.searchTerm, this.pageNumber).subscribe(
+    this.userService.getUsers(this.searchTerm, this.userStatus, this.pageNumber).subscribe(
       (response: HttpResponse<User[]>) => {
         this.totalPages = +response.headers.get('totalPages');
         this.users = response.body;
@@ -69,9 +71,9 @@ export class UserListComponent implements OnInit {
       (response: Response) => {
         if (response.status = "200") {
           if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.users.length == 1){
-            this.router.navigate(['users',  this.searchTerm + " ", this.pageNumber - 1]);
+            this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber - 1]);
           } else {
-            this.router.navigate(['users',  this.searchTerm + " ", this.pageNumber]);
+            this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber]);
           }
         } else if (response.status = "404") {
           throw new Error(response.message);
@@ -83,13 +85,17 @@ export class UserListComponent implements OnInit {
 
   onSearchChange(event) {
     if(event.keyCode == 13){      // enter key pressed
-      this.router.navigate(['users', this.searchTerm, '1']);
+      this.router.navigate(['users', this.searchTerm, this.userStatus,'1']);
     }
   } 
 
   onPageChange(i: number): void {
     let pageNumber:number = this.pageNumber + i;
-    this.router.navigate(['users', this.searchTerm, pageNumber]);
+    this.router.navigate(['users', this.searchTerm, this.userStatus, pageNumber]);
+  }
+
+  onStatusChange(status:string):void {
+    this.router.navigate(['users', this.searchTerm, status, this.pageNumber]);
   }
 
 

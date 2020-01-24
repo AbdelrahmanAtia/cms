@@ -11,8 +11,12 @@ export function GreaterThanZero(control: AbstractControl) {
 export class CustomValidator {
 
   static uniqueEmail(userService: UserService, userId:number) {
+
     return (control: AbstractControl) => {
       let email: string = control.value;
+      if(userId == undefined){
+        userId = 0;
+      }
       return userService.isUniqueEmail(email, userId);
     }
   }

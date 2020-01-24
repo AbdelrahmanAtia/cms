@@ -23,7 +23,7 @@ export class CategoryListComponent implements OnInit {
 
   ngOnInit() {
     this.listenToRouteParamChanges();
-  }
+  } 
 
   // called when any route param changes
   listenToRouteParamChanges() {

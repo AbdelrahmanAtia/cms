@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-
 import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.UserRepository;
 import org.javaworld.cmsbackend.entity.User;
@@ -34,16 +33,32 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<User> getUsers(String searchTerm, int pageNumber, int pageSize) {
+	public List<User> getUsers(String searchTerm, int pageNumber, int pageSize, String status) {
 		searchTerm = searchTerm.trim();
 
 		Page<User> page = null;
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
 		if (searchTerm.length() == 0) {
-			page = userRepository.findAll(pageable);
+			if(status.equals("All")) {
+				page = userRepository.findAll(pageable);	
+			} else if(status.equals("Active")) {
+				page = userRepository.findByActive(true, pageable);
+			} else if(status.equals("Inactive")) {
+				page = userRepository.findByActive(false, pageable);
+			} else {
+				throw new RuntimeException("status: " + status + " is invalid!!");
+			}
 		} else {
-			page = userRepository.findByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(searchTerm, searchTerm, pageable);
+			if(status.equals("All")) {
+				page = userRepository.findByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(searchTerm, searchTerm, pageable);
+			} else if(status.equals("Active")) {
+				page = userRepository.findByActiveAndNameIgnoreCaseContainingOrActiveAndEmailIgnoreCaseContaining(true, searchTerm, true, searchTerm, pageable);
+			} else if(status.equals("Inactive")) {
+				page = userRepository.findByActiveAndNameIgnoreCaseContainingOrActiveAndEmailIgnoreCaseContaining(false, searchTerm, false, searchTerm, pageable);
+			} else {
+				throw new RuntimeException("status: " + status + " is invalid!!");
+			}			
 		}
 
 		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());

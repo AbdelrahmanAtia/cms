@@ -14,6 +14,15 @@
                (keypress)="onSearchChange($event)"> 
     </div>
 
+    <div class="col-sm-2">
+    </div>
+
+    <div class="col-sm-4">
+        <button class="btn status-btn" (click)="onStatusChange('All')">All</button>
+        <button class="btn status-btn" (click)="onStatusChange('Active')">Active</button>
+        <button class="btn status-btn" (click)="onStatusChange('Inactive')">Inactive</button>
+    </div>
+
 </div>
 <br> 
 <br>

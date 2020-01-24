@@ -102,14 +102,14 @@ export class UserEditComponent implements OnInit {
 
   private addNewUser(user: User): void {
     this.userService.addNewUser(user).subscribe(
-      (response: User) => this.router.navigate(['users', ' ', '1'])
+      (response: User) => this.router.navigate(['users', ' ', 'All','1'])
       , (error) => console.log(error)
     );
   }
 
   private updateUser(user: User): void {
     this.userService.updateUser(user).subscribe(
-      (response: User) => this.router.navigate(['users', ' ', '1'])
+      (response: User) => this.router.navigate(['users', ' ','All', '1'])
       , (error) => console.log(error)
     );
   }
@@ -124,7 +124,7 @@ export class UserEditComponent implements OnInit {
   }
 
   cancel(): void { 
-    this.router.navigate(['users', ' ' ,'1']);
+    this.router.navigate(['users', ' ', 'All', '1']);
   }
 
 } 

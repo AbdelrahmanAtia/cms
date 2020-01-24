@@ -29,9 +29,11 @@ public class UserRestController {
 	}
 	
 	@GetMapping("/users")
-	public List<User> getUsers(@RequestParam String searchTerm, @RequestParam int pageNumber,
-			@RequestParam int pageSize) {
-		return userService.getUsers(searchTerm, pageNumber, pageSize);
+	public List<User> getUsers(@RequestParam String searchTerm, 
+			                   @RequestParam String userStatus,
+							   @RequestParam int pageNumber,
+							   @RequestParam int pageSize) {
+		return userService.getUsers(searchTerm, pageNumber, pageSize, userStatus);
 	}
 	
 	@GetMapping("/users/{userId}")

@@ -5,11 +5,15 @@ done
 3- set product category to null when category is removed                
 4- handle what will be shown when a category is deleted                 
 5- add field validation in (FE, BE, DB) for user form
-========================================================================================
-to do
-======
 
 >> add filters (ALL - Active - Inactive) for user list...
+
+>> fix 'email already exist' issue in case of edit mode..
+========================================================================================
+to do
+=====
+
+>> visualize user state button pressed activity by changing the button color..
 
 >> save user password encrypted in the data base
 
