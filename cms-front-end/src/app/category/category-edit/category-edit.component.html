@@ -17,6 +17,19 @@
                              categoryForm.get('categoryName').touched && 
                              categoryForm.get('categoryName').errors['required']"
                       class="help-block"> Please fill out this field.</span>
+
+                <span *ngIf="categoryForm.get('categoryName').invalid &&  
+                             categoryForm.get('categoryName').touched && 
+                             categoryForm.get('categoryName').errors['uniqueCategoryName']" 
+                             class="help-block">Category title is already used.</span>
+                
+                       
+                <span *ngIf="categoryForm.get('categoryName').invalid &&  
+                             categoryForm.get('categoryName').touched &&
+                             categoryForm.get('categoryName').errors['blank'] &&
+                            !categoryForm.get('categoryName').errors['required']" class="help-block">Category title can't be blank.</span>
+
+
             </div>
 
         </div>

@@ -86,6 +86,15 @@ public class CategoryServiceImpl implements CategoryService {
 			return new Response(Constants.NOT_FOUND_STATUS, "category id not found - " + categoryId);
 		return new Response(Constants.OK_STATUS, "Deleted  image for category id - " + categoryId);
 	}
+	
+	@Override
+	public boolean isUniqueCategoryName(String categoryName, int categoryId) {
+		Category category = categoryRepository.findByName(categoryName);
+		//the 2nd condition is for edit mode
+		if (category == null || category.getId() == categoryId)  
+			return true;
+		return false;
+	}
 
 		
 }

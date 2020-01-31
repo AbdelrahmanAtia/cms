@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "category")
@@ -16,6 +17,7 @@ public class Category {
 	@Column(name = "id")
 	private int id;
 
+	@NotBlank
 	@Column(name = "name")
 	private String name;
 

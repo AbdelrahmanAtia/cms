@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Config } from '../_models/Config ';
 import { Response } from '../_models/Response';
+import { ValidationErrors } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +57,15 @@ export class CategoryService {
   deleteCategoryImage(categoryId: number): Observable<Response> {
     let url: string = this.baseUrl + "/categories/image/" + categoryId;
     return this.http.delete<Response>(url);
+  }
+
+  isUniqueCategoryName(categoryName: string, categoryId: number): Observable<ValidationErrors> {
+    let url: string = this.baseUrl + "/categories/isNameExist/" + categoryName + "/" + categoryId;
+    return this.http.get<boolean>(url).pipe(
+      map((response: boolean) => {
+        return response ? null : { "uniqueCategoryName": true };
+      })
+    );
   }
 
 }

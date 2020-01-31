@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from 'src/app/_models/Category';
 import { Response } from 'src/app/_models/Response';
+import { CustomValidator } from 'src/app/_validators/CustomValidator';
 
 @Component({
   selector: 'app-category-edit',
@@ -38,14 +39,14 @@ export class CategoryEditComponent implements OnInit {
         }, (error) => { console.log(error); }
       );
     }
-  }
+  }  
 
   private initializeCategoryForm(categoryName:string, 
                                  categoryDescription:string,
                                  categoryImage:string,
                                  productCount:number):void {
       this.categoryForm = new FormGroup({
-        'categoryName': new FormControl(categoryName, Validators.required),
+        'categoryName': new FormControl(categoryName, [Validators.required, CustomValidator.notBlank], CustomValidator.uniqueCategoryName(this.categoryService, this.categoryId)),
         'categoryDescription': new FormControl(categoryDescription, null),
         'categoryImage': new FormControl(categoryImage, null),
         'productCount': new FormControl(productCount, null)

@@ -9,15 +9,20 @@ done
 >> add filters (ALL - Active - Inactive) for user list...
 
 >> fix 'email already exist' issue in case of edit mode..
+
+>> visualize user state button pressed activity by changing the button color..
+
 ========================================================================================
 to do
 =====
 
->> visualize user state button pressed activity by changing the button color..
 
 >> save user password encrypted in the data base
 
 >> control who can see user password according to their authority..
+
+>> try to make pagging generic by declaring it into one component and pass
+the list to it..
 
 1- use pipes to approximate fields in order form to 2 numbers after the
    decimal point

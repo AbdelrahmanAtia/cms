@@ -16,3 +16,16 @@
     width: 30%;
     margin-right: 3px;
 }
+
+.active {
+    color: white;
+    background-color: rgb(99, 94, 94);
+}
+
+.disabled-item {
+
+}
+
+.disabled-item a:hover {
+    cursor:not-allowed
+}

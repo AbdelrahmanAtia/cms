@@ -1,5 +1,6 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { UserService } from '../_services/user.service';
+import { CategoryService } from '../_services/category.service';
 
 export function GreaterThanZero(control: AbstractControl) {
   if (control.value <= 0) {
@@ -10,8 +11,17 @@ export function GreaterThanZero(control: AbstractControl) {
 
 export class CustomValidator {
 
-  static uniqueEmail(userService: UserService, userId:number) {
+  static uniqueCategoryName(categoryService: CategoryService, categoryId:number) {
+    return (control: AbstractControl) => {
+      let categoryName: string = control.value;
+      if(categoryId == undefined){
+        categoryId = 0;
+      }
+    return categoryService.isUniqueCategoryName(categoryName, categoryId);
+    }
+  }
 
+  static uniqueEmail(userService: UserService, userId:number) {
     return (control: AbstractControl) => {
       let email: string = control.value;
       if(userId == undefined){

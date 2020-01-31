@@ -18,9 +18,18 @@
     </div>
 
     <div class="col-sm-4">
-        <button class="btn status-btn" (click)="onStatusChange('All')">All</button>
-        <button class="btn status-btn" (click)="onStatusChange('Active')">Active</button>
-        <button class="btn status-btn" (click)="onStatusChange('Inactive')">Inactive</button>
+        <button class="btn status-btn" 
+                [ngClass]="{'active': userStatus === 'All'}"
+                (click)="onStatusChange('All')">All</button>
+
+        <button class="btn status-btn" 
+                [ngClass]="{'active': userStatus === 'Active'}"
+                (click)="onStatusChange('Active')">Active</button>
+
+        <button class="btn status-btn" 
+                [ngClass]="{'active': userStatus === 'Inactive'}"
+                (click)="onStatusChange('Inactive')">Inactive</button>
+
     </div>
 
 </div>
@@ -77,9 +86,13 @@
     <div class="col-sm-7" *ngIf="users.length > 0">
         <nav aria-label="Page navigation example">
             <ul class="pagination" style="cursor: pointer">
-
+                
                 <li class="page-item" *ngIf="pageNumber > 1">
                     <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                </li>
+
+                <li class="page-item disabled-item" *ngIf="pageNumber <= 1">
+                    <a class="page-link">Previous</a>
                 </li>
 
                 <li class="page-item">
@@ -90,6 +103,10 @@
                     <a class="page-link" (click)="onPageChange(1)">Next</a>
                 </li>
 
+                <li class="page-item disabled-item" *ngIf="pageNumber >= totalPages">
+                    <a class="page-link">Next</a>
+                </li>
+                
             </ul>
         </nav>
     </div> 

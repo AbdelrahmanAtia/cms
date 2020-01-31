@@ -95,8 +95,7 @@ export class UserListComponent implements OnInit {
   }
 
   onStatusChange(status:string):void {
-    this.router.navigate(['users', this.searchTerm, status, this.pageNumber]);
+    this.router.navigate(['users', this.searchTerm, status, '1']);
   }
-
-
+  
 }

@@ -62,5 +62,10 @@ public class CategoryRestController {
 	public Response deleteCategoryImage(@PathVariable int categoryId) {
 		return categoryService.deleteCategoryImage(categoryId);
 	}
+	
+	@GetMapping("/categories/isNameExist/{categoryName}/{categoryId}")
+	public boolean isUniqueEmail(@PathVariable String categoryName, @PathVariable int categoryId) {
+		return categoryService.isUniqueCategoryName(categoryName, categoryId);
+	}
 
 }

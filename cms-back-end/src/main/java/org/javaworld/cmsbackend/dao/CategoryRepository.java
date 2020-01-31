@@ -13,6 +13,8 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 	Page<Category> findAll(Pageable pageable);
 
 	Page<Category> findByNameIgnoreCaseContaining(String name, Pageable pageable);
+	
+	Category findByName(String name);
 
 	@Modifying
 	@Query("UPDATE Category c SET c.image = null WHERE c.id = :categoryId")

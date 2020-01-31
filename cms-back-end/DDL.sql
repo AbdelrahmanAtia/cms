@@ -1,8 +1,17 @@
 use cms;
 -- ------------------------------------------------------------------------------------------------
+-- drop tables
+drop table if exists user_details;
+drop table if exists user_authority;
+drop table if exists order_line;
+drop table if exists client_order;
+drop table if exists client;
+drop table if exists product;
+drop table if exists category;
+-- ------------------------------------------------------------------------------------------------
 CREATE TABLE category (
 	id int primary key auto_increment,
-	name varchar(255),
+	name varchar(255) not null,
 	description varchar(255),
 	product_count int,
 	image longblob
@@ -104,6 +113,5 @@ delete from product where id > 0;
 delete from category where id > 0;
 delete from user_details where id > 0;
 -- ------------------------------------------------------------------------------------------------
--- drop tables
-drop table user_details;
+
 

@@ -19,4 +19,6 @@ public interface CategoryService {
 	
 	public Response deleteCategoryImage(int categoryId);
 
+	boolean isUniqueCategoryName(String categoryName, int categoryId);
+
 }
