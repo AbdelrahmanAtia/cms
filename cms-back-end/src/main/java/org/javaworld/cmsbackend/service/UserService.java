@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.javaworld.cmsbackend.entity.User;
 import org.javaworld.cmsbackend.model.Response;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
 	public List<User> findAll();
 
