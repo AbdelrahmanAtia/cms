@@ -1,4 +1,5 @@
 import { Authority } from './Authority';
+import { Response } from './Response';
 
 export class User {
     id: number;

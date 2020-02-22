@@ -123,5 +123,10 @@ public class UserServiceImpl implements UserService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return userRepository.findByName(username);
 	}
+	
+	@Override
+	public UserDetails loadUserByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 
 }

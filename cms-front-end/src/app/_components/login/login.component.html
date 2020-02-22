@@ -1,0 +1,80 @@
+<form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()" class="login-form">
+
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <span style="font-weight: bold; color: #858A9F;">ADMIN LOGIN</span>
+            </div>            
+        </div>
+        <br>
+
+        <div class="form-group" [ngClass]="{'has-error': loginForm.get('userEmail').invalid 
+                                                      && loginForm.get('userEmail').touched}">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="userEmail">Email:</label>
+                </div>
+                <div class="col-sm-6 input-group">
+                    <span class="input-group-addon">@</span>
+                    <input id="userEmail" type="text" class="form-control" formControlName="userEmail">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6 input-group">
+                    <span *ngIf="loginForm.get('userEmail').invalid &&  
+                                 loginForm.get('userEmail').touched && 
+                                 loginForm.get('userEmail').errors['required']" class="help-block">This field is required.
+                    </span>
+
+                    <span *ngIf="loginForm.get('userEmail').invalid &&  
+                                 loginForm.get('userEmail').touched && 
+                                 loginForm.get('userEmail').errors['email']" class="help-block">Please enter a valid email address.
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': loginForm.get('userPassword').invalid 
+                                                      && loginForm.get('userPassword').touched}">        
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="userPassword">Password:</label>
+                </div>
+                <div class="col-sm-6 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input id="userPassword" type="text" class="form-control" formControlName="userPassword">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6 input-group">
+                    <span *ngIf="loginForm.get('userPassword').invalid &&  
+                                 loginForm.get('userPassword').touched && 
+                                 loginForm.get('userPassword').errors['required']" class="help-block">This field is required.
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6 input-group">
+                <button type="submit" class="btn btn-primary btn-block" [disabled]="loginForm.invalid">Login</button>
+            </div>           
+        </div>
+        <br>
+
+        <div class="row" *ngIf="invalidLogin">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-4 input-group error-msg">
+                Wrong email or password
+            </div>
+            
+        </div>
+        <br>
+</form>

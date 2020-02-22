@@ -1,58 +1,75 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductComponent } from './product/product.component';
-import { ProductListComponent } from './product/product-list/product-list.component';
-import { CategoryComponent } from './category/category.component';
-import { CategoryListComponent } from './category/category-list/category-list.component';
-import { CategoryEditComponent } from './category/category-edit/category-edit.component';
-import { ProductEditComponent } from './product/product-edit/product-edit.component';
-import { OrderComponent } from './order/order.component';
-import { OrderListComponent } from './order/order-list/order-list.component';
-import { OrderEditComponent } from './order/order-edit/order-edit.component';
-import { UserComponent } from './user/user.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserEditComponent } from './user/user-edit/user-edit.component';
+import { ProductComponent } from './_components/main/product/product.component';
+import { ProductListComponent } from './_components/main/product/product-list/product-list.component';
+import { CategoryComponent } from './_components/main/category/category.component';
+import { CategoryListComponent } from './_components/main/category/category-list/category-list.component';
+import { CategoryEditComponent } from './_components/main/category/category-edit/category-edit.component';
+import { ProductEditComponent } from './_components/main/product/product-edit/product-edit.component';
+import { UserComponent } from './_components/main/user/user.component';
+import { UserListComponent } from './_components/main/user/user-list/user-list.component';
+import { UserEditComponent } from './_components/main/user/user-edit/user-edit.component';
+import { LoginComponent } from './_components/login/login.component';
+import { DashBoardComponent } from './_components/main/dash-board/dash-board.component';
+import { MainComponent } from './_components/main/main.component';
+import { OrderComponent } from './_components/main/order/order.component';
+import { OrderListComponent } from './_components/main/order/order-list/order-list.component';
+import { OrderEditComponent } from './_components/main/order/order-edit/order-edit.component';
+import { AuthGuard } from './_guards/auth.guard';
 
  
 const routes: Routes = [
-  { path: '', redirectTo: '/categories', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   {
-    path: 'products', component: ProductComponent, children:
-      [
-        { path: ':searchTerm/:categoryId/:pageNumber', component: ProductListComponent },
-        { path: 'new', component: ProductEditComponent },
-        { path: ':id/edit', component: ProductEditComponent }
-      ]
+    path: 'login', component: LoginComponent
   },
 
   {
-    path: 'categories', component: CategoryComponent, children:
+    path: 'main', component: MainComponent, canActivate: [AuthGuard], children: 
       [
-        { path: 'new', component: CategoryEditComponent },
-        { path: ':id/edit', component: CategoryEditComponent },
-        { path: ':searchTerm/:pageNumber', component: CategoryListComponent }
-      ]
-  },
 
-  {
-    path: 'orders', component: OrderComponent, children:
-      [
-        { path: '', component: OrderListComponent },
-        { path: 'new', component: OrderEditComponent },
-        { path: ':id/edit', component: OrderEditComponent }
-      ]
-  },
+        {
+          path: 'dashboard', component: DashBoardComponent
+        },
 
-  {
-    path: 'users', component: UserComponent, children:
-      [
-        { path: 'new', component: UserEditComponent },
-        { path: ':id/edit', component: UserEditComponent },
-        { path: ':searchTerm/:userStatus/:pageNumber', component: UserListComponent }
+        {
+          path: 'products', component: ProductComponent, children:
+            [
+              { path: ':searchTerm/:categoryId/:pageNumber', component: ProductListComponent },
+              { path: 'new', component: ProductEditComponent },
+              { path: ':id/edit', component: ProductEditComponent }
+            ]
+        },
+
+        {
+          path: 'categories', component: CategoryComponent, children:
+            [
+              { path: 'new', component: CategoryEditComponent },
+              { path: ':id/edit', component: CategoryEditComponent },
+              { path: ':searchTerm/:pageNumber', component: CategoryListComponent }
+            ]
+        },
+
+        {
+          path: 'orders', component: OrderComponent, children:
+            [
+              { path: '', component: OrderListComponent },
+              { path: 'new', component: OrderEditComponent },
+              { path: ':id/edit', component: OrderEditComponent }
+            ]
+        },
+      
+        {
+          path: 'users', component: UserComponent, children:
+            [
+              { path: 'new', component: UserEditComponent },
+              { path: ':id/edit', component: UserEditComponent },
+              { path: ':searchTerm/:userStatus/:pageNumber', component: UserListComponent }
+            ]
+        }
       ]
   }
-
 ];
 
 @NgModule({

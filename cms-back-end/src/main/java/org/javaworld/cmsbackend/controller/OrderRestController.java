@@ -60,5 +60,10 @@ public class OrderRestController {
 		return orderService.deleteOrder(orderId);		
 	}
 	
+	@GetMapping("/orders/count")
+	public long getTotalOrdersCount() {
+		return orderService.getTotalOrdersCount();
+	}
+	
 
 }

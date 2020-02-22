@@ -1,0 +1,20 @@
+.login-form {
+    background-color: white;
+    margin-left: 32%;
+    margin-right: 30%;
+    margin-top: 5%;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-left: 25px;
+}
+
+.error-msg{
+    background-color: #FFB4B4;
+    color: #660000;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-bottom: 9px;
+    padding-top: 9px;
+    border: 1px solid #990000;
+    border-radius: 4px;
+}

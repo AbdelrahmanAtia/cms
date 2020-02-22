@@ -26,7 +26,7 @@ export class OrderListComponent implements OnInit {
   }
 
   addNewOrder(): void {
-    this.router.navigate(['orders', 'new']);
+    this.router.navigate(['main', 'orders', 'new']);
   }
 
   editOrder(orderId: number): void {

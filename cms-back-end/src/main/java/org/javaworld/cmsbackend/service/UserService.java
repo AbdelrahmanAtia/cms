@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.javaworld.cmsbackend.entity.User;
 import org.javaworld.cmsbackend.model.Response;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
@@ -21,5 +22,7 @@ public interface UserService extends UserDetailsService {
 	public Response deleteById(int userId);
 
 	public boolean isUniqueEmail(String email, int userId);
+
+	public UserDetails loadUserByEmail(String email);
 
 }

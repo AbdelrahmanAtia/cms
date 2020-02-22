@@ -3,11 +3,14 @@ import { Observable } from 'rxjs';
 
 export class BasicAuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        req = req.clone({
-            setHeaders: {
-                'Authorization': 'Basic ' + window.btoa("admin2" + ':' + 'pass2')
-            }
-        });
+        //don't add authorization header for login
+        if (req.url.search('login') === -1) {
+            req = req.clone({
+                setHeaders: {
+                    'Authorization': 'Basic ' + localStorage.getItem('currentUser')
+                }
+            });
+        }
         return next.handle(req);
     }
 }

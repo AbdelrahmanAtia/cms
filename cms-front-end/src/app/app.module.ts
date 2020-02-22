@@ -2,25 +2,29 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SideBarComponent } from './side-bar/side-bar.component';
-import { HeaderComponent } from './header/header.component';
-import { ProductComponent } from './product/product.component';
-import { ProductListComponent } from './product/product-list/product-list.component';
-import { CategoryComponent } from './category/category.component';
-import { CategoryListComponent } from './category/category-list/category-list.component';
+import { SideBarComponent } from './_components/main/side-bar/side-bar.component';
+import { HeaderComponent } from './_components/header/header.component';
+import { ProductComponent } from './_components/main/product/product.component';
+import { ProductListComponent } from './_components/main/product/product-list/product-list.component';
+import { CategoryComponent } from './_components/main/category/category.component';
+import { CategoryListComponent } from './_components/main/category/category-list/category-list.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CategoryEditComponent } from './category/category-edit/category-edit.component';
+import { CategoryEditComponent } from './_components/main/category/category-edit/category-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { ProductEditComponent } from './product/product-edit/product-edit.component';
-import { OrderComponent } from './order/order.component';
-import { OrderListComponent } from './order/order-list/order-list.component';
-import { OrderEditComponent } from './order/order-edit/order-edit.component';
+import { ProductEditComponent } from './_components/main/product/product-edit/product-edit.component';
 import { DatePipe } from '@angular/common';
-import { UserComponent } from './user/user.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserEditComponent } from './user/user-edit/user-edit.component';
+import { UserComponent } from './_components/main/user/user.component';
+import { UserListComponent } from './_components/main/user/user-list/user-list.component';
+import { UserEditComponent } from './_components/main/user/user-edit/user-edit.component';
 import { BasicAuthInterceptor } from './_interceptors/basic-auth.interceptor';
+import { LoginComponent } from './_components/login/login.component';
+import { DashBoardComponent } from './_components/main/dash-board/dash-board.component';
+import { MainComponent } from './_components/main/main.component';
+import { OrderComponent } from './_components/main/order/order.component';
+import { OrderListComponent } from './_components/main/order/order-list/order-list.component';
+import { OrderEditComponent } from './_components/main/order/order-edit/order-edit.component';
+import { AuthGuard } from './_guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,10 @@ import { BasicAuthInterceptor } from './_interceptors/basic-auth.interceptor';
     OrderEditComponent,
     UserComponent,
     UserListComponent,
-    UserEditComponent
+    UserEditComponent,
+    LoginComponent,
+    DashBoardComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +57,7 @@ import { BasicAuthInterceptor } from './_interceptors/basic-auth.interceptor';
   ],
   providers: [
     DatePipe,
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

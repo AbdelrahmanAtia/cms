@@ -215,7 +215,7 @@ export class OrderEditComponent implements OnInit {
   addNewOrder(order: Order) {
     console.log(order);
     this.orderService.addNewOrder(order).subscribe(
-      (response: Order) => this.router.navigate(['/orders'])
+      (response: Order) => this.router.navigate(['/main/orders'])
       , (error) => console.log(error)
     );
   }
@@ -223,7 +223,7 @@ export class OrderEditComponent implements OnInit {
   updateExistingOrder(order: Order) {
     console.log(order);
     this.orderService.updateOrder(order).subscribe(
-      (response: Order) => this.router.navigate(['/orders'])
+      (response: Order) => this.router.navigate(['/main/orders'])
       , (error) => console.log(error)
     );
   }
@@ -245,7 +245,7 @@ export class OrderEditComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/orders']);
+    this.router.navigate(['/main/orders']);
   }
 
 }

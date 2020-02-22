@@ -69,4 +69,9 @@ public class OrderServiceImpl implements OrderService {
 		return new Response(Constants.OK_STATUS, "Deleted order id - " + orderId);
 	}
 
+	@Override
+	public long getTotalOrdersCount() {
+		return orderRepository.count();
+	}
+
 }

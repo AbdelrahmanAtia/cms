@@ -39,4 +39,9 @@ export class OrderService {
     return this.http.delete<Response>(url);
   }
 
+  getTotalOrdersCount(): Observable<number>{
+    let url: string = this.baseUrl + "/orders/count";
+    return this.http.get<number>(url);
+  }
+
 }

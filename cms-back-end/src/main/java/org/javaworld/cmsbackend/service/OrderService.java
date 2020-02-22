@@ -17,4 +17,6 @@ public interface OrderService {
 
 	public Response deleteOrder(int orderId);
 
+	public long getTotalOrdersCount();
+
 }

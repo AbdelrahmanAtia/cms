@@ -21,9 +21,12 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 	private UserService userService; 
 	
 	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {				
+	protected void configure(HttpSecurity httpSecurity) throws Exception {	
+		
+		httpSecurity.csrf().disable();
 		httpSecurity.authorizeRequests()
 							.antMatchers(HttpMethod.OPTIONS).permitAll()  // no need for authorization token for options request
+							.antMatchers("/api/authentication/login").permitAll()
 					.anyRequest().authenticated()
 					.and().httpBasic(); // basic authentication
 	}
