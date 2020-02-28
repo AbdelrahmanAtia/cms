@@ -1,5 +1,6 @@
 package org.javaworld.cmsbackend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +10,12 @@ import org.javaworld.cmsbackend.dao.OrderRepository;
 import org.javaworld.cmsbackend.entity.Order;
 import org.javaworld.cmsbackend.entity.OrderLine;
 import org.javaworld.cmsbackend.model.Response;
+import org.javaworld.cmsbackend.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +77,21 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public long getTotalOrdersCount() {
 		return orderRepository.count();
+	}
+
+	@Override
+	public long getOrdersToDeliverTodayCount() {
+		long startOfDay = DateUtil.getStartOfTheDayAsTimeStamp();
+		long endOfDay = DateUtil.getEndOfTheDayAsTimeStamp();
+		return orderRepository.countByDeliveryDateBetween(startOfDay, endOfDay);
+	}
+
+	@Override
+	public List<Order> getNextOrdersToBeDelivered() {
+		long currentTimeStamp = DateUtil.getCurrentDateTimeAsTimeStamp();
+		Pageable pageable = PageRequest.of(0, 3);
+		Page<Order> ordersPage = orderRepository.findByDeliveryDateGreaterThan(currentTimeStamp, pageable);
+		return ordersPage.hasContent() ? ordersPage.getContent() : new ArrayList<>();
 	}
 
 }

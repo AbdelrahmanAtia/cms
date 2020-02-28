@@ -47,23 +47,21 @@ public class OrderRestController {
 		orderService.save(order);
 		return order;
 	}
-	
+
 	@PutMapping("/orders")
 	public Order updateOrder(@RequestBody Order order) {
 		orderService.update(order);
 		return order;
 	}
-	
-	
+
 	@DeleteMapping("/orders/{orderId}")
 	public Response deleteOrder(@PathVariable int orderId) {
-		return orderService.deleteOrder(orderId);		
+		return orderService.deleteOrder(orderId);
 	}
 	
-	@GetMapping("/orders/count")
-	public long getTotalOrdersCount() {
-		return orderService.getTotalOrdersCount();
+	@GetMapping("/orders/nextToDeliver")
+	public List<Order> getNextOrdersToBeDelivered() {
+		return orderService.getNextOrdersToBeDelivered();
 	}
-	
 
 }

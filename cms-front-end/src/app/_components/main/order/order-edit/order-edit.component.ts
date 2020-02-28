@@ -49,7 +49,6 @@ export class OrderEditComponent implements OnInit {
       // populate order form in case of edit  mode
       this.orderService.getOrder(this.orderId).subscribe(
         (response: Order) => {
-          console.log(response);
           this.orderLinesList = response.orderLines;
           this.clientId = response.client.id;
 
@@ -170,7 +169,6 @@ export class OrderEditComponent implements OnInit {
  
 
   submitOrderForm() {
-    console.log("starting submitOrderForm()....");
     
     let order:Order = new Order();
     let client:Client = new Client();
@@ -213,7 +211,6 @@ export class OrderEditComponent implements OnInit {
   }
 
   addNewOrder(order: Order) {
-    console.log(order);
     this.orderService.addNewOrder(order).subscribe(
       (response: Order) => this.router.navigate(['/main/orders'])
       , (error) => console.log(error)
@@ -221,7 +218,6 @@ export class OrderEditComponent implements OnInit {
   }
 
   updateExistingOrder(order: Order) {
-    console.log(order);
     this.orderService.updateOrder(order).subscribe(
       (response: Order) => this.router.navigate(['/main/orders'])
       , (error) => console.log(error)

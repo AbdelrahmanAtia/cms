@@ -83,9 +83,7 @@ export class ProductEditComponent implements OnInit {
 
   getCategoryId(categoryName: string): number {
     for (let c of this.categories) {
-      console.log(c);
       if (c.name == categoryName) {
-        console.log("match found..");
         return c.id;
       }
     }
@@ -100,8 +98,6 @@ export class ProductEditComponent implements OnInit {
     product.image = this.base64ProductImage;
     product.active = this.productForm.value.productStatus;
 
-    console.log(product.active);
-
     let category: Category = new Category();
     category.id = this.getCategoryId(this.productForm.value.productCategory);
     product.category = category;
@@ -114,20 +110,20 @@ export class ProductEditComponent implements OnInit {
 
   addNewProduct(product: Product) {
     this.productService.addNewProduct(product).subscribe(
-      (response: Product) => this.router.navigate(['products', ' ', 0, 1])
+      (response: Product) => this.router.navigate(['main', 'products', ' ', 0, 1])
       , (error) => console.log(error)
     );
   }
 
   updateProduct(product: Product) {
     this.productService.updateProduct(product).subscribe(
-      (response: Product) => this.router.navigate(['products', ' ', 0, 1])
+      (response: Product) => this.router.navigate(['main', 'products', ' ', 0, 1])
       , (error) => console.log(error)
     );
   }
 
   cancel(): void {
-    this.router.navigate(['products', ' ', 0, 1]);
+    this.router.navigate(['main', 'products', ' ', 0, 1]);
   }
 
 }

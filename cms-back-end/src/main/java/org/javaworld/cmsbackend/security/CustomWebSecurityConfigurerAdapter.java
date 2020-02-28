@@ -18,7 +18,9 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
 	
 	@Autowired
-	private UserService userService; 
+	private UserService userService;
+	
+	
 	
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {	
@@ -29,6 +31,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 							.antMatchers("/api/authentication/login").permitAll()
 					.anyRequest().authenticated()
 					.and().httpBasic(); // basic authentication
+		
+		 httpSecurity.exceptionHandling().authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint());
 	}
 
 	@Override

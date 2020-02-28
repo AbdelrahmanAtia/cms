@@ -64,11 +64,11 @@ export class ProductListComponent implements OnInit {
   }
 
   addNewProduct(): void {
-    this.router.navigate(['products', 'new']);
+    this.router.navigate(['main', 'products', 'new']);
   }
 
   editProduct(productId: number): void {
-    this.router.navigate(['products', productId, 'edit']);
+    this.router.navigate(['main', 'products', productId, 'edit']);
   }
 
   deleteProduct(productId: number): void {
@@ -78,7 +78,7 @@ export class ProductListComponent implements OnInit {
     this.productService.deleteProduct(productId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          this.router.navigate(['products', this.searchTerm + " ", this.categoryId, this.pageNumber]);
+          this.router.navigate(['main', 'products', this.searchTerm + " ", this.categoryId, this.pageNumber]);
         }
         else if (response.status = "404") {
           throw new Error(response.message);
@@ -90,18 +90,18 @@ export class ProductListComponent implements OnInit {
 
   onSearchChange(event) {
     if(event.keyCode == 13){      // enter key pressed
-      this.router.navigate(['products', this.searchTerm, this.categoryId, '1']);
+      this.router.navigate(['main', 'products', this.searchTerm, this.categoryId, '1']);
     }
   }
 
   onCategoryChange(event): void {
     let categoryId: number = event.target.value;
-    this.router.navigate(['products', this.searchTerm, categoryId, '1']);
+    this.router.navigate(['main', 'products', this.searchTerm, categoryId, '1']);
   }
 
   onPageChange(i: number): void {
     let pageNumber:number = this.pageNumber + i;
-    this.router.navigate(['products', this.searchTerm, this.categoryId, pageNumber]);
+    this.router.navigate(['main', 'products', this.searchTerm, this.categoryId, pageNumber]);
   }
 
   goToPage(i:number){

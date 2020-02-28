@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DashBoardInfo } from 'src/app/_models/DashBoardInfo';
+import { DashBoardService } from 'src/app/_services/dash-board.service';
 import { OrderService } from 'src/app/_services/order.service';
+import { Order } from 'src/app/_models/Order';
 
 @Component({
   selector: 'app-dash-board',
@@ -8,19 +12,24 @@ import { OrderService } from 'src/app/_services/order.service';
 })
 export class DashBoardComponent implements OnInit {
 
-  totalOrdersCount: number;
+  dashBoardInfo: DashBoardInfo;
 
-  constructor(private orderService: OrderService) { }
+  ordersToBeDeliveredNext: Order[] = [];
+
+
+  constructor(private dashBoardService: DashBoardService,
+    private orderService: OrderService,
+    private router: Router) { }
 
   ngOnInit() {
-    this.initializeTotalOrdersCount();
+    this.initializeDashBoardInfo();
+    this.initializeOrdersToBeDeliveredNext();
   }
 
-  private initializeTotalOrdersCount() {
-    this.orderService.getTotalOrdersCount().subscribe(
+  private initializeDashBoardInfo() {
+    this.dashBoardService.getDashboardInfo().subscribe(
       (response) => {
-        console.log(response);
-        this.totalOrdersCount = response;
+        this.dashBoardInfo = response;
       },
       (error) => {
         console.log(error);
@@ -28,7 +37,31 @@ export class DashBoardComponent implements OnInit {
     );
   }
 
+  private initializeOrdersToBeDeliveredNext() {
+    this.orderService.getNextOrdersToBeDelivered().subscribe(
+      (response) => {
+        this.ordersToBeDeliveredNext = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 
+  addOrder(): void {
+    this.router.navigate(['main', 'orders', 'new']);
+  }
 
+  addProduct(): void {
+    this.router.navigate(['main', 'products', 'new']);
+  }
+
+  viewOrders(): void {
+    this.router.navigate(['main', 'orders']);
+  }
+
+  viewProducts(): void {
+    this.router.navigate(['main', 'products', ' ', 0, 1]);
+  }
 
 }

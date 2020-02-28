@@ -19,4 +19,8 @@ public interface OrderService {
 
 	public long getTotalOrdersCount();
 
+	public long getOrdersToDeliverTodayCount();
+
+	public List<Order> getNextOrdersToBeDelivered();
+
 }

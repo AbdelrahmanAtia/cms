@@ -96,20 +96,20 @@ export class CategoryEditComponent implements OnInit {
 
   private addNewCategory(category: Category):void {
     this.categoryService.addNewCategory(category).subscribe(
-      (response: Category) =>  this.router.navigate(['categories', ' ', '1'])
+      (response: Category) =>  this.router.navigate(['main', 'categories', ' ', '1'])
       , (error) => console.log(error)
     ); 
   }
 
   private updateCategory(category: Category):void {
     this.categoryService.updateCategory(category).subscribe(
-      (response: Category) => this.router.navigate(['categories', ' ', '1'])
+      (response: Category) => this.router.navigate(['main', 'categories', ' ', '1'])
       , (error) => console.log(error)
     );
   }
 
   cancel(): void {
-    this.router.navigate(['categories', ' ', '1']);
+    this.router.navigate(['main', 'categories', ' ', '1']);
   }
 
   deleteCategoryImage():void {

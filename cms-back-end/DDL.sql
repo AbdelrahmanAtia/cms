@@ -20,7 +20,7 @@ CREATE TABLE category (
 CREATE TABLE product (
 	id int primary key auto_increment,
 	active bit(1),
-	description varchar(255),
+	description varchar(1000),
 	image longblob,
 	name varchar(255),
 	price double,

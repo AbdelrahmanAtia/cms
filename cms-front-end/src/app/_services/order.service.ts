@@ -44,4 +44,10 @@ export class OrderService {
     return this.http.get<number>(url);
   }
 
+  getNextOrdersToBeDelivered(): Observable<Order[]>{
+    let url: string = this.baseUrl + "/orders/nextToDeliver";
+    return this.http.get<Order[]>(url);
+  }
+
+
 }

@@ -9,13 +9,13 @@
 
    <div class="col-sm-4 wrapper-div">
         <div class="img-div"><img src="../../../../assets/images/dashboard_orders.png"></div>
-        <div class="num-div">200</div>
+        <div class="num-div">{{dashBoardInfo?.ordersToDeliverTodayCount}}</div>
         <div class="desc-div"> orders to deliver<br>today</div>
     </div>
 
     <div class="col-sm-4 wrapper-div" style="border-right: 1px solid #E5E5E5;padding-right: 30px;">
         <div class="img-div"><img src="../../../../assets/images/dashboard_orders.png"></div>
-        <div class="num-div">200</div>
+        <div class="num-div">{{dashBoardInfo?.totalOrdersCount}}</div>
         <div class="desc-div" style="padding-top:16px">total orders</div>
     </div>
 
@@ -51,20 +51,10 @@
             <div class="inner-div">
                 Orders to be delivered
             </div>
-            <div class="inner-div">
-                Samantha Hamested<br>
-                +34657950687056<br>
-                Delivery date: 29-02-2020, 19:00
-            </div>
-            <div class="inner-div">
-                Samantha Hamested<br>
-                +34657950687056<br>
-                Delivery date: 29-02-2020, 19:00
-            </div>
-            <div class="inner-div">
-                Samantha Hamested<br>
-                +34657950687056<br>
-                Delivery date: 29-02-2020, 19:00
+            <div class="inner-div" *ngFor="let order of ordersToBeDeliveredNext">
+                {{order.client.name}}<br>
+                {{order.client.phone}}<br>
+                Delivery date: {{order.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}
             </div>
         </div>
     </div>
@@ -78,18 +68,18 @@
             </div>
 
             <div class="inner-div" style="border-bottom: none;">
-                + Add Order 
+                <a (click)="addOrder()">+ Add Order </a>
                 <br>  
                 <br>
-                + Add Product
+                <a (click)="addProduct()">+ Add Product</a>
                 <br>
             </div>
 
             <div class="inner-div">
-                View Orders
+                <a (click)="viewOrders()">View Orders</a>
                 <br>
                 <br>
-                View Products
+                <a (click)="viewProducts()">View Products</a>
                 <br>
             </div>
 

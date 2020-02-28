@@ -46,11 +46,11 @@ export class CategoryListComponent implements OnInit {
   }
 
   addNewCategory(): void {
-    this.router.navigate(['categories', 'new']);
+    this.router.navigate(['main', 'categories', 'new']);
   }
 
   editCategory(categoryId: number): void {
-    this.router.navigate(['categories', categoryId, 'edit']);
+    this.router.navigate(['main', 'categories', categoryId, 'edit']);
   }
 
   deleteCategory(categoryId: number): void {
@@ -60,7 +60,7 @@ export class CategoryListComponent implements OnInit {
     this.categoryService.deleteCategory(categoryId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          this.router.navigate(['categories',  this.searchTerm + " ", this.pageNumber]);
+          this.router.navigate(['main', 'categories',  this.searchTerm + " ", this.pageNumber]);
         } else if (response.status = "404") {
           throw new Error(response.message);
         }
@@ -71,15 +71,13 @@ export class CategoryListComponent implements OnInit {
 
   onSearchChange(event) {
     if(event.keyCode == 13){      // enter key pressed
-      this.router.navigate(['categories', this.searchTerm, '1']);
+      this.router.navigate(['main', 'categories', this.searchTerm, '1']);
     }
   }
 
   onPageChange(i: number): void {
     let pageNumber:number = this.pageNumber + i;
-    this.router.navigate(['categories', this.searchTerm, pageNumber]);
+    this.router.navigate(['main', 'categories', this.searchTerm, pageNumber]);
   }
-
-
 
 }

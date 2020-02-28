@@ -17,12 +17,17 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 	@Override
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("starting doDispatch..");
+		System.out.println(request.getRequestURL().toString());
 		if (!(request instanceof ContentCachingRequestWrapper)) {
 			request = new ContentCachingRequestWrapper(request);
 		}
 		try {
 			super.doDispatch(request, response);
-		} finally {
+		} catch(Exception e) {
+			System.out.println("message = " + e.getMessage());
+			e.printStackTrace();
+		}
+		finally {
 			logRequest(request);
 		}
 	}

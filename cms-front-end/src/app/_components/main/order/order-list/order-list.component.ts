@@ -30,7 +30,7 @@ export class OrderListComponent implements OnInit {
   }
 
   editOrder(orderId: number): void {
-    this.router.navigate(['orders', orderId, 'edit']);
+    this.router.navigate(['main', 'orders', orderId, 'edit']);
   }
 
   deleteOrder(orderId: number): void {
@@ -42,7 +42,6 @@ export class OrderListComponent implements OnInit {
     this.orderService.deleteOrder(orderId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          console.log(response.message);
           this.ngOnInit();
         }
         else if (response.status = "404") {
