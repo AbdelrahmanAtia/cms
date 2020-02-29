@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
 
     this.authenticationService.login(user).subscribe(
       (response:User) => {
-        console.log(response);
         // set user name and password in local storage
         localStorage.setItem('currentUser', window.btoa(response.name + ':' + response.password));
         
@@ -41,7 +40,7 @@ export class LoginComponent implements OnInit {
       ,
       (error) => {
         console.log(error);
-        if(error.error.status == 401){
+        if(error.status == 401){
           this.invalidLogin = true;
         }
       }
