@@ -3,7 +3,7 @@
 
     <div class="col-sm-4 wrapper-div">
         <div class="img-div"><img src="../../../../assets/images/dashboard_orders.png"></div>
-        <div class="num-div">200</div>
+        <div class="num-div">{{dashBoardInfo?.ordersReceivedTodayCount}}</div>
         <div class="desc-div"> orders received <br>today</div>
     </div>
 
@@ -28,20 +28,10 @@
             <div class="inner-div">
                 Latest orders
             </div>
-            <div class="inner-div">
-                Samantha Hamested<br>
-                +34657950687056<br>
-                Delivery date: 29-02-2020, 19:00
-            </div>
-            <div class="inner-div">
-                Samantha Hamested<br>
-                +34657950687056<br>
-                Delivery date: 29-02-2020, 19:00
-            </div>
-            <div class="inner-div">
-                Samantha Hamested<br>
-                +34657950687056<br>
-                Delivery date: 29-02-2020, 19:00
+            <div class="inner-div" *ngFor="let order of ordersReceivedToday">
+                {{order.client.name}}<br>
+                {{order.client.phone}}<br>
+                Delivery date: {{order.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}
             </div>
         </div>
     </div>
@@ -87,5 +77,16 @@
     </div>
 
 </div>
+<br>
 
+<div class="row">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-2 clock" >
+        {{now | date: 'HH:mm'}}
+    </div>
+    <div class="col-sm-2 dashboard-hour">
+        <div class="day-name">{{dayName | uppercase }}</div>
+        <div class="date">{{now | date: 'dd-MM-yyyy'}}</div>
+    </div>
+</div>
 <br>

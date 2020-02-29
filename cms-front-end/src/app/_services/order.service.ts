@@ -14,12 +14,12 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  getOrders(): Observable<Order[]>{
+  getOrders(): Observable<Order[]> {
     let url: string = this.baseUrl + "/orders";
     return this.http.get<Order[]>(url);
   }
 
-  getOrder(orderId:number):Observable<Order>{
+  getOrder(orderId: number): Observable<Order> {
     let url: string = this.baseUrl + "/orders/" + orderId;
     return this.http.get<Order>(url);
   }
@@ -39,13 +39,18 @@ export class OrderService {
     return this.http.delete<Response>(url);
   }
 
-  getTotalOrdersCount(): Observable<number>{
+  getTotalOrdersCount(): Observable<number> {
     let url: string = this.baseUrl + "/orders/count";
     return this.http.get<number>(url);
   }
 
-  getNextOrdersToBeDelivered(): Observable<Order[]>{
+  getNextOrdersToBeDelivered(): Observable<Order[]> {
     let url: string = this.baseUrl + "/orders/nextToDeliver";
+    return this.http.get<Order[]>(url);
+  }
+
+  getOrdersReceivedToday(): Observable<Order[]> {
+    let url: string = this.baseUrl + "/orders/receivedToday";
     return this.http.get<Order[]>(url);
   }
 

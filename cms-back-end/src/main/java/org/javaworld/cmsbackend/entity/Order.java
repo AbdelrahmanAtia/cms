@@ -49,6 +49,9 @@ public class Order {
 
 	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	private List<OrderLine> orderLines;
+	
+	@Column(name = "created_at")
+	private long createdAt;
 
 	public Order() {
 
@@ -136,6 +139,14 @@ public class Order {
 
 	public void setOrderLines(List<OrderLine> orderLines) {
 		this.orderLines = orderLines;
+	}
+	
+	public long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(long createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	@Override

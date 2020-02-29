@@ -12,17 +12,19 @@ done
 
 >> visualize user state button pressed activity by changing the button color..
 
+>> add login page for front end
+
+>> add logout [it is done from front end only as i think]
+
 ========================================================================================
 to do
 =====
 
 >> add auth Guards for frontend routed urls
 
->> add login page for front end
 
 >> save user password encrypted in the data base
 
->> add logout [it is done from front end only as i think]
 
 >> make use of getAuthority overriden method
 

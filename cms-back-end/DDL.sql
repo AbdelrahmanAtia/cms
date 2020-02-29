@@ -66,6 +66,12 @@ create table order_line (
     FOREIGN KEY (product_id) REFERENCES product(id),
     FOREIGN KEY (order_id) REFERENCES client_order(id)
 );
+
+-- add new column
+ALTER TABLE client_order ADD created_at BIGINT(20);
+
+-- add not null constraint
+ALTER TABLE client_order CHANGE COLUMN created_at created_at BIGINT(20) NOT NULL;
 -- ------------------------------------------------------------------------------------------------
 create table user_authority(
 	id int primary key auto_increment,

@@ -40,6 +40,7 @@
 .num-div{
   float: left;
   font-size: 40px;
+  font-weight: bold;
 }
 
 .desc-div{
@@ -50,3 +51,27 @@
 a {
   cursor: pointer;
 }
+
+.clock {
+ font-size: 33px;
+ font-weight: 700;
+ text-align: right;
+}
+
+.dashboard-hour {
+  text-align: left;
+  border-left: 2px solid #E9E8E7;
+  padding-left: 10px;
+}
+
+.day-name{
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.date{
+  padding-left: 14px;
+}
+
+
+

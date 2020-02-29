@@ -47,6 +47,17 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void save(Order order) {
+
+		order.setId(0); // force creating a new entity
+		order.getClient().setId(0); // force creating a new entity
+		order.setCreatedAt(DateUtil.getCurrentDateTimeAsTimeStamp());
+
+		List<OrderLine> orderLines = order.getOrderLines();
+		for (OrderLine orderline : orderLines) {
+			orderline.setId(0); // force creating a new entity
+			orderline.setOrder(order); // bidirectional relationship
+		}
+
 		orderRepository.save(order);
 	}
 
@@ -89,8 +100,22 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<Order> getNextOrdersToBeDelivered() {
 		long currentTimeStamp = DateUtil.getCurrentDateTimeAsTimeStamp();
+		Pageable pageable = PageRequest.of(0, 3); // the first 3 orders only
+		Page<Order> ordersPage = orderRepository.findByDeliveryDateGreaterThanOrderByDeliveryDate(currentTimeStamp, pageable);
+		return ordersPage.hasContent() ? ordersPage.getContent() : new ArrayList<>();
+	}
+
+	@Override
+	public long getOrdersReceivedTodayCount() {
+		long startOfDayTimeStamp = DateUtil.getStartOfTheDayAsTimeStamp();
+		return orderRepository.countByCreatedAtGreaterThanEqual(startOfDayTimeStamp);
+	}
+
+	@Override
+	public List<Order> getOrdersReceivedToday() {
+		long startOfDayTimeStamp = DateUtil.getStartOfTheDayAsTimeStamp();
 		Pageable pageable = PageRequest.of(0, 3);
-		Page<Order> ordersPage = orderRepository.findByDeliveryDateGreaterThan(currentTimeStamp, pageable);
+		Page<Order> ordersPage = orderRepository.findByCreatedAtGreaterThanEqual(startOfDayTimeStamp, pageable);
 		return ordersPage.hasContent() ? ordersPage.getContent() : new ArrayList<>();
 	}
 

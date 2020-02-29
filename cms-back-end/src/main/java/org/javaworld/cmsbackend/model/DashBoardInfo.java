@@ -4,6 +4,7 @@ public class DashBoardInfo {
 
 	private long totalOrdersCount;
 	private long ordersToDeliverTodayCount;
+	private long ordersReceivedTodayCount;
 
 	public DashBoardInfo() {
 
@@ -25,10 +26,18 @@ public class DashBoardInfo {
 		this.ordersToDeliverTodayCount = ordersToDeliverTodayCount;
 	}
 
+	public long getOrdersReceivedTodayCount() {
+		return ordersReceivedTodayCount;
+	}
+
+	public void setOrdersReceivedTodayCount(long ordersReceivedTodayCount) {
+		this.ordersReceivedTodayCount = ordersReceivedTodayCount;
+	}
+
 	@Override
 	public String toString() {
 		return "DashBoardInfo [totalOrdersCount=" + totalOrdersCount + ", ordersToDeliverTodayCount="
-				+ ordersToDeliverTodayCount + "]";
+				+ ordersToDeliverTodayCount + ", ordersReceivedTodayCount=" + ordersReceivedTodayCount + "]";
 	}
 
 }

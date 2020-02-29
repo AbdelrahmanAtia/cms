@@ -9,6 +9,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
 	public long countByDeliveryDateBetween(long startDate, long endDate);
 
-	public Page<Order> findByDeliveryDateGreaterThan(long currentTimeStamp, Pageable pageable);
+	public Page<Order> findByDeliveryDateGreaterThanOrderByDeliveryDate(long currentTimeStamp, Pageable pageable);
+	
+	public long countByCreatedAtGreaterThanEqual(long startOfDayTimeStamp);
+	
+	public Page<Order> findByCreatedAtGreaterThanEqual(long startOfDayTimeStamp, Pageable pageable);
 
 }

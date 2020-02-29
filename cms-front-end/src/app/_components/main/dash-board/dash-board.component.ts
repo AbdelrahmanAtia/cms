@@ -15,7 +15,12 @@ export class DashBoardComponent implements OnInit {
   dashBoardInfo: DashBoardInfo;
 
   ordersToBeDeliveredNext: Order[] = [];
+  ordersToBeDeliver: Order[] = [];
+  ordersReceivedToday: Order[] = [];
 
+
+  now:Date = new Date();
+  dayName: string = "";
 
   constructor(private dashBoardService: DashBoardService,
     private orderService: OrderService,
@@ -24,6 +29,8 @@ export class DashBoardComponent implements OnInit {
   ngOnInit() {
     this.initializeDashBoardInfo();
     this.initializeOrdersToBeDeliveredNext();
+    this.initializeOrdersReceivedToday();
+    this.setDayName();
   }
 
   private initializeDashBoardInfo() {
@@ -46,6 +53,24 @@ export class DashBoardComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  private initializeOrdersReceivedToday() {
+    this.orderService.getOrdersReceivedToday().subscribe(
+      (response) => {
+        this.ordersReceivedToday = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  private setDayName():void {
+    let now: Date = new Date();
+    let days:string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    console.log(now.getDay())
+    this.dayName = days[now.getDay()];
   }
 
   addOrder(): void {

@@ -15,6 +15,7 @@ public class DashboardServiceImpl implements DashboardService {
 		DashBoardInfo dashBoardInfo = new DashBoardInfo();
 		dashBoardInfo.setTotalOrdersCount(orderService.getTotalOrdersCount());
 		dashBoardInfo.setOrdersToDeliverTodayCount(orderService.getOrdersToDeliverTodayCount());
+		dashBoardInfo.setOrdersReceivedTodayCount(orderService.getOrdersReceivedTodayCount());
 		return dashBoardInfo;
 	}
 
