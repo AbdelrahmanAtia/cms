@@ -3,11 +3,14 @@ package org.javaworld.cmsbackend.service;
 import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Order;
+import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.model.Response;
 
 public interface OrderService {
 
 	public List<Order> findAll();
+
+	public List<Order> getOrders(OrderStatus orderStatus);
 
 	public Order findById(int id);
 

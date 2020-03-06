@@ -1,5 +1,15 @@
 <br>
-<button class="btn" (click)="addNewOrder()">+ Add Order</button>
+<div class="row">
+    <div class="col-sm-3">
+        <button class="btn" (click)="addNewOrder()">+ Add Order</button>
+    </div>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-5">
+        <button *ngFor="let orderStatus of orderStatusList" 
+                class="btn status-btn" 
+                (click)="getOrders(orderStatus)">{{orderStatus | titlecase }}</button>
+    </div>
+</div>
 <br><br>
 
 <div *ngIf="orders.length == 0">
@@ -25,14 +35,14 @@
             <td>{{o.id}}</td>
             <td>{{o.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}</td>
             <td>{{o.client.name}}</td>
-            <td>{{o.totalPrice}}</td>
-            <td>{{o.status}}</td>
+            <td>{{o.totalPrice | number : '1.2-2'}}</td>
+            <td>{{o.orderStatus | titlecase}}</td>
 
             <td>
                 <span (click)="editOrder(o.id)">
                     <i class="fa fa-edit fa-2x col-sm-5"></i>
                 </span>
-                           
+
                 <span (click)="deleteOrder(o.id)">
                     <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
                 </span>

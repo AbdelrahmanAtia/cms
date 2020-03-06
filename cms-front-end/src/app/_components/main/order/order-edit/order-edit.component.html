@@ -111,7 +111,7 @@
 
                     <td class="col-md-2">
                         <div *ngIf="ol.price">
-                            € {{ol.price}}
+                            € {{ol.price | number : '1.2-2'}}
                         </div>
                     </td>
 
@@ -125,7 +125,7 @@
                             (change)="onQuantityChange($event, i)" />
                     </td>
                     <td>
-                        {{ol.totalPrice}}
+                        € {{ol.totalPrice | number : '1.2-2'}}
                     </td>
                     <td>
                         <button type="button" class='btn btn-sm' (click)="deleteOrderLine(i)">X</button>

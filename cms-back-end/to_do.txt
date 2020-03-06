@@ -16,15 +16,18 @@ done
 
 >> add logout [it is done from front end only as i think]
 
+>> add auth Guards for frontend routed urls
+
 ========================================================================================
 to do
 =====
 
->> add auth Guards for frontend routed urls
+>> add generic exception handler for not found entity
 
+>> add not found page for non existing urls in front end
 
+>> export inserts from data base tables.. and add them to dml.sql file
 >> save user password encrypted in the data base
-
 
 >> make use of getAuthority overriden method
 
@@ -52,6 +55,16 @@ example (basic auth  -  jwt auth  - ldap auth)..
 deleting that elements ..it stays in the same page ..fix that issue
 
 9- add field validation in (FE, BE, DB) for (category - product - order)..
+=========================================================================
+order component
+================
+1- search
+2- paging
+4- validation in all layers
+5- change order status field in database to be enum also in front end
+7- prevent creating order with delivery time < current time
+=========================================================================
+
 
 
 

@@ -1,8 +1,10 @@
 package org.javaworld.cmsbackend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Order;
+import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,9 +25,14 @@ public class OrderRestController {
 	@Autowired
 	private OrderService orderService;
 
-	@GetMapping("/orders")
-	public List<Order> getOrders() {
+	@GetMapping("/orders/all")
+	public List<Order> getAllOrders() {
 		return orderService.findAll();
+	}
+	
+	@GetMapping("/orders")
+	public List<Order> getOrders(@RequestParam OrderStatus orderStatus){
+		return orderService.getOrders(orderStatus);
 	}
 
 	@GetMapping("/orders/{orderId}")
@@ -48,15 +56,24 @@ public class OrderRestController {
 	public Response deleteOrder(@PathVariable int orderId) {
 		return orderService.deleteOrder(orderId);
 	}
-	
+
 	@GetMapping("/orders/nextToDeliver")
 	public List<Order> getNextOrdersToBeDelivered() {
 		return orderService.getNextOrdersToBeDelivered();
 	}
-	
+
 	@GetMapping("/orders/receivedToday")
 	public List<Order> getOrdersReceivedToday() {
 		return orderService.getOrdersReceivedToday();
+	}
+
+	@GetMapping("/orders/orderStatusList")
+	public List<OrderStatus> getOrderStatusList() {
+		List<OrderStatus> orderStatusList = new ArrayList<>();
+		for (OrderStatus orderStatus : OrderStatus.values()) {
+			orderStatusList.add(orderStatus);
+		}
+		return orderStatusList;
 	}
 
 }

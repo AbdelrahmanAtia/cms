@@ -165,10 +165,36 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", title=" + title + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ ", company=" + company + ", address=" + address + ", city=" + city + ", state=" + state + ", zip="
-				+ zip + ", country=" + country + ", specialInstructions=" + specialInstructions + ", order=" + order
-				+ "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Client [id=");
+		builder.append(id);
+		builder.append(", title=");
+		builder.append(title);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", phone=");
+		builder.append(phone);
+		builder.append(", company=");
+		builder.append(company);
+		builder.append(", address=");
+		builder.append(address);
+		builder.append(", city=");
+		builder.append(city);
+		builder.append(", state=");
+		builder.append(state);
+		builder.append(", zip=");
+		builder.append(zip);
+		builder.append(", country=");
+		builder.append(country);
+		builder.append(", specialInstructions=");
+		builder.append(specialInstructions);
+		builder.append(", order=");
+		builder.append(order.getId());
+		builder.append("]");
+		return builder.toString();
 	}
 
+	
 }

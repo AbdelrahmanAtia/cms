@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.javaworld.cmsbackend.model.OrderStatus;
 
 @Entity
 @Table(name = "client_order")
@@ -38,7 +42,8 @@ public class Order {
 	private String ipAddress;
 
 	@Column(name = "status")
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private OrderStatus orderStatus; 
 
 	@Column(name = "payment_method")
 	private String paymentMethod;
@@ -109,12 +114,12 @@ public class Order {
 		this.ipAddress = ipAddress;
 	}
 
-	public String getStatus() {
-		return status;
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	public String getPaymentMethod() {
@@ -151,9 +156,33 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", deliveryDate=" + deliveryDate + ", tax=" + tax + ", subtotal=" + subtotal
-				+ ", totalPrice=" + totalPrice + ", ipAddress=" + ipAddress + ", status=" + status + ", paymentMethod="
-				+ paymentMethod + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Order [id=");
+		builder.append(id);
+		builder.append(", deliveryDate=");
+		builder.append(deliveryDate);
+		builder.append(", tax=");
+		builder.append(tax);
+		builder.append(", subtotal=");
+		builder.append(subtotal);
+		builder.append(", totalPrice=");
+		builder.append(totalPrice);
+		builder.append(", ipAddress=");
+		builder.append(ipAddress);
+		builder.append(", orderStatus=");
+		builder.append(orderStatus);
+		builder.append(", paymentMethod=");
+		builder.append(paymentMethod);
+		builder.append(", clientId=");
+		builder.append(client.getId());
+		builder.append(", orderLinesSize=");
+		builder.append(orderLines.size());
+		builder.append(", createdAt=");
+		builder.append(createdAt);
+		builder.append("]");
+		return builder.toString();
 	}
+
+	
 
 }

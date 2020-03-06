@@ -233,15 +233,17 @@ export class OrderEditComponent implements OnInit {
         subTotal = subTotal + ol.totalPrice;
       }
     }
-    taxVal = subTotal * new Config().tax;
-    totalPrice = subTotal + taxVal;
+
+    subTotal = +(subTotal.toFixed(2));
+    taxVal = +((subTotal * new Config().tax).toFixed(2)) ;
+    totalPrice = +((subTotal + taxVal).toFixed(2));
     this.orderForm.patchValue({orderSubtotal: subTotal});
     this.orderForm.patchValue({orderTax: taxVal});
     this.orderForm.patchValue({orderTotalPrice: totalPrice});
   }
 
   cancel(): void {
-    this.router.navigate(['/main/orders']);
+    this.router.navigate(['/main/orders', 'ALL']);
   }
 
 }

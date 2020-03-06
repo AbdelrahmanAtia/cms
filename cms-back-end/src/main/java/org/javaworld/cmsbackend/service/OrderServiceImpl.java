@@ -9,6 +9,7 @@ import org.javaworld.cmsbackend.dao.OrderLineRepository;
 import org.javaworld.cmsbackend.dao.OrderRepository;
 import org.javaworld.cmsbackend.entity.Order;
 import org.javaworld.cmsbackend.entity.OrderLine;
+import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,14 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<Order> findAll() {
 		return orderRepository.findAll();
+	}
+	
+	@Override
+	public List<Order> getOrders(OrderStatus orderStatus) {
+		if(orderStatus == OrderStatus.ALL) {
+			return orderRepository.findAll();
+		}
+		return orderRepository.findByOrderStatus(orderStatus);
 	}
 
 	@Override
@@ -118,5 +127,7 @@ public class OrderServiceImpl implements OrderService {
 		Page<Order> ordersPage = orderRepository.findByCreatedAtGreaterThanEqual(startOfDayTimeStamp, pageable);
 		return ordersPage.hasContent() ? ordersPage.getContent() : new ArrayList<>();
 	}
+
+	
 
 }

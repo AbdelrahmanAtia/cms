@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Config } from '../_models/Config ';
 import { Observable } from 'rxjs';
 import { Order } from '../_models/Order';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Response } from '../_models/Response';
 
 @Injectable({
@@ -14,9 +14,24 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  getOrders(): Observable<Order[]> {
-    let url: string = this.baseUrl + "/orders";
+  getAllOrders(): Observable<Order[]> {
+    let url: string = this.baseUrl + "/orders/all";
     return this.http.get<Order[]>(url);
+  }
+
+  getOrders(orderStatus: string): Observable<HttpResponse<Order[]>> {
+    let url: string = this.baseUrl + "/orders";
+    return this.http.get<any>(url, {
+      params: {
+        orderStatus: orderStatus
+      }
+      , observe: 'response'
+    });
+  }
+
+  getOrderStatusList(): Observable<string[]> {
+    let url: string = this.baseUrl + "/orders/orderStatusList";
+    return this.http.get<string[]>(url);
   }
 
   getOrder(orderId: number): Observable<Order> {

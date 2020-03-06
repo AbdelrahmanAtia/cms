@@ -12,17 +12,46 @@ import { Response } from 'src/app/_models/Response';
 export class OrderListComponent implements OnInit {
 
   orders: Order[] = [];
+  orderStatusList: string[] = [];
+  orderStatus:string;
 
   constructor(private orderService: OrderService,
-              private router: Router,
-              private route: ActivatedRoute) { }
-
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.orderService.getOrders().subscribe(
-      (response: Order[]) => { this.orders = response; },
+    this.initializeOrderStatusList();
+    this.listenToRouteParamChanges();
+  }
+
+  private initializeOrderStatusList() {
+    this.orderService.getOrderStatusList().subscribe(
+      (response:string[]) => { 
+        this.orderStatusList = response;
+      },
       (error) => { console.log(error) }
     );
+  }
+
+  // called when any route param changes
+  private listenToRouteParamChanges():void {
+    this.route.params.subscribe(
+      params => {
+        this.orderStatus = params['orderStatus'];
+        this.initializeOrdersList();
+      });
+  }
+
+  private initializeOrdersList() {
+    this.orderService.getOrders(this.orderStatus).subscribe(
+      (response) => {
+        this.orders = response.body;
+      }, (error) => {console.log(error)}
+    )
+  }
+
+  getOrders(orderStatus: string):void {
+    this.router.navigate(['main', 'orders', orderStatus]);
   }
 
   addNewOrder(): void {
@@ -34,7 +63,7 @@ export class OrderListComponent implements OnInit {
   }
 
   deleteOrder(orderId: number): void {
-    
+
     if (!confirm("Are you sure you want to delete the selected record?")) {
       return;
     }
@@ -51,5 +80,5 @@ export class OrderListComponent implements OnInit {
       (error) => { console.log(error); }
     );
   }
-  
+
 }
