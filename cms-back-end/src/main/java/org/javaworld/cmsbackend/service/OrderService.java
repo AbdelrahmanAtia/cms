@@ -10,7 +10,7 @@ public interface OrderService {
 
 	public List<Order> findAll();
 
-	public List<Order> getOrders(OrderStatus orderStatus);
+	public List<Order> getOrders(OrderStatus orderStatus, int pageNumber, int pageSize);
 
 	public Order findById(int id);
 

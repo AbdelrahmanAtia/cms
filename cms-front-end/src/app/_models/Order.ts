@@ -9,7 +9,7 @@ export class Order {
 	totalPrice: number;
 	ipAddress:string;
 	client:Client;
-	status:string;
+	orderStatus:string;
 	paymentMethod:string;
 	orderLines:OrderLine[] = [];
 }

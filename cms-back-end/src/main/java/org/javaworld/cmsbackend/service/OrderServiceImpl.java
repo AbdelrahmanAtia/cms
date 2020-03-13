@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.OrderLineRepository;
 import org.javaworld.cmsbackend.dao.OrderRepository;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -28,6 +31,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderLineRepository orderLineRepository;
+	
+	@Autowired
+	HttpServletResponse httpServletResponse;
 
 	@Override
 	public List<Order> findAll() {
@@ -35,11 +41,22 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public List<Order> getOrders(OrderStatus orderStatus) {
-		if(orderStatus == OrderStatus.ALL) {
-			return orderRepository.findAll();
+	public List<Order> getOrders(OrderStatus orderStatus, int pageNumber, int pageSize) {
+		
+		pageNumber--; //paging is 0 indexed
+		
+		Page<Order> page = null;
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		
+		if (orderStatus == OrderStatus.ALL) {
+			page = orderRepository.findAll(pageable);
+		} else {
+			page = orderRepository.findByOrderStatus(orderStatus, pageable);
 		}
-		return orderRepository.findByOrderStatus(orderStatus);
+		
+		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());
+		return page.hasContent() ? page.getContent() : new ArrayList<>();
+
 	}
 
 	@Override
@@ -55,24 +72,22 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void save(Order order) {
-
+	@Transactional
+	public void save(@Validated Order order) {
 		order.setId(0); // force creating a new entity
 		order.getClient().setId(0); // force creating a new entity
 		order.setCreatedAt(DateUtil.getCurrentDateTimeAsTimeStamp());
-
 		List<OrderLine> orderLines = order.getOrderLines();
 		for (OrderLine orderline : orderLines) {
 			orderline.setId(0); // force creating a new entity
 			orderline.setOrder(order); // bidirectional relationship
 		}
-
 		orderRepository.save(order);
 	}
 
 	@Override
 	@Transactional
-	public void update(Order order) {
+	public void update(@Validated Order order) {
 		// delete all order lines for the given order
 		orderLineRepository.deleteOrderlines(order.getId());
 		List<OrderLine> orderLines = order.getOrderLines();

@@ -20,7 +20,7 @@ export class SideBarComponent implements OnInit {
   }
 
   viewOrders(): void {
-    this.router.navigate(['main', 'orders', 'ALL']);
+    this.router.navigate(['main', 'orders', 'ALL', '1']);
   }
 
   viewProducts(): void {

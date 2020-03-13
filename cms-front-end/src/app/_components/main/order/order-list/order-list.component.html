@@ -12,11 +12,13 @@
 </div>
 <br><br>
 
+
 <div *ngIf="orders.length == 0">
     <div class="jumbotron">
         <p>No Records Found</p>
     </div>
 </div>
+
 
 <table class="table" *ngIf="orders.length > 0">
     <thead>
@@ -35,7 +37,7 @@
             <td>{{o.id}}</td>
             <td>{{o.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}</td>
             <td>{{o.client.name}}</td>
-            <td>{{o.totalPrice | number : '1.2-2'}}</td>
+            <td> € {{o.totalPrice | number : '1.2-2'}}</td>
             <td>{{o.orderStatus | titlecase}}</td>
 
             <td>
@@ -49,6 +51,38 @@
 
             </td>
         </tr>
-    </tbody>
+    </tbody>  
 </table>
 <br>
+
+
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-7" *ngIf="orders.length > 0">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" style="cursor: pointer">
+                
+                <li class="page-item" *ngIf="pageNumber > 1">
+                    <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                </li>
+
+                <li class="page-item disabled-item" *ngIf="pageNumber <= 1">
+                    <a class="page-link">Previous</a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link">{{pageNumber}}</a>
+                </li>
+
+                <li class="page-item" *ngIf="pageNumber < totalPages">
+                    <a class="page-link" (click)="onPageChange(1)">Next</a>
+                </li>
+
+                <li class="page-item disabled-item" *ngIf="pageNumber >= totalPages">
+                    <a class="page-link">Next</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div> 
+</div>

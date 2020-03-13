@@ -14,6 +14,8 @@ export class OrderListComponent implements OnInit {
   orders: Order[] = [];
   orderStatusList: string[] = [];
   orderStatus:string;
+  pageNumber: number;
+  totalPages: number;
 
   constructor(private orderService: OrderService,
     private router: Router,
@@ -38,20 +40,22 @@ export class OrderListComponent implements OnInit {
     this.route.params.subscribe(
       params => {
         this.orderStatus = params['orderStatus'];
+        this.pageNumber = +params['pageNumber'];
         this.initializeOrdersList();
       });
   }
 
   private initializeOrdersList() {
-    this.orderService.getOrders(this.orderStatus).subscribe(
+    this.orderService.getOrders(this.orderStatus, this.pageNumber).subscribe(
       (response) => {
+        this.totalPages = +response.headers.get('totalPages');
         this.orders = response.body;
       }, (error) => {console.log(error)}
     )
   }
 
   getOrders(orderStatus: string):void {
-    this.router.navigate(['main', 'orders', orderStatus]);
+    this.router.navigate(['main', 'orders', orderStatus, '1']);
   }
 
   addNewOrder(): void {
@@ -80,5 +84,11 @@ export class OrderListComponent implements OnInit {
       (error) => { console.log(error); }
     );
   }
+  
+  onPageChange(i: number): void {
+    let pageNumber:number = this.pageNumber + i;
+    this.router.navigate(['main', 'orders', this.orderStatus, pageNumber]);
+  }
+
 
 }

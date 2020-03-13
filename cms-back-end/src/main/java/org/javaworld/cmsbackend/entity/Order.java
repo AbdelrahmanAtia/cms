@@ -14,8 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import org.javaworld.cmsbackend.model.OrderStatus;
+import org.javaworld.cmsbackend.validator.AfterNow;
+import org.javaworld.cmsbackend.validator.OnCreate;
 
 @Entity
 @Table(name = "client_order")
@@ -26,25 +30,33 @@ public class Order {
 	@Column(name = "id")
 	private int id;
 
+	@NotNull
+	@AfterNow(groups = {OnCreate.class})
 	@Column(name = "delivery_date")
-	private long deliveryDate;
+	private Long deliveryDate;
 
+	@DecimalMin("0.0")   //prevent negative values
+	@NotNull
 	@Column(name = "tax")
-	private double tax;
+	private Double tax;
 
+	@NotNull
 	@Column(name = "subtotal")
-	private double subtotal;
+	private Double subtotal;
 
+	@NotNull
 	@Column(name = "total_price")
-	private double totalPrice;
+	private Double totalPrice;
 
 	@Column(name = "ip_address")
 	private String ipAddress;
 
+	@NotNull
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus; 
 
+	@NotBlank
 	@Column(name = "payment_method")
 	private String paymentMethod;
 

@@ -2,12 +2,13 @@ package org.javaworld.cmsbackend.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.javaworld.cmsbackend.entity.Order;
 import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.OrderService;
+import org.javaworld.cmsbackend.validator.OnCreate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +32,10 @@ public class OrderRestController {
 	}
 	
 	@GetMapping("/orders")
-	public List<Order> getOrders(@RequestParam OrderStatus orderStatus){
-		return orderService.getOrders(orderStatus);
+	public List<Order> getOrders(@RequestParam OrderStatus orderStatus, 
+			                     @RequestParam int pageNumber, 
+			                     @RequestParam int pageSize){
+		return orderService.getOrders(orderStatus, pageNumber, pageSize);
 	}
 
 	@GetMapping("/orders/{orderId}")
@@ -41,13 +44,14 @@ public class OrderRestController {
 	}
 
 	@PostMapping("/orders")
-	public Order addOrder(@RequestBody Order order) {
+	public Order addOrder(@Validated(value= OnCreate.class) 
+	                      @RequestBody Order order) {
 		orderService.save(order);
 		return order;
 	}
 
 	@PutMapping("/orders")
-	public Order updateOrder(@RequestBody Order order) {
+	public Order updateOrder(@Validated @RequestBody Order order) {
 		orderService.update(order);
 		return order;
 	}

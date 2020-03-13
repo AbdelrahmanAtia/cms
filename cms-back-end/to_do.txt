@@ -58,11 +58,10 @@ deleting that elements ..it stays in the same page ..fix that issue
 =========================================================================
 order component
 ================
-1- search
-2- paging
-4- validation in all layers
-5- change order status field in database to be enum also in front end
-7- prevent creating order with delivery time < current time
+>> prevent viewing All status in drop down list..
+>> change order status field in database to be enum also in front end
+>> validate that order deletion is working fine in all corner cases..
+>> validation for other order edit form fields in [front - back - data base]
 =========================================================================
 
 

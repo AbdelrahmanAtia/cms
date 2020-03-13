@@ -23,10 +23,11 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		}
 		try {
 			super.doDispatch(request, response);
-		} catch(Exception e) {
-			System.out.println("message = " + e.getMessage());
-			e.printStackTrace();
-		}
+		} 
+		//catch(Exception e) {
+		//	System.out.println("message = " + e.getMessage());
+		//	e.printStackTrace();
+		//}
 		finally {
 			logRequest(request);
 		}

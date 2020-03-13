@@ -19,11 +19,13 @@ export class OrderService {
     return this.http.get<Order[]>(url);
   }
 
-  getOrders(orderStatus: string): Observable<HttpResponse<Order[]>> {
+  getOrders(orderStatus: string,  pageNumber: number): Observable<HttpResponse<Order[]>> {
     let url: string = this.baseUrl + "/orders";
     return this.http.get<any>(url, {
       params: {
-        orderStatus: orderStatus
+        orderStatus: orderStatus,
+        pageNumber: pageNumber.toString(),
+        pageSize: new Config().pageSize.toString()
       }
       , observe: 'response'
     });

@@ -4,7 +4,7 @@ import { ProductService } from 'src/app/_services/product.service';
 import { OrderLine } from 'src/app/_models/OrderLine';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Order } from 'src/app/_models/Order';
-import { GreaterThanZero } from 'src/app/_validators/CustomValidator';
+import { GreaterThanZero, CustomValidator } from 'src/app/_validators/CustomValidator';
 import { Config } from 'src/app/_models/Config ';
 import { Client } from 'src/app/_models/Client';
 import { OrderService } from 'src/app/_services/order.service';
@@ -32,12 +32,16 @@ export class OrderEditComponent implements OnInit {
   productsList: Product[] = [];
   productsIdsList: number[] = [];
   orderLinesList:OrderLine[] = [];
-  statusList:string [] = ["Cancelled", "Confirmed", "Pending"];
+  statusList: string[] = [];
+
   paymentMethods:string [] = ["Cash"];
 
+  minDate: string = this.formattedDate();
   orderForm: FormGroup;
 
   ngOnInit() {
+    
+    this.initializeOrderStatusList();
     this.initProductsListAndProductsIdsList();  
     this.initOrderForm(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
@@ -51,9 +55,8 @@ export class OrderEditComponent implements OnInit {
         (response: Order) => {
           this.orderLinesList = response.orderLines;
           this.clientId = response.client.id;
-
           this.initOrderForm(this.datepipe.transform(response.deliveryDate, "yyyy-MM-ddTHH:mm"),
-                             response.status, 
+                             response.orderStatus, 
                              response.paymentMethod, 
                              response.subtotal,
                              response.tax, 
@@ -88,6 +91,15 @@ export class OrderEditComponent implements OnInit {
     );
   }
 
+  private initializeOrderStatusList() {
+    this.orderService.getOrderStatusList().subscribe(
+      (response:string[]) => {
+        this.statusList = response;
+      },
+      (error) => { console.log(error) }
+    );
+  }
+
   initOrderForm(orderDate:string,
                 orderStatus:string,
                 orderPaymentMethod:string,
@@ -105,7 +117,7 @@ export class OrderEditComponent implements OnInit {
                 clientSpecialInstructions:string): void {
 
     this.orderForm = new FormGroup({
-      'orderDate': new FormControl(orderDate, Validators.required),
+      'orderDate': new FormControl(orderDate, [Validators.required, CustomValidator.DateAfterNow(this.editMode)]),
       'orderSubtotal': new FormControl(subtotal,[Validators.required, GreaterThanZero]),
       'orderStatus': new FormControl(orderStatus, Validators.required),
       'orderTax': new FormControl(tax, Validators.required),
@@ -180,7 +192,7 @@ export class OrderEditComponent implements OnInit {
     
     order.deliveryDate = new Date(this.orderForm.value.orderDate).getTime(); //time stamp
     order.subtotal = this.orderForm.value.orderSubtotal;
-    order.status = this.orderForm.value.orderStatus;
+    order.orderStatus = this.orderForm.value.orderStatus;
     order.paymentMethod = this.orderForm.value.orderPaymentMethod;
     order.tax = this.orderForm.value.orderTax;
     order.totalPrice = this.orderForm.value.orderTotalPrice;
@@ -212,14 +224,18 @@ export class OrderEditComponent implements OnInit {
 
   addNewOrder(order: Order) {
     this.orderService.addNewOrder(order).subscribe(
-      (response: Order) => this.router.navigate(['/main/orders'])
+      (response: Order) => {
+        this.router.navigate(['main', 'orders', 'ALL', 1]);
+      }
       , (error) => console.log(error)
     );
   }
 
   updateExistingOrder(order: Order) {
     this.orderService.updateOrder(order).subscribe(
-      (response: Order) => this.router.navigate(['/main/orders'])
+      (response: Order) => {
+        this.router.navigate(['main', 'orders', 'ALL', 1]);
+      }
       , (error) => console.log(error)
     );
   }
@@ -243,7 +259,35 @@ export class OrderEditComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/main/orders', 'ALL']);
+    this.router.navigate(['main', 'orders', 'ALL', '1']);
+  }
+
+  private formattedDate():string {
+    let current_datetime = new Date();
+    let year:number = current_datetime.getFullYear();
+    
+    let month:string = (current_datetime.getMonth() + 1).toString();
+    if(month.length == 1){
+      month = '0' + month;
+    }
+
+    let day:string = current_datetime.getDate().toString();
+    if(day.length == 1){
+      day = '0' + day;
+    }
+
+    let hours:string = current_datetime.getHours().toString();
+    if(hours.length == 1){
+      hours = '0' + hours;
+    }
+
+    let minutes:string = current_datetime.getMinutes().toString();
+    if(minutes.length == 1){
+      minutes = '0' + minutes;
+    }
+
+    let formattedDateTime = year + "-" + month + "-" + day + 'T' + hours + ':' + minutes;
+    return formattedDateTime;
   }
 
 }
