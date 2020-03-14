@@ -7,7 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,12 +23,16 @@ public class Client {
 	@Column(name = "title")
 	private String title;
 
+	@NotBlank
 	@Column(name = "name")
 	private String name;
 
+	@Email
+	@NotBlank
 	@Column(name = "email")
 	private String email;
 
+	@NotBlank
 	@Column(name = "phone")
 	private String phone;
 

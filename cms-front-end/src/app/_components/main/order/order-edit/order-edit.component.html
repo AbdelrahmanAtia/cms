@@ -160,7 +160,8 @@
         <legend class="legend-border">Client Details</legend>
     
         
-        <div class="form-group">
+        <div class="form-group" [ngClass] = "{'has-error': orderForm.get('clientName').invalid 
+                                                        && orderForm.get('clientName').touched}">
             <div class="row">
                 <div class="col-sm-3">Name</div>
                 <div class="col-sm-7">
@@ -168,11 +169,17 @@
                             type="text" 
                             class="form-control"  
                             formControlName="clientName">
+                    
+                    <span *ngIf="orderForm.get('clientName').invalid &&  
+                                 orderForm.get('clientName').touched && 
+                                 orderForm.get('clientName').errors['blank']"
+                                 class="help-block">This field is required.</span>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [ngClass] = "{'has-error': orderForm.get('clientEmail').invalid 
+                                                        && orderForm.get('clientEmail').touched}">
             <div class="row">
                 <div class="col-sm-3">Email</div>
                 <div class="col-sm-7">
@@ -180,11 +187,22 @@
                             type="text" 
                             class="form-control"  
                             formControlName="clientEmail">
+
+                    <span *ngIf="orderForm.get('clientEmail').invalid &&  
+                                 orderForm.get('clientEmail').touched && 
+                                 orderForm.get('clientEmail').errors['email']"
+                                 class="help-block">Please enter a valid email address.</span>
+                    
+                    <span *ngIf="orderForm.get('clientEmail').invalid &&  
+                                 orderForm.get('clientEmail').touched && 
+                                 orderForm.get('clientEmail').errors['required']"
+                                 class="help-block">This field is required.</span>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [ngClass] = "{'has-error': orderForm.get('clientPhone').invalid 
+                                                        && orderForm.get('clientPhone').touched}">
             <div class="row">
                 <div class="col-sm-3">Phone</div>
                 <div class="col-sm-7">
@@ -192,6 +210,11 @@
                             type="text" 
                             class="form-control"  
                             formControlName="clientPhone">
+
+                    <span *ngIf="orderForm.get('clientPhone').invalid &&  
+                                 orderForm.get('clientPhone').touched && 
+                                 orderForm.get('clientPhone').errors['blank']"
+                                 class="help-block">This field is required.</span>
                 </div>
             </div>
         </div>

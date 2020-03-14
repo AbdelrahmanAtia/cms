@@ -42,6 +42,11 @@ create table client (
     country varchar(255),
     special_instructions varchar(255)
 );
+
+ALTER TABLE client CHANGE COLUMN name name VARCHAR(255) NOT NULL;
+ALTER TABLE client CHANGE COLUMN phone phone VARCHAR(255) NOT NULL;
+ALTER TABLE client CHANGE COLUMN email email VARCHAR(255) NOT NULL;
+ALTER TABLE client ADD CHECK (email like '%_@_%');
 -- ------------------------------------------------------------------------------------------------
 create table client_order (
 	id int primary key auto_increment,
@@ -70,7 +75,7 @@ create table order_line (
 -- add new column
 ALTER TABLE client_order ADD created_at BIGINT(20);
 
--- add not null constraint
+-- add not null constraint for created_at field
 ALTER TABLE client_order CHANGE COLUMN created_at created_at BIGINT(20) NOT NULL;
 -- ------------------------------------------------------------------------------------------------
 create table user_authority(
