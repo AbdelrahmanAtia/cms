@@ -47,6 +47,7 @@ ALTER TABLE client CHANGE COLUMN name name VARCHAR(255) NOT NULL;
 ALTER TABLE client CHANGE COLUMN phone phone VARCHAR(255) NOT NULL;
 ALTER TABLE client CHANGE COLUMN email email VARCHAR(255) NOT NULL;
 ALTER TABLE client ADD CHECK (email like '%_@_%');
+ALTER TABLE client_order CHANGE COLUMN status status ENUM ('PENDING','CONFIRMED','CANCELLED') NOT NULL;
 -- ------------------------------------------------------------------------------------------------
 create table client_order (
 	id int primary key auto_increment,

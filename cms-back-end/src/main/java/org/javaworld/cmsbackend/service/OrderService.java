@@ -14,9 +14,9 @@ public interface OrderService {
 
 	public Order findById(int id);
 
-	public void save(Order order);
+	public Order save(Order order);
 
-	public void update(Order order);
+	public Order update(Order order);
 
 	public Response deleteOrder(int orderId);
 

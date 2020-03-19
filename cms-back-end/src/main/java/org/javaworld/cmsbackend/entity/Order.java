@@ -1,6 +1,7 @@
 package org.javaworld.cmsbackend.entity;
 
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,59 +15,59 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.validator.AfterNow;
 import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 
 @Entity
 @Table(name = "client_order")
 public class Order {
 
 	@Id
+	@NotNull(groups = { OnUpdate.class })
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
-	@NotNull
-	@AfterNow(groups = {OnCreate.class})
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@AfterNow(groups = { OnCreate.class })
 	@Column(name = "delivery_date")
 	private Long deliveryDate;
+	
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@Column(name = "status")
+	@Enumerated(EnumType.STRING)
+	private OrderStatus orderStatus;
 
-	@DecimalMin("0.0")   //prevent negative values
-	@NotNull
-	@Column(name = "tax")
-	private Double tax;
-
-	@NotNull
 	@Column(name = "subtotal")
-	private Double subtotal;
+	private double subtotal;
+	
+	@Column(name = "tax")
+	private double tax;
 
-	@NotNull
 	@Column(name = "total_price")
-	private Double totalPrice;
+	private double totalPrice;
 
 	@Column(name = "ip_address")
 	private String ipAddress;
 
-	@NotNull
-	@Column(name = "status")
-	@Enumerated(EnumType.STRING)
-	private OrderStatus orderStatus; 
-
-	@NotBlank
+	@NotBlank(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "payment_method")
 	private String paymentMethod;
 
+	@Valid
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "client_id")
 	private Client client;
 
 	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	private List<OrderLine> orderLines;
-	
+
 	@Column(name = "created_at")
 	private long createdAt;
 
@@ -74,23 +75,19 @@ public class Order {
 
 	}
 
-	public Order(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public long getDeliveryDate() {
+	public Long getDeliveryDate() {
 		return deliveryDate;
 	}
 
-	public void setDeliveryDate(long deliveryDate) {
+	public void setDeliveryDate(Long deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
 
@@ -157,7 +154,7 @@ public class Order {
 	public void setOrderLines(List<OrderLine> orderLines) {
 		this.orderLines = orderLines;
 	}
-	
+
 	public long getCreatedAt() {
 		return createdAt;
 	}
@@ -194,7 +191,5 @@ public class Order {
 		builder.append("]");
 		return builder.toString();
 	}
-
-	
 
 }

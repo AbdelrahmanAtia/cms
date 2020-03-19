@@ -9,6 +9,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -16,23 +21,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Client {
 
 	@Id
+	@NotNull(groups = { OnUpdate.class })
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
 	@Column(name = "title")
 	private String title;
 
-	@NotBlank
+	@NotBlank(groups = {OnUpdate.class, OnCreate.class})
 	@Column(name = "name")
 	private String name;
 
-	@Email
-	@NotBlank
+	@Email(groups = {OnCreate.class, OnUpdate.class})
+	@NotBlank(groups = {OnCreate.class, OnUpdate.class})
 	@Column(name = "email")
 	private String email;
 
-	@NotBlank
+	@NotBlank(groups = {OnCreate.class, OnUpdate.class})
 	@Column(name = "phone")
 	private String phone;
 
@@ -57,17 +63,17 @@ public class Client {
 	@Column(name = "special_instructions")
 	private String specialInstructions;
 
-	@OneToOne(mappedBy="client")
+	@OneToOne(mappedBy = "client")
 	private Order order;
-	
+
 	public Client() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -201,5 +207,4 @@ public class Client {
 		return builder.toString();
 	}
 
-	
 }

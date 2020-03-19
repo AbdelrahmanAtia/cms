@@ -2,12 +2,15 @@ package org.javaworld.cmsbackend.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.javaworld.cmsbackend.entity.Order;
 import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.OrderService;
 import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,15 +29,19 @@ public class OrderRestController {
 	@Autowired
 	private OrderService orderService;
 
+	@Lazy
+	@Autowired
+	RequestScopedObject requestScopedObject;
+
 	@GetMapping("/orders/all")
 	public List<Order> getAllOrders() {
 		return orderService.findAll();
 	}
-	
+
 	@GetMapping("/orders")
 	public List<Order> getOrders(@RequestParam OrderStatus orderStatus, 
-			                     @RequestParam int pageNumber, 
-			                     @RequestParam int pageSize){
+			@RequestParam int pageNumber,
+			@RequestParam int pageSize) {
 		return orderService.getOrders(orderStatus, pageNumber, pageSize);
 	}
 
@@ -44,16 +51,13 @@ public class OrderRestController {
 	}
 
 	@PostMapping("/orders")
-	public Order addOrder(@Validated(value= OnCreate.class) 
-	                      @RequestBody Order order) {
-		orderService.save(order);
-		return order;
+	public Order addOrder(@Validated(value = OnCreate.class) @RequestBody Order order) {
+		return orderService.save(order);
 	}
 
 	@PutMapping("/orders")
-	public Order updateOrder(@Validated @RequestBody Order order) {
-		orderService.update(order);
-		return order;
+	public Order updateOrder(@Validated(value = OnUpdate.class) @RequestBody Order order) {
+		return orderService.update(order);
 	}
 
 	@DeleteMapping("/orders/{orderId}")

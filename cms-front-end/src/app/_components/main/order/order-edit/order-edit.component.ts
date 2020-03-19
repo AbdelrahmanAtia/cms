@@ -18,11 +18,11 @@ import { DatePipe } from '@angular/common';
 })
 export class OrderEditComponent implements OnInit {
 
-  constructor(private productService:ProductService,
-              private orderService:OrderService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private datepipe: DatePipe) { }
+  constructor(private productService: ProductService,
+    private orderService: OrderService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private datepipe: DatePipe) { }
 
 
   editMode: boolean = false;
@@ -31,18 +31,18 @@ export class OrderEditComponent implements OnInit {
 
   productsList: Product[] = [];
   productsIdsList: number[] = [];
-  orderLinesList:OrderLine[] = [];
+  orderLinesList: OrderLine[] = [];
   statusList: string[] = [];
 
-  paymentMethods:string [] = ["Cash"];
+  paymentMethods: string[] = ["Cash"];
 
   minDate: string = this.formattedDate();
   orderForm: FormGroup;
 
   ngOnInit() {
-    
+
     this.initializeOrderStatusList();
-    this.initProductsListAndProductsIdsList();  
+    this.initProductsListAndProductsIdsList();
     this.initOrderForm(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
     this.orderId = this.route.snapshot.params.id;
@@ -56,36 +56,35 @@ export class OrderEditComponent implements OnInit {
           this.orderLinesList = response.orderLines;
           this.clientId = response.client.id;
           this.initOrderForm(this.datepipe.transform(response.deliveryDate, "yyyy-MM-ddTHH:mm"),
-                             response.orderStatus, 
-                             response.paymentMethod, 
-                             response.subtotal,
-                             response.tax, 
-                             response.totalPrice, 
-                             response.client.name,
-                             response.client.email, 
-                             response.client.phone,
-                             response.client.company, 
-                             response.client.address,
-                             response.client.city,
-                             response.client.state,
-                             response.client.zip,
-                             response.client.specialInstructions);
+            response.orderStatus,
+            response.paymentMethod,
+            response.subtotal,
+            response.tax,
+            response.totalPrice,
+            response.client.name,
+            response.client.email,
+            response.client.phone,
+            response.client.company,
+            response.client.address,
+            response.client.city,
+            response.client.state,
+            response.client.zip,
+            response.client.specialInstructions);
 
         }, (error) => { console.log(error); }
       );
     }
-
   }
 
   initProductsListAndProductsIdsList(): void {
     this.productService.getAllProducts().subscribe(
-      (response:Product []) =>{
+      (response: Product[]) => {
         this.productsList = response;
-        for(let p of response){
+        for (let p of response) {
           this.productsIdsList.push(p.id);
         }
       },
-      (error)=>{
+      (error) => {
         console.log(error);
       }
     );
@@ -93,32 +92,36 @@ export class OrderEditComponent implements OnInit {
 
   private initializeOrderStatusList() {
     this.orderService.getOrderStatusList().subscribe(
-      (response:string[]) => {
-        this.statusList = response;
+      (response: string[]) => {
+        for(let s of response){
+          if(s != 'ALL'){
+            this.statusList.push(s);
+          }
+        }
       },
       (error) => { console.log(error) }
     );
   }
 
-  initOrderForm(orderDate:string,
-                orderStatus:string,
-                orderPaymentMethod:string,
-                subtotal:number, 
-                tax:number, 
-                total:number, 
-                clientName:string,
-                clientEmail:string, 
-                clientPhone:string, 
-                clientCompany:string, 
-                clientAddress:string,
-                clientCity:string,
-                clientState:string,
-                clientZip:string,
-                clientSpecialInstructions:string): void {
+  initOrderForm(orderDate: string,
+    orderStatus: string,
+    orderPaymentMethod: string,
+    subtotal: number,
+    tax: number,
+    total: number,
+    clientName: string,
+    clientEmail: string,
+    clientPhone: string,
+    clientCompany: string,
+    clientAddress: string,
+    clientCity: string,
+    clientState: string,
+    clientZip: string,
+    clientSpecialInstructions: string): void {
 
     this.orderForm = new FormGroup({
       'orderDate': new FormControl(orderDate, [Validators.required, CustomValidator.DateAfterNow(this.editMode)]),
-      'orderSubtotal': new FormControl(subtotal,[Validators.required, GreaterThanZero]),
+      'orderSubtotal': new FormControl(subtotal, [Validators.required, GreaterThanZero]),
       'orderStatus': new FormControl(orderStatus, Validators.required),
       'orderTax': new FormControl(tax, Validators.required),
       'orderPaymentMethod': new FormControl(orderPaymentMethod, Validators.required),
@@ -135,32 +138,32 @@ export class OrderEditComponent implements OnInit {
     });
   }
 
-  addNewOrderLine():void {
+  addNewOrderLine(): void {
     this.orderLinesList.push(new OrderLine());
   }
 
-  deleteOrderLine(orderLineIndex:number):void {
+  deleteOrderLine(orderLineIndex: number): void {
     this.orderLinesList.splice(orderLineIndex, 1);
     this.updateOtherFields();
   }
 
-  getProduct(productId: number): Product{
-    for(let product of this.productsList){
-      if(product.id == productId){
+  getProduct(productId: number): Product {
+    for (let product of this.productsList) {
+      if (product.id == productId) {
         return product;
       }
     }
     return null;
   }
 
-  onChange(event, orderLineIndex:number) {
-    let productId:number = event.target.value;
+  onChange(event, orderLineIndex: number) {
+    let productId: number = event.target.value;
     let product = this.getProduct(productId);
-    let productPrice:number = product.price;
-    let ol:OrderLine = this.orderLinesList[orderLineIndex];
+    let productPrice: number = product.price;
+    let ol: OrderLine = this.orderLinesList[orderLineIndex];
     //for orderline we need a product with id specified..we don't have to send all the 
     //product data over the network..we need only it's id
-    let p:Product = new Product();
+    let p: Product = new Product();
     p.id = product.id;
     ol.product = p;
     ol.price = productPrice;
@@ -168,36 +171,36 @@ export class OrderEditComponent implements OnInit {
     this.updateOtherFields();
   }
 
-  onQuantityChange(event, orderLineIndex:number):void {
-    let ol:OrderLine = this.orderLinesList[orderLineIndex];
-    let quantity:number = event.target.value;
+  onQuantityChange(event, orderLineIndex: number): void {
+    let ol: OrderLine = this.orderLinesList[orderLineIndex];
+    let quantity: number = event.target.value;
     ol.quantity = quantity;
-    if(ol.price){
+    if (ol.price) {
       ol.totalPrice = ol.price * ol.quantity;
     }
     this.updateOtherFields();
   }
 
- 
+
 
   submitOrderForm() {
-    
-    let order:Order = new Order();
-    let client:Client = new Client();
 
-    if(this.editMode){
+    let order: Order = new Order();
+    let client: Client = new Client();
+
+    if (this.editMode) {
       order.id = this.orderId;
       client.id = this.clientId;
     }
-    
+
     order.deliveryDate = new Date(this.orderForm.value.orderDate).getTime(); //time stamp
     order.subtotal = this.orderForm.value.orderSubtotal;
     order.orderStatus = this.orderForm.value.orderStatus;
     order.paymentMethod = this.orderForm.value.orderPaymentMethod;
     order.tax = this.orderForm.value.orderTax;
     order.totalPrice = this.orderForm.value.orderTotalPrice;
-    
-    
+
+
     client.name = this.orderForm.value.clientName;
     client.email = this.orderForm.value.clientEmail;
     client.phone = this.orderForm.value.clientPhone;
@@ -207,15 +210,15 @@ export class OrderEditComponent implements OnInit {
     client.state = this.orderForm.value.clientState;
     client.zip = this.orderForm.value.clientZip;
     client.specialInstructions = this.orderForm.value.clientSpecialInstructions;
-        
+
     order.client = client;
-    for(let ol of this.orderLinesList){
-      if(ol.product.id != undefined){
+    for (let ol of this.orderLinesList) {
+      if (ol.product.id != undefined) {
         order.orderLines.push(ol);
       }
     }
 
-    if(this.editMode){
+    if (this.editMode) {
       this.updateExistingOrder(order);
     } else {
       this.addNewOrder(order);
@@ -240,49 +243,49 @@ export class OrderEditComponent implements OnInit {
     );
   }
 
-  updateOtherFields():void {
-    let subTotal:number = 0;
-    let taxVal:number = 0;
-    let totalPrice:number = 0;
-    for(let ol of this.orderLinesList){
-      if(ol.totalPrice){
+  updateOtherFields(): void {
+    let subTotal: number = 0;
+    let taxVal: number = 0;
+    let totalPrice: number = 0;
+    for (let ol of this.orderLinesList) {
+      if (ol.totalPrice) {
         subTotal = subTotal + ol.totalPrice;
       }
     }
 
     subTotal = +(subTotal.toFixed(2));
-    taxVal = +((subTotal * new Config().tax).toFixed(2)) ;
+    taxVal = +((subTotal * new Config().tax).toFixed(2));
     totalPrice = +((subTotal + taxVal).toFixed(2));
-    this.orderForm.patchValue({orderSubtotal: subTotal});
-    this.orderForm.patchValue({orderTax: taxVal});
-    this.orderForm.patchValue({orderTotalPrice: totalPrice});
+    this.orderForm.patchValue({ orderSubtotal: subTotal });
+    this.orderForm.patchValue({ orderTax: taxVal });
+    this.orderForm.patchValue({ orderTotalPrice: totalPrice });
   }
 
   cancel(): void {
     this.router.navigate(['main', 'orders', 'ALL', '1']);
   }
 
-  private formattedDate():string {
+  private formattedDate(): string {
     let current_datetime = new Date();
-    let year:number = current_datetime.getFullYear();
-    
-    let month:string = (current_datetime.getMonth() + 1).toString();
-    if(month.length == 1){
+    let year: number = current_datetime.getFullYear();
+
+    let month: string = (current_datetime.getMonth() + 1).toString();
+    if (month.length == 1) {
       month = '0' + month;
     }
 
-    let day:string = current_datetime.getDate().toString();
-    if(day.length == 1){
+    let day: string = current_datetime.getDate().toString();
+    if (day.length == 1) {
       day = '0' + day;
     }
 
-    let hours:string = current_datetime.getHours().toString();
-    if(hours.length == 1){
+    let hours: string = current_datetime.getHours().toString();
+    if (hours.length == 1) {
       hours = '0' + hours;
     }
 
-    let minutes:string = current_datetime.getMinutes().toString();
-    if(minutes.length == 1){
+    let minutes: string = current_datetime.getMinutes().toString();
+    if (minutes.length == 1) {
       minutes = '0' + minutes;
     }
 

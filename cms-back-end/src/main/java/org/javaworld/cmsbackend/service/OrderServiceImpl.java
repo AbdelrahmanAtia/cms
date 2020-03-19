@@ -3,14 +3,14 @@ package org.javaworld.cmsbackend.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.OrderLineRepository;
 import org.javaworld.cmsbackend.dao.OrderRepository;
+import org.javaworld.cmsbackend.dao.ProductRepository;
 import org.javaworld.cmsbackend.entity.Order;
 import org.javaworld.cmsbackend.entity.OrderLine;
+import org.javaworld.cmsbackend.entity.Product;
 import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.util.DateUtil;
@@ -21,7 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -31,7 +30,10 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderLineRepository orderLineRepository;
-	
+
+	@Autowired
+	private ProductRepository productRepository;
+
 	@Autowired
 	HttpServletResponse httpServletResponse;
 
@@ -39,21 +41,21 @@ public class OrderServiceImpl implements OrderService {
 	public List<Order> findAll() {
 		return orderRepository.findAll();
 	}
-	
+
 	@Override
 	public List<Order> getOrders(OrderStatus orderStatus, int pageNumber, int pageSize) {
-		
-		pageNumber--; //paging is 0 indexed
-		
+
+		pageNumber--; // paging is 0 indexed
+
 		Page<Order> page = null;
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-		
+
 		if (orderStatus == OrderStatus.ALL) {
 			page = orderRepository.findAll(pageable);
 		} else {
 			page = orderRepository.findByOrderStatus(orderStatus, pageable);
 		}
-		
+
 		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());
 		return page.hasContent() ? page.getContent() : new ArrayList<>();
 
@@ -73,29 +75,21 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public void save(@Validated Order order) {
+	public Order save(Order order) {
 		order.setId(0); // force creating a new entity
 		order.getClient().setId(0); // force creating a new entity
 		order.setCreatedAt(DateUtil.getCurrentDateTimeAsTimeStamp());
-		List<OrderLine> orderLines = order.getOrderLines();
-		for (OrderLine orderline : orderLines) {
-			orderline.setId(0); // force creating a new entity
-			orderline.setOrder(order); // bidirectional relationship
-		}
-		orderRepository.save(order);
+		setOrderFields(order);
+		return orderRepository.save(order);
 	}
 
 	@Override
 	@Transactional
-	public void update(@Validated Order order) {
+	public Order update(Order order) {
 		// delete all order lines for the given order
 		orderLineRepository.deleteOrderlines(order.getId());
-		List<OrderLine> orderLines = order.getOrderLines();
-		for (OrderLine orderline : orderLines) {
-			orderline.setId(0); // force creating a new entity
-			orderline.setOrder(order); // bidirectional relationship
-		}
-		orderRepository.save(order);
+		setOrderFields(order);
+		return orderRepository.save(order);
 	}
 
 	@Override
@@ -125,7 +119,8 @@ public class OrderServiceImpl implements OrderService {
 	public List<Order> getNextOrdersToBeDelivered() {
 		long currentTimeStamp = DateUtil.getCurrentDateTimeAsTimeStamp();
 		Pageable pageable = PageRequest.of(0, 3); // the first 3 orders only
-		Page<Order> ordersPage = orderRepository.findByDeliveryDateGreaterThanOrderByDeliveryDate(currentTimeStamp, pageable);
+		Page<Order> ordersPage = orderRepository.findByDeliveryDateGreaterThanOrderByDeliveryDate(currentTimeStamp,
+				pageable);
 		return ordersPage.hasContent() ? ordersPage.getContent() : new ArrayList<>();
 	}
 
@@ -143,6 +138,43 @@ public class OrderServiceImpl implements OrderService {
 		return ordersPage.hasContent() ? ordersPage.getContent() : new ArrayList<>();
 	}
 
-	
+	/**
+	 * >> creates bi directional relationship between order and order lines
+	 * >> calculates  and sets the following order fields [sub total, tax, total]
+	 * @param order
+	 */
+	private void setOrderFields(Order order) {
+		List<OrderLine> orderLines = order.getOrderLines();
+		double subTotal = 0.0;
+		for (OrderLine orderline : orderLines) {
+			
+			orderline.setId(0); // force creating a new entity
+			orderline.setOrder(order); // bidirectional relationship
+			
+			int productId = orderline.getProduct().getId();
+			double productPrice = this.getProductPriceById(productId);
+			int qty = orderline.getQuantity();
+			
+			//we set those fields in data base because product price may change 
+			//so we need to have the old product price when the order was made
+			orderline.setPrice(productPrice);
+			orderline.setTotalPrice(productPrice * qty);
+			
+			subTotal = subTotal + productPrice * orderline.getQuantity();
+		}
+
+		double tax = 0.1 * subTotal;
+		double totalPrice = subTotal + tax;
+
+		order.setSubtotal(subTotal);
+		order.setTax(tax);
+		order.setTotalPrice(totalPrice);
+	}
+
+	public double getProductPriceById(int productId) {
+		Optional<Product> optionalProduct = productRepository.findById(productId);
+		Product tempProd = optionalProduct.get();
+		return (tempProd != null) ? tempProd.getPrice() : 0;
+	}
 
 }
