@@ -71,8 +71,10 @@ export class UserListComponent implements OnInit {
       (response: Response) => {
         if (response.status = "200") {
           if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.users.length == 1){
+            //go to the previous page 
             this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber - 1]);
           } else {
+            //stay in the same page
             this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber]);
           }
         } else if (response.status = "404") {

@@ -37,13 +37,25 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		RequestInfo requestInfo = new RequestInfo();
 		requestInfo.setRequestTime(DateUtil.getCurrentDate("dd/MM/yyyy HH:mm:ss"));
 		requestInfo.setMethod(requestToCache.getMethod());
-		requestInfo.setRemoteAddr(requestToCache.getRemoteAddr());
+		requestInfo.setRemoteAddr(requestToCache.getRemoteAddr());		
 		requestInfo.setLocalAddr(requestToCache.getLocalAddr());
-		requestInfo.setAuthType(requestToCache.getAuthType());
+		requestInfo.setAuthType(getAuthType(requestToCache));
 		requestInfo.setContentType(requestToCache.getContentType());
 		requestInfo.setUrl(requestToCache.getRequestURL().toString());
 		requestInfo.setPayload(getRequestPayload(requestToCache));
 		System.out.println(requestInfo);
+	}
+
+	private String getAuthType(HttpServletRequest requestToCache) {
+		String authType = null;
+		String authHeader = requestToCache.getHeader("Authorization");
+		if(authHeader != null) {
+			String[]  authHeaderSplitted= authHeader.split(" ");
+			if (authHeaderSplitted.length > 1) {
+				authType = authHeaderSplitted[0];
+			}
+		}
+		return authType;
 	}
 
 	private String getRequestPayload(HttpServletRequest request) {

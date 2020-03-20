@@ -19,7 +19,7 @@ export class DashBoardComponent implements OnInit {
   ordersReceivedToday: Order[] = [];
 
 
-  now:Date = new Date();
+  now: Date = new Date();
   dayName: string = "";
 
   constructor(private dashBoardService: DashBoardService,
@@ -66,10 +66,9 @@ export class DashBoardComponent implements OnInit {
     );
   }
 
-  private setDayName():void {
+  private setDayName(): void {
     let now: Date = new Date();
-    let days:string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    console.log(now.getDay())
+    let days: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     this.dayName = days[now.getDay()];
   }
 
@@ -82,11 +81,15 @@ export class DashBoardComponent implements OnInit {
   }
 
   viewOrders(): void {
-    this.router.navigate(['main', 'orders']);
+    this.router.navigate(['main', 'orders', 'ALL', '1']);
   }
 
   viewProducts(): void {
     this.router.navigate(['main', 'products', ' ', 0, 1]);
+  }
+
+  redirectToOrder(orderId: number): void {
+    this.router.navigate(['main', 'orders', orderId, 'edit']);
   }
 
 }

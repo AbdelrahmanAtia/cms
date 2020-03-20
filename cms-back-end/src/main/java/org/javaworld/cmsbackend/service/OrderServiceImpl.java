@@ -86,9 +86,19 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public Order update(Order order) {
+		
 		// delete all order lines for the given order
 		orderLineRepository.deleteOrderlines(order.getId());
+		
 		setOrderFields(order);
+		
+		//set createdAt field to the old value
+		Optional<Order> optionalOrder= orderRepository.findById(order.getId());
+		Order tempOrder = optionalOrder.get();
+		if(tempOrder != null) {
+			order.setCreatedAt(tempOrder.getCreatedAt());
+		}
+		
 		return orderRepository.save(order);
 	}
 
@@ -139,8 +149,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	/**
-	 * >> creates bi directional relationship between order and order lines
-	 * >> calculates  and sets the following order fields [sub total, tax, total]
+	 * creates bi directional relationship between order and order lines,<br>
+	 * calculates  and sets the following order fields [sub total, tax, total]
 	 * @param order
 	 */
 	private void setOrderFields(Order order) {

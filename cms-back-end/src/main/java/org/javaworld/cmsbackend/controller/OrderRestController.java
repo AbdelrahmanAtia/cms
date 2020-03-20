@@ -29,10 +29,6 @@ public class OrderRestController {
 	@Autowired
 	private OrderService orderService;
 
-	@Lazy
-	@Autowired
-	RequestScopedObject requestScopedObject;
-
 	@GetMapping("/orders/all")
 	public List<Order> getAllOrders() {
 		return orderService.findAll();

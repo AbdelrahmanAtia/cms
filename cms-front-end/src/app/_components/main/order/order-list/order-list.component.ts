@@ -75,7 +75,16 @@ export class OrderListComponent implements OnInit {
     this.orderService.deleteOrder(orderId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          this.ngOnInit();
+          if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.orders.length == 1){
+            //go to the previous page 
+            this.router.navigate(['main', 'orders', 'ALL', this.pageNumber - 1]);
+          } else {
+            //stay in the same page and remove the deleted record from the list
+            let updatedOrdersList:Order[] = this.orders.filter((element:Order, index:number, list:Order[])=> {
+              return (element.id != orderId);
+            });
+           this.orders = updatedOrdersList;
+          }
         }
         else if (response.status = "404") {
           throw new Error(response.message);
@@ -89,6 +98,5 @@ export class OrderListComponent implements OnInit {
     let pageNumber:number = this.pageNumber + i;
     this.router.navigate(['main', 'orders', this.orderStatus, pageNumber]);
   }
-
 
 }

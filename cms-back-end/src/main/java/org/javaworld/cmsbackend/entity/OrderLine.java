@@ -8,6 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,19 +25,22 @@ public class OrderLine {
 	@Column(name = "id")
 	private int id;
 
+	@Min(value = 1, groups = { OnCreate.class, OnUpdate.class }, message = "quantity must be greater than 0")
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "quantity")
-	private int quantity;
-
-	@Column(name = "price")
-	private double price;
-
-	@Column(name = "total_price")
-	private double totalPrice;
-
+	private Integer quantity;
+	
+	@NotNull(groups = {OnCreate.class, OnUpdate.class})
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
+	@Column(name = "price")
+	private double price;
+
+	@Column(name = "total_price")
+	private double totalPrice;	
+
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
@@ -49,11 +57,11 @@ public class OrderLine {
 		this.id = id;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 
@@ -80,7 +88,7 @@ public class OrderLine {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
+
 	@JsonIgnore
 	public Order getOrder() {
 		return order;

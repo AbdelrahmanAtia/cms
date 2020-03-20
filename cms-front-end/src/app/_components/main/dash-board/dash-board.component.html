@@ -29,7 +29,7 @@
                 Latest orders
             </div>
             <div class="inner-div" *ngFor="let order of ordersReceivedToday">
-                {{order.client.name}}<br>
+                <span (click)="redirectToOrder(order.id)" class="clickable-text">{{order.client.name}}</span><br>
                 {{order.client.phone}}<br>
                 Delivery date: {{order.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}
             </div>
@@ -42,7 +42,7 @@
                 Orders to be delivered
             </div>
             <div class="inner-div" *ngFor="let order of ordersToBeDeliveredNext">
-                {{order.client.name}}<br>
+                <span (click)="redirectToOrder(order.id)" class="clickable-text">{{order.client.name}}</span><br>
                 {{order.client.phone}}<br>
                 Delivery date: {{order.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}
             </div>

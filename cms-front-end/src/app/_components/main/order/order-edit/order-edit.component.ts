@@ -93,8 +93,8 @@ export class OrderEditComponent implements OnInit {
   private initializeOrderStatusList() {
     this.orderService.getOrderStatusList().subscribe(
       (response: string[]) => {
-        for(let s of response){
-          if(s != 'ALL'){
+        for (let s of response) {
+          if (s != 'ALL') {
             this.statusList.push(s);
           }
         }
@@ -121,11 +121,11 @@ export class OrderEditComponent implements OnInit {
 
     this.orderForm = new FormGroup({
       'orderDate': new FormControl(orderDate, [Validators.required, CustomValidator.DateAfterNow(this.editMode)]),
-      'orderSubtotal': new FormControl(subtotal, [Validators.required, GreaterThanZero]),
+      'orderSubtotal': new FormControl(subtotal ? subtotal.toFixed(2) : subtotal, [Validators.required, GreaterThanZero]),
       'orderStatus': new FormControl(orderStatus, Validators.required),
-      'orderTax': new FormControl(tax, Validators.required),
+      'orderTax': new FormControl(tax ? tax.toFixed(2) : tax, Validators.required),
       'orderPaymentMethod': new FormControl(orderPaymentMethod, Validators.required),
-      'orderTotalPrice': new FormControl(total, Validators.required),
+      'orderTotalPrice': new FormControl(total ? total.toFixed(2) : total, Validators.required),
       'clientName': new FormControl(clientName, CustomValidator.notBlank),
       'clientEmail': new FormControl(clientEmail, [Validators.email, Validators.required]),
       'clientPhone': new FormControl(clientPhone, CustomValidator.notBlank),
@@ -180,9 +180,7 @@ export class OrderEditComponent implements OnInit {
     }
     this.updateOtherFields();
   }
-
-
-
+  
   submitOrderForm() {
 
     let order: Order = new Order();

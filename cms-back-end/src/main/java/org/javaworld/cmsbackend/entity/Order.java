@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.javaworld.cmsbackend.model.OrderStatus;
 import org.javaworld.cmsbackend.validator.AfterNow;
@@ -37,7 +38,7 @@ public class Order {
 	@AfterNow(groups = { OnCreate.class })
 	@Column(name = "delivery_date")
 	private Long deliveryDate;
-	
+
 	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
@@ -45,7 +46,7 @@ public class Order {
 
 	@Column(name = "subtotal")
 	private double subtotal;
-	
+
 	@Column(name = "tax")
 	private double tax;
 
@@ -65,6 +66,9 @@ public class Order {
 	@JoinColumn(name = "client_id")
 	private Client client;
 
+	@Valid
+	@Size(min = 1, groups = {OnCreate.class, OnUpdate.class})
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	private List<OrderLine> orderLines;
 
