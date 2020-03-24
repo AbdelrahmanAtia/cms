@@ -56,6 +56,7 @@ public class Order {
 	@Column(name = "ip_address")
 	private String ipAddress;
 
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@NotBlank(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "payment_method")
 	private String paymentMethod;

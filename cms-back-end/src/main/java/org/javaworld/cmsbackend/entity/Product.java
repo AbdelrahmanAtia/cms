@@ -10,36 +10,46 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Type;
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 
 @Entity
 @Table(name = "product")
 public class Product {
 
 	@Id
+	@NotNull(groups = { OnUpdate.class })
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@NotBlank(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "name")
 	private String name;
 
 	@Column(name = "description")
 	private String description;
 
+	@DecimalMin(value = "0.0", inclusive = false, groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "price")
 	private double price;
 
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@Type(type = "org.hibernate.type.BooleanType")
 	@Column(name = "active")
-	private boolean active;
+	private Boolean active;
 
 	@Column(name = "image")
 	private String image; // base64 string
 
-	@ManyToOne(fetch = FetchType.EAGER, 
-			   cascade = { CascadeType.DETACH, 
-					       CascadeType.REFRESH })
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "category_id")
 	private Category category;
 
@@ -54,11 +64,11 @@ public class Product {
 		this.active = active;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -86,11 +96,11 @@ public class Product {
 		this.price = price;
 	}
 
-	public boolean isActive() {
+	public Boolean getActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 

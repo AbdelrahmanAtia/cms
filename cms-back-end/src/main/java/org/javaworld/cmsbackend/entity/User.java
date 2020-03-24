@@ -14,6 +14,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,34 +24,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
 	@Id
+	@NotNull(groups = { OnUpdate.class })
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
-	@Email
-	@NotBlank
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@NotBlank(groups = { OnCreate.class, OnUpdate.class })
+	@Email(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "email")
 	private String email;
 
-	@NotBlank
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@NotBlank(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "password")
 	private String password;
 
-	@NotBlank
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@NotBlank(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "name")
 	private String name;
 
 	@Column(name = "phone")
 	private String phone;
 
-	@NotNull
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "active")
 	private Boolean active;
 
 	@Column(name = "register_date")
 	private String registerDate;
 
-	@NotNull
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@ManyToOne
 	@JoinColumn(name = "authority_id")
 	private Authority authority;
@@ -58,11 +64,11 @@ public class User implements UserDetails {
 
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -123,12 +129,6 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", phone=" + phone
-				+ ", active=" + active + ", registerDate=" + registerDate + ", authority=" + authority + "]";
-	}
-
-	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		return null;
@@ -162,6 +162,12 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", phone=" + phone
+				+ ", active=" + active + ", registerDate=" + registerDate + ", authority=" + authority + "]";
 	}
 
 }

@@ -7,10 +7,6 @@ span {
     color: #63A8C9;
 }
 
-.disabled-item {
-
-}
-
 .disabled-item a:hover {
     cursor:not-allowed
 }

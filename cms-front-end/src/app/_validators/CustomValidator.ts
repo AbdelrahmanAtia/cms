@@ -11,6 +11,13 @@ export function GreaterThanZero(control: AbstractControl) {
 
 export class CustomValidator {
 
+  static greaterThanZero(control: AbstractControl): ValidationErrors {
+    if (control.value > 0) {
+      return null;  //validation passes
+    }
+    //validation fails
+    return { notGreaterThanZero: true };
+  }
 
   static uniqueCategoryName(categoryService: CategoryService, categoryId: number) {
     return (control: AbstractControl) => {

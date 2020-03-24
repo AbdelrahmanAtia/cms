@@ -23,12 +23,12 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	HttpServletResponse httpServletResponse;
-	
+
 	@Override
 	public List<Product> getAllProducts() {
 		return productRepository.findAll();
-	}	
-	
+	}
+
 	@Override
 	public List<Product> getProducts(String name, int categoryId, int pageNumber, int pageSize) {
 
@@ -71,8 +71,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void save(Product product) {
-		productRepository.save(product);
+	public Product save(Product product) {
+		product.setId(0); // force creating a new entity
+		return productRepository.save(product);
+	}
+
+	@Override
+	public Product update(Product product) {
+		return productRepository.save(product);
 	}
 
 	@Override

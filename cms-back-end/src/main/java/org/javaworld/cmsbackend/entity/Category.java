@@ -7,17 +7,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 
 @Entity
 @Table(name = "category")
 public class Category {
 
 	@Id
+	@NotNull(groups = { OnUpdate.class })
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
-	@NotBlank
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@NotBlank(groups = { OnCreate.class, OnUpdate.class })
 	@Column(name = "name")
 	private String name;
 
@@ -38,11 +44,11 @@ public class Category {
 		this.id = id;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

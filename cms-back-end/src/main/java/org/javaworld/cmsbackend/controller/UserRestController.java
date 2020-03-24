@@ -5,7 +5,10 @@ import java.util.List;
 import org.javaworld.cmsbackend.entity.User;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.UserService;
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,15 +45,15 @@ public class UserRestController {
 	}
 	
 	@PostMapping("/users")
-	public User addUser(@RequestBody User user) {
-		userService.save(user);
-		return user;
+	public User addUser(@Validated(value = {OnCreate.class})
+	                    @RequestBody User user) {
+		return userService.save(user);
 	}
 	
 	@PutMapping("/users")
-	public User updateUser(@RequestBody User user) {
-		userService.update(user);
-		return user;
+	public User updateUser(@Validated(value = {OnUpdate.class})
+			               @RequestBody User user) {
+		return userService.update(user);		
 	}
 	
 	@DeleteMapping("/users/{userId}")

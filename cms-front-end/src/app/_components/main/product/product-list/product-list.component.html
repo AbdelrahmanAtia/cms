@@ -21,8 +21,8 @@
 
     <div class="col-sm-3">
         <select (change)="onCategoryChange($event)" class="form-control">
-            <option [attr.selected] = "true"  [attr.value]="0">-- All categories --</option>
-            <option *ngFor="let c of categories" [attr.value]="c.id">
+            <option [attr.selected] = "true"  [attr.value]="categoryId">-- All categories --</option>
+            <option *ngFor="let c of categories" [value]="c.id"  [selected]="categoryId == c.id">
                 {{c.name}}
             </option>    
         </select>
@@ -81,9 +81,13 @@
     <div class="col-sm-7" *ngIf="products.length > 0">
         <nav aria-label="Page navigation example">
             <ul class="pagination" style="cursor: pointer">
-
+                
                 <li class="page-item" *ngIf="pageNumber > 1">
                     <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                </li>
+
+                <li class="page-item disabled-item" *ngIf="pageNumber <= 1">
+                    <a class="page-link">Previous</a>
                 </li>
 
                 <li class="page-item">
@@ -94,6 +98,10 @@
                     <a class="page-link" (click)="onPageChange(1)">Next</a>
                 </li>
 
+                <li class="page-item disabled-item" *ngIf="pageNumber >= totalPages">
+                    <a class="page-link">Next</a>
+                </li>
+                
             </ul>
         </nav>
     </div> 

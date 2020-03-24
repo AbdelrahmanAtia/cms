@@ -80,24 +80,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void save(User user) {
+	public User save(User user) {
 		user.setId(0); // force creating a new entity
 		if(!isUniqueEmail(user.getEmail(), 0)) {
 			throw new RuntimeException("email already exists");
 		}
 		String registerDate = DateUtil.getCurrentDate("dd-MM-yyyy, HH:mm:ss");
 		user.setRegisterDate(registerDate);
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 
 	@Override
-	public void update(User user) {
+	public User update(User user) {
 		if(!isUniqueEmail(user.getEmail(), user.getId())) {
 			throw new RuntimeException("email already exists");
 		}
 		String registerDate = this.findById(user.getId()).getRegisterDate();
 		user.setRegisterDate(registerDate);
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 	
 	@Override

@@ -5,8 +5,10 @@ import java.util.List;
 import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.CategoryService;
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api")
 public class CategoryRestController {
 
 	@Autowired
@@ -41,16 +43,15 @@ public class CategoryRestController {
 	}
 
 	@PostMapping("/categories")
-	public Category addCategory(@RequestBody Category category) {
-		category.setId(0); // force creating a new entity
-		categoryService.save(category);
-		return category;
+	public Category addCategory(@Validated(value = {OnCreate.class}) 
+			                    @RequestBody Category category) {
+		return categoryService.save(category);
 	}
 
 	@PutMapping("/categories")
-	public Category updateCategory(@RequestBody Category category) {
-		categoryService.save(category);
-		return category;
+	public Category updateCategory(@Validated(value = {OnUpdate.class})
+			                       @RequestBody Category category) {
+		return categoryService.update(category);
 	}
 
 	@DeleteMapping("/categories/{categoryId}")

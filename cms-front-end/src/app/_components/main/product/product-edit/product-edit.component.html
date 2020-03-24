@@ -71,12 +71,19 @@
             <div class="col-sm-3">
                 <input id="productPrice" 
                        type="number" 
+                       min="0"
                        class="form-control" 
                        formControlName="productPrice">
                 <span *ngIf="productForm.get('productPrice').invalid &&  
                              productForm.get('productPrice').touched && 
                              productForm.get('productPrice').errors['required']"
-                             class="help-block"> Please fill out this field.</span>
+                             class="help-block">Please fill out this field.</span>
+
+                <span *ngIf="productForm.get('productPrice').invalid &&  
+                             productForm.get('productPrice').touched && 
+                             ! productForm.get('productPrice').errors['required'] &&
+                             productForm.get('productPrice').errors['notGreaterThanZero']"
+                             class="help-block">This field should be greater than 0</span>
             </div>
         </div>     
     </div>

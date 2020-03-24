@@ -5,3 +5,7 @@
 span {
     cursor: pointer;
 }
+
+.disabled-item a:hover {
+    cursor:not-allowed
+}

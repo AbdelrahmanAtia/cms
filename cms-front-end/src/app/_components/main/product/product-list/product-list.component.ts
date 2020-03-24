@@ -36,7 +36,7 @@ export class ProductListComponent implements OnInit {
   listenToRouteParamChanges() {
     this.route.params.subscribe(
       params => {
-        this.searchTerm = params['searchTerm'];
+        this.searchTerm = (params['searchTerm'] + "").trim();
         this.categoryId = +params['categoryId'];
         this.pageNumber = +params['pageNumber'];
         this.initializeProductsList();
@@ -77,8 +77,17 @@ export class ProductListComponent implements OnInit {
     }
     this.productService.deleteProduct(productId).subscribe(
       (response: Response) => {
-        if (response.status = "200") {
-          this.router.navigate(['main', 'products', this.searchTerm + " ", this.categoryId, this.pageNumber]);
+        if (response.status = "200") { 
+          if (this.pageNumber > 1 && this.totalPages == this.pageNumber && this.products.length == 1) {
+            //go to the previous page 
+            this.router.navigate(['main', 'products', this.searchTerm, this.categoryId, this.pageNumber - 1]);
+          } else {
+            //stay in the same page and remove the deleted record from the list
+            let updatedProductsList: Product[] = this.products.filter((element: Product, index: number, list: Product[]) => {
+              return (element.id != productId);
+            });
+            this.products = updatedProductsList;
+          }
         }
         else if (response.status = "404") {
           throw new Error(response.message);
@@ -90,18 +99,27 @@ export class ProductListComponent implements OnInit {
 
   onSearchChange(event) {
     if(event.keyCode == 13){      // enter key pressed
-      this.router.navigate(['main', 'products', this.searchTerm, this.categoryId, '1']);
+      let categoryId : number = 0;  // reset category 
+      let pageNumber: number = 1;   // reset page
+      this.router.navigate(['main', 'products', this.searchTerm, categoryId, pageNumber]);
     }
   }
 
   onCategoryChange(event): void {
     let categoryId: number = event.target.value;
-    this.router.navigate(['main', 'products', this.searchTerm, categoryId, '1']);
+    let searchTerm:string = ' ';  //reset search term
+    let pageNumber: number = 1;   // reset page 
+    this.router.navigate(['main', 'products', searchTerm, categoryId, pageNumber]);
   }
 
   onPageChange(i: number): void {
     let pageNumber:number = this.pageNumber + i;
-    this.router.navigate(['main', 'products', this.searchTerm, this.categoryId, pageNumber]);
+
+    // paginate on the current category & search term
+    let categoryId: number = this.categoryId;  
+    let searchTerm: string = (this.searchTerm.length == 0)? ' ': this.searchTerm;
+
+    this.router.navigate(['main', 'products', searchTerm, categoryId, pageNumber]);
   }
 
   goToPage(i:number){

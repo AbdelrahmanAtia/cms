@@ -17,29 +17,29 @@ export class CategoryListComponent implements OnInit {
   totalPages: number;
   categories: Category[] = [];
 
-  constructor(private categoryService: CategoryService, 
-              private router: Router,
-              private route: ActivatedRoute) { }
+  constructor(private categoryService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.listenToRouteParamChanges();
-  } 
+  }
 
   // called when any route param changes
   listenToRouteParamChanges() {
     this.route.params.subscribe(
       params => {
-        this.searchTerm = params['searchTerm'];
+        this.searchTerm = (params['searchTerm'] + '').trim();
         this.pageNumber = +params['pageNumber'];
         this.initializeCategoriesList();
-    });
-  } 
+      });
+  }
 
-  initializeCategoriesList(){
+  initializeCategoriesList() {
     this.categoryService.getCategories(this.searchTerm, this.pageNumber).subscribe(
-      (response:HttpResponse<Category[]>) => { 
+      (response: HttpResponse<Category[]>) => {
         this.totalPages = +response.headers.get('totalPages');
-        this.categories = response.body; 
+        this.categories = response.body;
       },
       (error) => { console.log(error) }
     );
@@ -60,7 +60,16 @@ export class CategoryListComponent implements OnInit {
     this.categoryService.deleteCategory(categoryId).subscribe(
       (response: Response) => {
         if (response.status = "200") {
-          this.router.navigate(['main', 'categories',  this.searchTerm + " ", this.pageNumber]);
+          if (this.pageNumber > 1 && this.totalPages == this.pageNumber && this.categories.length == 1) {
+            //go to the previous page 
+            this.router.navigate(['main', 'categories', ' ', this.pageNumber - 1]);
+          } else {
+            //stay in the same page and remove the deleted record from the list
+            let updatedCategoriesList: Category[] = this.categories.filter((element: Category, index: number, list: Category[]) => {
+              return (element.id != categoryId);
+            });
+            this.categories = updatedCategoriesList;
+          }
         } else if (response.status = "404") {
           throw new Error(response.message);
         }
@@ -70,14 +79,18 @@ export class CategoryListComponent implements OnInit {
   }
 
   onSearchChange(event) {
-    if(event.keyCode == 13){      // enter key pressed
+    if (event.keyCode == 13) {      // enter key pressed
       this.router.navigate(['main', 'categories', this.searchTerm, '1']);
     }
   }
 
   onPageChange(i: number): void {
-    let pageNumber:number = this.pageNumber + i;
-    this.router.navigate(['main', 'categories', this.searchTerm, pageNumber]);
+    let pageNumber: number = this.pageNumber + i;
+    this.router.navigate(['main', 'categories',  (this.searchTerm.length > 0) ? this.searchTerm : ' ' , pageNumber]);
   }
+
+  viewProductsByCategoryId(categoryId:number){
+    this.router.navigate(['main', 'products', '', categoryId, '1']);
+  } 
 
 }

@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 	@Autowired
 	HttpServletResponse httpServletResponse;
 
@@ -31,21 +31,21 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
 	}
-	
+
 	@Override
 	public List<Category> getCategories(String name, int pageNumber, int pageSize) {
 		name = name.trim();
-				
+
 		Page<Category> page = null;
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);	
-		
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
 		if (name.length() == 0) {
 			page = categoryRepository.findAll(pageable);
 		} else {
 			page = categoryRepository.findByNameIgnoreCaseContaining(name, pageable);
 		}
-		
-		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());		
+
+		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());
 		return page.hasContent() ? page.getContent() : new ArrayList<Category>();
 	}
 
@@ -63,8 +63,14 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void save(Category category) {
-		categoryRepository.save(category);
+	public Category save(Category category) {
+		category.setId(0); // force creating a new entity
+		return categoryRepository.save(category);
+	}
+
+	@Override
+	public Category update(Category category) {
+		return categoryRepository.save(category);
 	}
 
 	@Override
@@ -86,15 +92,14 @@ public class CategoryServiceImpl implements CategoryService {
 			return new Response(Constants.NOT_FOUND_STATUS, "category id not found - " + categoryId);
 		return new Response(Constants.OK_STATUS, "Deleted  image for category id - " + categoryId);
 	}
-	
+
 	@Override
 	public boolean isUniqueCategoryName(String categoryName, int categoryId) {
 		Category category = categoryRepository.findByName(categoryName);
-		//the 2nd condition is for edit mode
-		if (category == null || category.getId() == categoryId)  
+		// the 2nd condition is for edit mode
+		if (category == null || category.getId() == categoryId)
 			return true;
 		return false;
 	}
 
-		
 }

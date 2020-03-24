@@ -30,7 +30,7 @@ export class UserListComponent implements OnInit {
   listenToRouteParamChanges() {
     this.route.params.subscribe(
       params => {
-        this.searchTerm = params['searchTerm'];
+        this.searchTerm = (params['searchTerm'] + "").trim();
         this.userStatus = params['userStatus'];
         this.pageNumber = +params['pageNumber'];
         this.initializeUsersList();
@@ -55,11 +55,11 @@ export class UserListComponent implements OnInit {
   }
 
   addNewUser(): void {
-    this.router.navigate(['users', 'new']);
+    this.router.navigate(['main', 'users', 'new']);
   }
 
   editUser(userId:number):void {
-    this.router.navigate(['users', userId, 'edit']);
+    this.router.navigate(['main', 'users', userId, 'edit']);
   }
 
   deleteUser(userId: number): void {
@@ -87,17 +87,17 @@ export class UserListComponent implements OnInit {
 
   onSearchChange(event) {
     if(event.keyCode == 13){      // enter key pressed
-      this.router.navigate(['users', this.searchTerm, this.userStatus,'1']);
+      this.router.navigate(['main', 'users', this.searchTerm, 'All','1']);
     }
   } 
 
   onPageChange(i: number): void {
     let pageNumber:number = this.pageNumber + i;
-    this.router.navigate(['users', this.searchTerm, this.userStatus, pageNumber]);
+    this.router.navigate(['main', 'users', this.searchTerm, this.userStatus, pageNumber]);
   }
 
   onStatusChange(status:string):void {
-    this.router.navigate(['users', this.searchTerm, status, '1']);
+    this.router.navigate(['main', 'users', ' ', status, '1']);
   }
   
 }

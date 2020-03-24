@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from 'src/app/_models/Product';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/app/_models/Category';
+import { CustomValidator } from 'src/app/_validators/CustomValidator';
 
 @Component({
   selector: 'app-product-edit',
@@ -65,7 +66,7 @@ export class ProductEditComponent implements OnInit {
         'productName': new FormControl(productName, Validators.required),
         'productDescription': new FormControl(productDescription, null),
         'productCategory': new FormControl(productCategory, Validators.required),
-        'productPrice': new FormControl(productPrice, Validators.required),
+        'productPrice': new FormControl(productPrice, [Validators.required, CustomValidator.greaterThanZero]),
         'productImage': new FormControl(productImage, null),
         'productStatus': new FormControl(productStatus, Validators.required)
       });

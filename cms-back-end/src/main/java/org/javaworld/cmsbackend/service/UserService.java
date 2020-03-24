@@ -13,11 +13,11 @@ public interface UserService extends UserDetailsService {
 
 	public List<User> getUsers(String searchTerm, int pageNumber, int pageSize, String status);
 
-	public void save(User user);
+	public User save(User user);
 
 	public User findById(int userId);
 
-	public void update(User user);
+	public User update(User user);
 
 	public Response deleteById(int userId);
 

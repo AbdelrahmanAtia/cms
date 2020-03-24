@@ -13,7 +13,9 @@ public interface CategoryService {
 
 	public Category findById(int id);
 
-	public void save(Category category);
+	public Category save(Category category);
+	
+	public Category update(Category category);
 
 	public Response deleteById(int id);
 	

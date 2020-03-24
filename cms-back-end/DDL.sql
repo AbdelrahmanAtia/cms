@@ -18,14 +18,14 @@ CREATE TABLE category (
 );
 -- ------------------------------------------------------------------------------------------------
 CREATE TABLE product (
-	id int primary key auto_increment,
-	active bit(1),
-	description varchar(1000),
-	image longblob,
-	name varchar(255),
-	price double,
-	category_id int,
-	FOREIGN KEY (category_id) REFERENCES category(id)  ON DELETE SET NULL ON UPDATE CASCADE
+  id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  active bit(1) NOT NULL,
+  description varchar(1000) DEFAULT NULL,
+  image longblob,
+  name varchar(255) NOT NULL,
+  price double NOT NULL check (price > 0),
+  category_id int(11) DEFAULT NULL,
+  FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 -- ------------------------------------------------------------------------------------------------
 create table client (
@@ -49,35 +49,30 @@ ALTER TABLE client CHANGE COLUMN email email VARCHAR(255) NOT NULL;
 ALTER TABLE client ADD CHECK (email like '%_@_%');
 ALTER TABLE client_order CHANGE COLUMN status status ENUM ('PENDING','CONFIRMED','CANCELLED') NOT NULL;
 -- ------------------------------------------------------------------------------------------------
-create table client_order (
-	id int primary key auto_increment,
-    delivery_date BIGINT(20), 
-    tax double,
-    subtotal double,
-    total_price double,
-    status varchar(50),
-    payment_method varchar(50),
-    ip_address varchar(50),
-    client_id int,
-    FOREIGN KEY (client_id) REFERENCES client(id)
+CREATE TABLE client_order (
+  id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  delivery_date bigint(20) NOT NULL,
+  tax double NOT NULL CHECK (tax > 0),
+  subtotal double NOT NULL CHECK (subtotal > 0),
+  total_price double NOT NULL CHECK (total_price > 0),
+  status enum('PENDING','CONFIRMED','CANCELLED') NOT NULL,
+  payment_method varchar(50) NOT NULL,
+  ip_address varchar(50) DEFAULT NULL,
+  client_id int(11) NOT NULL,
+  created_at bigint(20) NOT NULL,
+  FOREIGN KEY (client_id) REFERENCES client (id)
 );
 -- ------------------------------------------------------------------------------------------------
-create table order_line (
-	id int primary key auto_increment,
-    quantity int, 
-    price double,
-    total_price double,
-    product_id int,
-    order_id int,
-    FOREIGN KEY (product_id) REFERENCES product(id),
-    FOREIGN KEY (order_id) REFERENCES client_order(id)
+CREATE TABLE order_line (
+  id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  quantity int(11) NOT NULL CHECK (quantity > 0),
+  price double NOT NULL CHECK (price > 0),
+  total_price double NOT NULL CHECK(total_price > 0),
+  product_id int(11) NOT NULL,
+  order_id int(11) NOT NULL,
+  FOREIGN KEY (product_id) REFERENCES product(id),
+  FOREIGN KEY (order_id)   REFERENCES client_order (id)
 );
-
--- add new column
-ALTER TABLE client_order ADD created_at BIGINT(20);
-
--- add not null constraint for created_at field
-ALTER TABLE client_order CHANGE COLUMN created_at created_at BIGINT(20) NOT NULL;
 -- ------------------------------------------------------------------------------------------------
 create table user_authority(
 	id int primary key auto_increment,
@@ -125,5 +120,23 @@ delete from product where id > 0;
 delete from category where id > 0;
 delete from user_details where id > 0;
 -- ------------------------------------------------------------------------------------------------
+-- important queries
+
+-- show query used to create a table
+SHOW CREATE TABLE table_name;
+
+-- disable foreign key checks
+SET foreign_key_checks = 0;
+
+-- enable foreign key checks
+SET foreign_key_checks = 1;
+
+-- add check constrain that field > 0
+ALTER TABLE table_name ADD CHECK (col_name > 0);
+
+
+
+
+
 
 

@@ -10,7 +10,6 @@ import org.javaworld.cmsbackend.service.OrderService;
 import org.javaworld.cmsbackend.validator.OnCreate;
 import org.javaworld.cmsbackend.validator.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

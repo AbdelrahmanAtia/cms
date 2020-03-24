@@ -40,7 +40,7 @@
             <td>{{c.id}}</td>
             <td>{{c.name}}</td>
             <td>
-                <a href="main/products/%20/{{c.id}}/1">{{c.productCount}}</a>
+                <a (click)="viewProductsByCategoryId(c.id)" class="cursor">{{c.productCount}}</a>
             </td>
             <td>
                 <span (click)="editCategory(c.id)">
@@ -60,9 +60,13 @@
     <div class="col-sm-7" *ngIf="categories.length > 0">
         <nav aria-label="Page navigation example">
             <ul class="pagination" style="cursor: pointer">
-
+                
                 <li class="page-item" *ngIf="pageNumber > 1">
                     <a class="page-link" (click)="onPageChange(-1)">Previous</a>
+                </li>
+
+                <li class="page-item disabled-item" *ngIf="pageNumber <= 1">
+                    <a class="page-link">Previous</a>
                 </li>
 
                 <li class="page-item">
@@ -73,6 +77,10 @@
                     <a class="page-link" (click)="onPageChange(1)">Next</a>
                 </li>
 
+                <li class="page-item disabled-item" *ngIf="pageNumber >= totalPages">
+                    <a class="page-link">Next</a>
+                </li>
+                
             </ul>
         </nav>
     </div> 

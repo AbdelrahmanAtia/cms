@@ -5,7 +5,10 @@ import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.entity.Product;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.service.ProductService;
+import org.javaworld.cmsbackend.validator.OnCreate;
+import org.javaworld.cmsbackend.validator.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +37,6 @@ public class ProductRestController {
 									 @RequestParam int pageNumber, 
 									 @RequestParam int pageSize) {
 
-		
 		return productService.getProducts(searchTerm, categoryId, pageNumber, pageSize);
 	}
 
@@ -44,16 +46,15 @@ public class ProductRestController {
 	}
 
 	@PostMapping("/products")
-	public Product addProduct(@RequestBody Product product) {
-		product.setId(0); // force creating a new entity
-		productService.save(product);
-		return product;
+	public Product addProduct(@Validated(value = {OnCreate.class}) 
+	                          @RequestBody Product product) {
+		return productService.save(product);
 	}
 
 	@PutMapping("/products")
-	public Product updateProduct(@RequestBody Product product) {
-		productService.save(product);
-		return product;
+	public Product updateProduct(@Validated(value= {OnUpdate.class})
+			                     @RequestBody Product product) {
+		return productService.update(product);
 	}
 
 	@DeleteMapping("/products/{productId}")
