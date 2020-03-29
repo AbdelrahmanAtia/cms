@@ -18,7 +18,7 @@ export class ProductEditComponent implements OnInit {
   productId: number;
   productForm: FormGroup;
   categories: Category[] = [];
-  base64ProductImage: string | ArrayBuffer = '';
+  base64ProductImage: string | ArrayBuffer = null;
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService,
@@ -39,8 +39,6 @@ export class ProductEditComponent implements OnInit {
 
           this.initProductForm(response.name, response.description, categoryName, 
                                response.price, null, response.active);         
-
-          this.base64ProductImage = response.image;
           
         }, (error) => { console.log(error); }
       );
@@ -59,7 +57,7 @@ export class ProductEditComponent implements OnInit {
     productDescription:string, 
     productCategory:string,
     productPrice:number, 
-    productImage:string, 
+    productImageName:string, 
     productStatus:boolean):void {
 
       this.productForm = new FormGroup({
@@ -67,7 +65,7 @@ export class ProductEditComponent implements OnInit {
         'productDescription': new FormControl(productDescription, null),
         'productCategory': new FormControl(productCategory, Validators.required),
         'productPrice': new FormControl(productPrice, [Validators.required, CustomValidator.greaterThanZero]),
-        'productImage': new FormControl(productImage, null),
+        'productImageName': new FormControl(productImageName, null),
         'productStatus': new FormControl(productStatus, Validators.required)
       });
   }
@@ -79,6 +77,12 @@ export class ProductEditComponent implements OnInit {
         this.base64ProductImage = (<FileReader>event.target).result;
       }
       reader.readAsDataURL(event.target.files[0]);
+    } else {
+      // no image exist..so we need to reset image name and base 64 image
+      this.productForm.patchValue({
+        "productImageName" : null
+      }); 
+      this.base64ProductImage = null;
     }
   }
 
@@ -90,13 +94,13 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
-  submitProductForm(): void {
+  submitProductForm(): void {    
     let product = new Product();
     product.id = this.productId;
     product.name = this.productForm.value.productName;
     product.description = this.productForm.value.productDescription;
     product.price = this.productForm.value.productPrice;
-    product.image = this.base64ProductImage;
+    product.base64Image = this.base64ProductImage;
     product.active = this.productForm.value.productStatus;
 
     let category: Category = new Category();

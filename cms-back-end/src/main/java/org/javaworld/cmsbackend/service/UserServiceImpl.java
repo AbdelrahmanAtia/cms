@@ -121,12 +121,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userRepository.findByName(username);
+		User user = userRepository.findByName(username);
+		user.setPassword(user.getPassword().trim()); //temp soln
+		return user;
 	}
 	
 	@Override
 	public UserDetails loadUserByEmail(String email) {
-		return userRepository.findByEmail(email);
+		User user = userRepository.findByEmail(email);
+		user.setPassword(user.getPassword().trim());  //temp soln
+		return user;
 	}
 
 }

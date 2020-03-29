@@ -9,7 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,8 +25,9 @@ import org.javaworld.cmsbackend.validator.OnUpdate;
 public class Product {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
+	@SequenceGenerator(sequenceName = "product_seq", allocationSize = 1, name = "product_seq_gen")
 	@NotNull(groups = { OnUpdate.class })
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
@@ -45,8 +48,11 @@ public class Product {
 	@Column(name = "active")
 	private Boolean active;
 
-	@Column(name = "image")
-	private String image; // base64 string
+	@Column(name = "image_name")
+	private String imageName;
+	
+	@Transient
+	private String base64Image;
 
 	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.REFRESH })
@@ -104,14 +110,22 @@ public class Product {
 		this.active = active;
 	}
 
-	public String getImage() {
-		return image;
+	public String getImageName() {
+		return imageName;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
+	public String getBase64Image() {
+		return base64Image;
+	}
+
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
+	}
+	
 	public Category getCategory() {
 		return category;
 	}
@@ -122,8 +136,27 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", active=" + active + ", category=" + category + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Product [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", price=");
+		builder.append(price);
+		builder.append(", active=");
+		builder.append(active);
+		builder.append(", imageName=");
+		builder.append(imageName);
+		builder.append(", base64ImageLength=");
+		builder.append((base64Image != null)?base64Image.length(): 0);
+		builder.append(", categoryId=");
+		builder.append(category.getId());
+		builder.append("]");
+		return builder.toString();
 	}
+
+	
 
 }

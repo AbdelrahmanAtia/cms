@@ -20,10 +20,10 @@ public class LoggingAspect {
 	@Pointcut("execution(* org.javaworld.cmsbackend.service.*.*(..))")
 	private void forServicePackage() {}
 	
-	@Pointcut("execution(* org.javaworld.cms_rest.dao.*.*(..))")
-	private void forDaoPackage() {}
+	@Pointcut("execution(* org.javaworld.cmsbackend.util.*.*(..))")
+	private void forUtilPackage() {}
 	
-	@Pointcut("forControllerPackage() || forServicePackage() || forDaoPackage()")
+	@Pointcut("forControllerPackage() || forServicePackage() || forUtilPackage()")
 	private void forAppFlow() {}
 	
 	@Before("forAppFlow()")

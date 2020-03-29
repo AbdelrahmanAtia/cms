@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/_models/Category';
 import { CategoryService } from 'src/app/_services/category.service';
 import { HttpResponse } from '@angular/common/http';
+import { Config } from 'src/app/_models/Config ';
 
 @Component({
   selector: 'app-product-list',
@@ -21,6 +22,8 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = []; 
   categories: Category[] = [];
+
+  imageBaseUrl:string = new Config().baseUrl + "/products/getImage";
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService,

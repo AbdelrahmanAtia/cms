@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,8 +18,9 @@ import org.javaworld.cmsbackend.validator.OnUpdate;
 public class Category {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq_gen")
+	@SequenceGenerator(sequenceName = "category_seq", allocationSize = 1, name = "category_seq_gen")
 	@NotNull(groups = { OnUpdate.class })
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 

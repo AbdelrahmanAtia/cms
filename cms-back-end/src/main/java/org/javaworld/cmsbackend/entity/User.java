@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,8 +25,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
+	@SequenceGenerator(sequenceName = "user_seq", allocationSize = 1, name = "user_seq_gen")
 	@NotNull(groups = { OnUpdate.class })
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 

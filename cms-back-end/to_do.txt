@@ -64,7 +64,13 @@ order component
 >> validation for other order edit form fields in [front - back - data base]
 =========================================================================
 
+>> all dates in database should not be a varchar it must be a date so we can order that 
+table by date ..if u used varchar u will not be able to 
+sort by that field correctly as expected..
 
+>> the password is returned as 60 characters so i trim the spaces in 
+backend ...u should save that pass encoded and u should remove the trim from
+backend..
 
 
 

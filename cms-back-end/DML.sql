@@ -1,9 +1,8 @@
-use cms;
 -- -----------------------------------------------------------------------------
 -- user_authority
 -- ---------------
-insert into user_authority values(1, "Administrator");
-insert into user_authority values(2, "Editor");
+insert into user_authority values(1, 'Administrator');
+insert into user_authority values(2, 'Editor');
 -- -----------------------------------------------------------------------------
 -- user_details
 -- ---------------

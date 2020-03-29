@@ -1,5 +1,5 @@
-use cms;
--- ------------------------------------------------------------------------------------------------
+-- these commands are executed by the database administrator
+
 -- drop tables
 drop table if exists user_details;
 drop table if exists user_authority;
@@ -9,23 +9,47 @@ drop table if exists client;
 drop table if exists product;
 drop table if exists category;
 -- ------------------------------------------------------------------------------------------------
-CREATE TABLE category (
-	id int primary key auto_increment,
+-- sequences
+-- -----------
+CREATE SEQUENCE cmsapp.user_seq START WITH 2 INCREMENT BY 1;
+CREATE SEQUENCE cmsapp.category_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE cmsapp.product_seq START WITH 1 INCREMENT BY 1;
+-- ------------------------------------------------------------------------------------------------
+create table cmsapp.user_authority(
+	id int primary key,
+    name varchar(255)
+);
+-- ------------------------------------------------------------------------------------------------
+create table cmsapp.user_details(
+	id int primary key,
+	email varchar(255) not null unique check(email like '%_@_%'),
+    password char(60) not null,
+    name varchar(255) not null,
+    phone varchar(255),
+    active NUMBER(1) not null,
+    register_date varchar(255) not null,
+    authority_id int not null,
+    FOREIGN KEY (authority_id) REFERENCES cmsapp.user_authority(id)
+);
+-- ------------------------------------------------------------------------------------------------
+
+CREATE TABLE cmsapp.category (
+	id int primary key,
 	name varchar(255) not null,
 	description varchar(255),
 	product_count int,
-	image longblob
+	image CLOB
 );
 -- ------------------------------------------------------------------------------------------------
-CREATE TABLE product (
-  id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  active bit(1) NOT NULL,
+CREATE TABLE cmsapp.product (
+  id number PRIMARY KEY NOT NULL,
+  active number(1) NOT NULL,
   description varchar(1000) DEFAULT NULL,
-  image longblob,
   name varchar(255) NOT NULL,
-  price double NOT NULL check (price > 0),
-  category_id int(11) DEFAULT NULL,
-  FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE SET NULL ON UPDATE CASCADE
+  price number NOT NULL check (price > 0),
+  category_id number DEFAULT NULL,
+  IMAGE_NAME VARCHAR2(255 BYTE), 
+  FOREIGN KEY (category_id) REFERENCES cmsapp.category (id) ON DELETE SET NULL
 );
 -- ------------------------------------------------------------------------------------------------
 create table client (
@@ -74,22 +98,8 @@ CREATE TABLE order_line (
   FOREIGN KEY (order_id)   REFERENCES client_order (id)
 );
 -- ------------------------------------------------------------------------------------------------
-create table user_authority(
-	id int primary key auto_increment,
-    name varchar(255)
-);
--- ------------------------------------------------------------------------------------------------
-create table user_details(
-	id int primary key auto_increment,
-	email varchar(255) not null unique check(email like '%_@_%'),
-    password char(60) not null,
-    name varchar(255) not null,
-    phone varchar(255),
-    active bit(1) not null,
-    register_date varchar(255) not null,
-    authority_id int not null,
-    FOREIGN KEY (authority_id) REFERENCES user_authority(id)
-);
+
+
 -- ------------------------------------------------------------------------------------------------
 -- triggers
 delimiter $$

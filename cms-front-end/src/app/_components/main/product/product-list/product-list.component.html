@@ -54,7 +54,11 @@
     <tbody *ngFor="let p of products">
         <tr>
             <td>{{p.id}}</td>
-            <td><img width="84px" height="60px" [src]="p.image"></td>
+            
+            <td>
+                <img width="84px" height="60px" src="{{imageBaseUrl}}/{{p.imageName}}">
+            </td>
+            
             <td>{{p.name}}</td>
             <td>
                 <div *ngIf="p.category">

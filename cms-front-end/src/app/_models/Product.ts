@@ -6,7 +6,7 @@ export class Product {
     description: string;
     price: number;
     active: boolean;
-    image: string | ArrayBuffer;
-    category:Category;
-    
+    imageName: string;
+    base64Image: string | ArrayBuffer;
+    category: Category;
 }

@@ -7,6 +7,9 @@ public class Constants {
 	
 	public static String NOT_AUTHORIZED = "401";
 	public static String  NOT_FOUND_STATUS = "404";
+	
+	
+	public static final String NOT_FOUND_IMAGE_NAME = "no_image.png";
 
 
 }

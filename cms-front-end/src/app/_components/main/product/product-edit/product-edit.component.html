@@ -88,22 +88,17 @@
         </div>     
     </div>
 
-
     <div class="form-group">
         <div class="row">
             <div class="col-sm-3">
-                <label for="productImage">Image</label>
+                <label for="productImageName">Image</label>
             </div>
             <div class="col-sm-9">
-                <input id="productImage" 
+                <input id="productImageName" 
                        type="file" 
                        class="form-control"
-                       formControlName="productImage"
+                       formControlName="productImageName"
                        (change)="readUrl($event)" />
-                <br>
-                <div *ngIf="base64ProductImage.length > 0">
-                    <img [src]="base64ProductImage" width="165px" height="84px"> 
-                </div>
             </div>
         </div>
     </div>
