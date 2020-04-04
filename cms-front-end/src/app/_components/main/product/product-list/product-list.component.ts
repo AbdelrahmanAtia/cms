@@ -80,7 +80,7 @@ export class ProductListComponent implements OnInit {
     }
     this.productService.deleteProduct(productId).subscribe(
       (response: Response) => {
-        if (response.status = "200") { 
+        if (response.status) { 
           if (this.pageNumber > 1 && this.totalPages == this.pageNumber && this.products.length == 1) {
             //go to the previous page 
             this.router.navigate(['main', 'products', this.searchTerm, this.categoryId, this.pageNumber - 1]);
@@ -92,7 +92,7 @@ export class ProductListComponent implements OnInit {
             this.products = updatedProductsList;
           }
         }
-        else if (response.status = "404") {
+        else {
           throw new Error(response.message);
         }
       },

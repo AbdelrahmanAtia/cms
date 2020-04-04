@@ -1,5 +1,5 @@
 
 export class Response {
-    status: string;
+    status: boolean;
     message: string;
 }

@@ -1,23 +1,32 @@
 package org.javaworld.cmsbackend.service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javaworld.cmsbackend.CmsBackEndApplication;
 import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.ProductRepository;
 import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.entity.Product;
+import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -26,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	HttpServletResponse httpServletResponse;
-	
+
 	@Autowired
 	CmsBackEndApplication cmsBackEndApplication;
 
@@ -119,7 +128,7 @@ public class ProductServiceImpl implements ProductService {
 			}
 
 			// delete old image from file system except no-image.png
-			if(!tempProduct.getImageName().equals(Constants.NOT_FOUND_IMAGE_NAME)) {
+			if (!tempProduct.getImageName().equals(Constants.NOT_FOUND_IMAGE_NAME)) {
 				String oldImagePath = createImagePath(tempProduct.getImageName());
 				boolean deleted = FileUtil.deleteImageFromFileSystem(oldImagePath);
 				if (!deleted) {
@@ -132,16 +141,37 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void deleteById(int id) {
-		productRepository.deleteById(id);
+	public Response deleteById(int id) {
+		try {
+			productRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			return new Response(false, "No product with id 42 exists!");
+		}
+		return new Response(true, "product deleted successfully");
 	}
-	
-	public String createImagePath(String imageName) {
-		return cmsBackEndApplication.getProjectFilesLocation() 
-			+ File.separator 
-			+ "products_images" 
-			+ File.separator 
-			+ imageName;
+
+	@Override
+	public void geProductImage(String imageName) throws IOException {
+		String path = createImagePath(imageName);
+		InputStream in = new FileInputStream(path);
+		httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
+		IOUtils.copy(in, httpServletResponse.getOutputStream());
+		in.close();
+	}
+
+	@Override
+	@Transactional
+	public Response deleteProductImage(String imageName) {
+		int rowsAffected = productRepository.deleteProductImage(imageName);
+		if (rowsAffected == 0) {
+			return new Response(false, "no product image found with name " + imageName);
+		}
+		return new Response(true, "image deleted successfully");
+	}
+
+	private String createImagePath(String imageName) {
+		return cmsBackEndApplication.getProjectFilesLocation() + File.separator + "products_images" + File.separator
+				+ imageName;
 	}
 
 }

@@ -2,23 +2,23 @@ package org.javaworld.cmsbackend.model;
 
 public class Response {
 
-	private String status;
+	private boolean status;
 	private String message;
-	
+
 	public Response() {
-		
+
 	}
 
-	public Response(String status, String message) {
+	public Response(boolean status, String message) {
 		this.status = status;
 		this.message = message;
 	}
 
-	public String getStatus() {
+	public boolean isStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
@@ -32,7 +32,13 @@ public class Response {
 
 	@Override
 	public String toString() {
-		return "Response [status=" + status + ", message=" + message + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Response [status=");
+		builder.append(status);
+		builder.append(", message=");
+		builder.append(message);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

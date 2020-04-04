@@ -32,8 +32,9 @@ public class CategoryRestController {
 	}
 
 	@GetMapping("/categories")
-	public List<Category> getCategories(@RequestParam String searchTerm, @RequestParam int pageNumber,
-			@RequestParam int pageSize) {
+	public List<Category> getCategories(@RequestParam String searchTerm, 
+										@RequestParam int pageNumber,
+										@RequestParam int pageSize) {
 		return categoryService.getCategories(searchTerm, pageNumber, pageSize);
 	}
 

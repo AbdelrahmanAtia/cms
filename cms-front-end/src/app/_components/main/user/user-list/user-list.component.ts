@@ -69,7 +69,7 @@ export class UserListComponent implements OnInit {
     }
     this.userService.deleteUser(userId).subscribe(
       (response: Response) => {
-        if (response.status = "200") {
+        if (response.status) {
           if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.users.length == 1){
             //go to the previous page 
             this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber - 1]);
@@ -77,7 +77,7 @@ export class UserListComponent implements OnInit {
             //stay in the same page
             this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber]);
           }
-        } else if (response.status = "404") {
+        } else {
           throw new Error(response.message);
         }
       },

@@ -1,4 +1,4 @@
-package org.javaworld.cmsbackend.controller;
+/*package org.javaworld.cmsbackend.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +31,16 @@ public class CustomErrorController implements ErrorController {
 		System.out.println("message = " + message);
 
 		Throwable t = (Throwable) request.getAttribute("javax.servlet.error.exception");
+		
+		Class exceptionClass = null;
+		String exceptionMessage = "";
 		if (t != null) {
-			System.out.println("exception class = " + t.getClass());
-			System.out.println("exception message = " + t.getMessage());
+			
+			exceptionClass = t.getClass();
+			exceptionMessage = t.getMessage();
+			
+			System.out.println("exception class = " + exceptionClass);
+			System.out.println("exception message = " + exceptionMessage);
 
 			Class cl = t.getClass();
 			if (cl.equals(BadCredentialsException.class) || cl.equals(ExpiredJwtException.class)
@@ -43,7 +50,7 @@ public class CustomErrorController implements ErrorController {
 				res.setStatus(statusCode);
 			}
 		}
-		return new Response(statusCode + "", message);
+		return new Response(statusCode + "", exceptionMessage);
 	}
 
 	@Override
@@ -52,3 +59,4 @@ public class CustomErrorController implements ErrorController {
 	}
 
 }
+*/

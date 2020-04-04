@@ -36,10 +36,10 @@ public class AuthenticationWs {
 	        String jwtToken = jwtTokenUtil.generateToken(userName);
 	        System.out.println("generated jwt token: " + jwtToken);
 	        httpServletResponse.setHeader("jwt-token", jwtToken );
-	        return new Response("true", "user authenticated successfully..");
+	        return new Response(true, "user authenticated successfully..");
 	        
 		} else {
-	        return new Response("false", "authentication failed..");
+	        return new Response(false, "authentication failed..");
 		}
 		
 		//dont forget to add usernamepassword token to security context holder..

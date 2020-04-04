@@ -59,7 +59,7 @@ export class CategoryListComponent implements OnInit {
     }
     this.categoryService.deleteCategory(categoryId).subscribe(
       (response: Response) => {
-        if (response.status = "200") {
+        if (response.status) {
           if (this.pageNumber > 1 && this.totalPages == this.pageNumber && this.categories.length == 1) {
             //go to the previous page 
             this.router.navigate(['main', 'categories', ' ', this.pageNumber - 1]);
@@ -70,7 +70,7 @@ export class CategoryListComponent implements OnInit {
             });
             this.categories = updatedCategoriesList;
           }
-        } else if (response.status = "404") {
+        } else {
           throw new Error(response.message);
         }
       },

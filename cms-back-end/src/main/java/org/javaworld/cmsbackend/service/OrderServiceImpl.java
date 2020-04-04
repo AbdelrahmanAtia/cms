@@ -108,9 +108,9 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			orderRepository.deleteById(orderId);
 		} catch (EmptyResultDataAccessException ex) {
-			return new Response(Constants.NOT_FOUND_STATUS, "Order id not found - " + orderId);
+			return new Response(false, "Order id not found - " + orderId);
 		}
-		return new Response(Constants.OK_STATUS, "Deleted order id - " + orderId);
+		return new Response(true, "Deleted order id - " + orderId);
 	}
 
 	@Override

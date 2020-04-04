@@ -42,7 +42,7 @@ public class AuthenticationRestController {
 	@ExceptionHandler(value = BadCredentialsException.class)
 	public ResponseEntity<Response> exception(BadCredentialsException exception) {
 		Response customResponse = new Response();
-		customResponse.setStatus("false");
+		customResponse.setStatus(false);
 		customResponse.setMessage("invalid username or password");
 		return new ResponseEntity<Response>(customResponse, HttpStatus.UNAUTHORIZED);
 	}

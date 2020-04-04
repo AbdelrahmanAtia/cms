@@ -24,7 +24,7 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 		System.out.println("statrting CustomBasicAuthenticationEntryPoint.commence()");
 		System.out.println("request url = " + request.getRequestURL());
 		Response customResponse = new Response();
-		customResponse.setStatus("false");
+		customResponse.setStatus(false);
 		customResponse.setMessage("invalid username or password");
 
 		ObjectMapper mapper = new ObjectMapper();

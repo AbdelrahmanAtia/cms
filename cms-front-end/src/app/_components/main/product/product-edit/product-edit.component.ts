@@ -6,6 +6,9 @@ import { Product } from 'src/app/_models/Product';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/app/_models/Category';
 import { CustomValidator } from 'src/app/_validators/CustomValidator';
+import { Config } from 'src/app/_models/Config ';
+import { Response } from 'src/app/_models/Response';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-product-edit',
@@ -19,6 +22,8 @@ export class ProductEditComponent implements OnInit {
   productForm: FormGroup;
   categories: Category[] = [];
   base64ProductImage: string | ArrayBuffer = null;
+  imageBaseUrl:string = new Config().baseUrl + "/products/getImage";
+  imageName:string = null;  //only set in case edit mode
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService,
@@ -35,6 +40,8 @@ export class ProductEditComponent implements OnInit {
     if (this.editMode) {
       this.productService.getProduct(this.productId).subscribe(
         (response: Product) => {
+
+          this.imageName = response.imageName; //to preview image
           let categoryName: string = response.category ? response.category.name : null;
 
           this.initProductForm(response.name, response.description, categoryName, 
@@ -107,7 +114,7 @@ export class ProductEditComponent implements OnInit {
     category.id = this.getCategoryId(this.productForm.value.productCategory);
     product.category = category;
 
-    if (this.editMode)
+    if (this.editMode) 
       this.updateProduct(product);
     else
       this.addNewProduct(product);
@@ -129,6 +136,25 @@ export class ProductEditComponent implements OnInit {
 
   cancel(): void {
     this.router.navigate(['main', 'products', ' ', 0, 1]);
+  }
+
+  deleteProductImage():void {
+    if (!confirm("Are you sure that you want to delete this image?")) {
+      return;
+    }
+    
+    this.productService.deleteProductImage(this.imageName).subscribe(
+      (response:Response) => {
+        if(response.status){
+          this.imageName = "no_image.png"
+        }else {
+          throw new Error(response.message);
+        }
+      },
+      (error) => {
+       console.log(error);
+      }  
+    )
   }
 
 }

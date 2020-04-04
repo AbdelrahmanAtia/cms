@@ -74,7 +74,7 @@ export class OrderListComponent implements OnInit {
 
     this.orderService.deleteOrder(orderId).subscribe(
       (response: Response) => {
-        if (response.status = "200") {
+        if (response.status) {
           if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.orders.length == 1){
             //go to the previous page 
             this.router.navigate(['main', 'orders', 'ALL', this.pageNumber - 1]);
@@ -86,7 +86,7 @@ export class OrderListComponent implements OnInit {
            this.orders = updatedOrdersList;
           }
         }
-        else if (response.status = "404") {
+        else {
           throw new Error(response.message);
         }
       },

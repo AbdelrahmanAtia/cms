@@ -126,11 +126,11 @@ export class CategoryEditComponent implements OnInit {
 
     this.categoryService.deleteCategoryImage(this.categoryId).subscribe(
       (response: Response) => {
-        if(response.status == '200'){
+        if(response.status == true){
           this.base64CategoryImage = null;
           this.categoryForm.patchValue({categoryImage: null});
         } else {
-          console.log(response);
+          console.log(response.message);
         }
       }, 
       (error) => console.log(error)

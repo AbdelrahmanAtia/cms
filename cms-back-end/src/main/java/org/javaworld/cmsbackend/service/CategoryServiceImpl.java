@@ -79,9 +79,9 @@ public class CategoryServiceImpl implements CategoryService {
 		try {
 			categoryRepository.deleteById(categoryId);
 		} catch (EmptyResultDataAccessException ex) {
-			return new Response(Constants.NOT_FOUND_STATUS, "category id not found - " + categoryId);
+			return new Response(false, "category id not found - " + categoryId);
 		}
-		return new Response(Constants.OK_STATUS, "Deleted category id - " + categoryId);
+		return new Response(true, "Deleted category id - " + categoryId);
 	}
 
 	@Override
@@ -89,8 +89,8 @@ public class CategoryServiceImpl implements CategoryService {
 	public Response deleteCategoryImage(int categoryId) {
 		int rowsAffected = categoryRepository.deleteCategoryImage(categoryId);
 		if (rowsAffected == 0)
-			return new Response(Constants.NOT_FOUND_STATUS, "category id not found - " + categoryId);
-		return new Response(Constants.OK_STATUS, "Deleted  image for category id - " + categoryId);
+			return new Response(false, "category id not found - " + categoryId);
+		return new Response(true, "Deleted  image for category id - " + categoryId);
 	}
 
 	@Override

@@ -106,9 +106,9 @@ public class UserServiceImpl implements UserService {
 		try {
 			userRepository.deleteById(userId);
 		} catch (EmptyResultDataAccessException ex) {
-			return new Response(Constants.NOT_FOUND_STATUS, "user id not found - " + userId);
+			return new Response(false, "user id not found - " + userId);
 		}
-		return new Response(Constants.OK_STATUS, "Deleted user id - " + userId);
+		return new Response(true, "Deleted user id - " + userId);
 	}
 	
 	@Override

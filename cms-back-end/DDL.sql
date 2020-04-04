@@ -48,7 +48,7 @@ CREATE TABLE cmsapp.product (
   name varchar(255) NOT NULL,
   price number NOT NULL check (price > 0),
   category_id number DEFAULT NULL,
-  IMAGE_NAME VARCHAR2(255 BYTE), 
+  IMAGE_NAME VARCHAR2(255 BYTE) NOT NULL, 
   FOREIGN KEY (category_id) REFERENCES cmsapp.category (id) ON DELETE SET NULL
 );
 -- ------------------------------------------------------------------------------------------------
