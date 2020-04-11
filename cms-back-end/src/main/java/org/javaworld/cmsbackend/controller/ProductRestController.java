@@ -67,8 +67,8 @@ public class ProductRestController {
 	}
 
 	@GetMapping("/products/getImage/{imageName}")
-	public void geProductImage(@PathVariable String imageName) throws IOException {
-		productService.geProductImage(imageName);
+	public void getProductImage(@PathVariable String imageName) throws IOException {
+		productService.getProductImage(imageName);
 	}
 
 	@DeleteMapping("/products/deleteImage/{imageName}")

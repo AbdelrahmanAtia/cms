@@ -1,5 +1,6 @@
 package org.javaworld.cmsbackend.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Category;
@@ -60,14 +61,19 @@ public class CategoryRestController {
 		return categoryService.deleteById(categoryId);
 	}
 	
-	@DeleteMapping("/categories/image/{categoryId}")
-	public Response deleteCategoryImage(@PathVariable int categoryId) {
-		return categoryService.deleteCategoryImage(categoryId);
+	@GetMapping("/categories/getImage/{imageName}")
+	public void getCategoryImage(@PathVariable String imageName) throws IOException {
+		categoryService.getCategoryImage(imageName);
+	}
+
+	@DeleteMapping("/categories/deleteImage/{imageName}")
+	public Response deleteCategoryImage(@PathVariable String imageName) {
+		return categoryService.deleteCategoryImage(imageName);
 	}
 	
 	@GetMapping("/categories/isNameExist/{categoryName}/{categoryId}")
 	public boolean isUniqueEmail(@PathVariable String categoryName, @PathVariable int categoryId) {
 		return categoryService.isUniqueCategoryName(categoryName, categoryId);
 	}
-
+	
 }

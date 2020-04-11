@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from 'src/app/_models/Category';
 import { Response } from 'src/app/_models/Response';
 import { CustomValidator } from 'src/app/_validators/CustomValidator';
+import { Config } from 'src/app/_models/Config ';
 
 @Component({
   selector: 'app-category-edit',
@@ -16,7 +17,10 @@ export class CategoryEditComponent implements OnInit {
   editMode: boolean = false;
   categoryId: number;
   categoryForm: FormGroup;
-  base64CategoryImage: string | ArrayBuffer = '';
+  base64CategoryImage: string | ArrayBuffer = null;
+  imageBaseUrl:string = new Config().baseUrl + "/categories/getImage";
+  imageName:string = null;  //only set in case edit mode
+
 
   constructor(private categoryService: CategoryService,
               private route: ActivatedRoute,
@@ -27,20 +31,21 @@ export class CategoryEditComponent implements OnInit {
     this.categoryId = this.route.snapshot.params.id;
     this.editMode = this.categoryId != null;
 
-    //  initialize category form
-    this.initializeCategoryForm(null, null, null, null);
-
     if (this.editMode) {
-      // populate category form in case of edit  mode
+      
       this.categoryService.getCategory(this.categoryId).subscribe(
         (response: Category) => {
+          this.imageName = response.imageName; //to preview image
           this.initializeCategoryForm(response.name, response.description, null, response.productCount);
-          this.base64CategoryImage = response.image;
-        }, (error) => { console.log(error); }
+        }, (error) => { 
+          console.log(error); 
+        }
       );
+    } else {
+      this.initializeCategoryForm(null, null, null, null);
     }
   }  
-
+ 
   private initializeCategoryForm(categoryName:string, 
                                  categoryDescription:string,
                                  categoryImage:string,
@@ -48,7 +53,7 @@ export class CategoryEditComponent implements OnInit {
       this.categoryForm = new FormGroup({
         'categoryName': new FormControl(categoryName, [Validators.required, CustomValidator.notBlank], CustomValidator.uniqueCategoryName(this.categoryService, this.categoryId)),
         'categoryDescription': new FormControl(categoryDescription, null),
-        'categoryImage': new FormControl(categoryImage, null),
+        'categoryImageName': new FormControl(categoryImage, null),
         'productCount': new FormControl(productCount, null)
       });
   }
@@ -60,32 +65,21 @@ export class CategoryEditComponent implements OnInit {
         this.base64CategoryImage = (<FileReader>event.target).result;
       }
       reader.readAsDataURL(event.target.files[0]);
+    } else {
+      // no image exist..so we need to reset image name and base 64 image
+      this.categoryForm.patchValue({
+        "categoryImageName" : null
+      }); 
+      this.base64CategoryImage = null;
     }
   }
-
-  /*
-  convertBase64StringToBytes(imageBase64String): number[] {
-    if (imageBase64String.length == 0) {
-      return [];
-    }
-    let BASE64_MARKER: string = ';base64,';
-    let base64Index: number = imageBase64String.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-    let base64: string = imageBase64String.substring(base64Index);
-    let decodedString: string = window.atob(base64);
-    let bytesArray: number[] = [];
-    for (let i = 0; i < decodedString.length; i++) {
-      bytesArray.push(decodedString.charCodeAt(i));
-    }
-    return bytesArray;
-  }
-  */
 
   submitCategoryForm(): void {
     let category = new Category();
     category.id = this.categoryId;
     category.name = this.categoryForm.value.categoryName;
     category.description = this.categoryForm.value.categoryDescription;
-    category.image = this.base64CategoryImage;
+    category.base64Image = this.base64CategoryImage;
     category.productCount = this.categoryForm.value.productCount;
     
     if (this.editMode)
@@ -113,28 +107,22 @@ export class CategoryEditComponent implements OnInit {
   }
 
   deleteCategoryImage():void {
-
-    if(!this.editMode ){
-      this.base64CategoryImage = null;
-      this.categoryForm.patchValue({categoryImage: null});
-      return;
-    } 
-
     if (!confirm("Are you sure that you want to delete this image?")) {
       return;
     }
-
-    this.categoryService.deleteCategoryImage(this.categoryId).subscribe(
-      (response: Response) => {
-        if(response.status == true){
-          this.base64CategoryImage = null;
-          this.categoryForm.patchValue({categoryImage: null});
-        } else {
-          console.log(response.message);
+    
+    this.categoryService.deleteCategoryImage(this.imageName).subscribe(
+      (response:Response) => {
+        if(response.status){
+          this.imageName = "no_image.png"
+        }else {
+          throw new Error(response.message);
         }
-      }, 
-      (error) => console.log(error)
-    );
+      },
+      (error) => {
+       console.log(error);
+      }  
+    )
   }
 
 }

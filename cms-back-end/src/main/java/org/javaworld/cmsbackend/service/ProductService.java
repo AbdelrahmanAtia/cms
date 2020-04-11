@@ -20,7 +20,7 @@ public interface ProductService {
 
 	public Response deleteById(int id);
 
-	public void geProductImage(String imageName) throws IOException;
+	public void getProductImage(String imageName) throws IOException;
 	
 	public Response deleteProductImage(String imageName);
 

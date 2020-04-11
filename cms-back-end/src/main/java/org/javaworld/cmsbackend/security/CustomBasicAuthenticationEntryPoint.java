@@ -22,6 +22,7 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 			throws IOException, ServletException {
 
 		System.out.println("statrting CustomBasicAuthenticationEntryPoint.commence()");
+		System.out.println("An error during authentication happened");
 		System.out.println("request url = " + request.getRequestURL());
 		Response customResponse = new Response();
 		customResponse.setStatus(false);

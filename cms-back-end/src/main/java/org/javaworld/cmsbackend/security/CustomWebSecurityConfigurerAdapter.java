@@ -16,12 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-	
 	@Autowired
 	private UserService userService;
-	
-	
-	
+		
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {	
 		
@@ -30,6 +27,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 							.antMatchers(HttpMethod.OPTIONS).permitAll()  // no need for authorization token for options request
 							.antMatchers("/api/authentication/login").permitAll()
 							.antMatchers("/api/products/getImage/*").permitAll()
+							.antMatchers("/api/categories/getImage/*").permitAll()
 					.anyRequest().authenticated()
 					.and().httpBasic(); // basic authentication
 		
@@ -59,5 +57,4 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         return NoOpPasswordEncoder.getInstance();
     }
     
-
 }

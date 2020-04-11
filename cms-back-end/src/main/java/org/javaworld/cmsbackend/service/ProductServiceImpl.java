@@ -151,7 +151,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void geProductImage(String imageName) throws IOException {
+	public void getProductImage(String imageName) throws IOException {
 		String path = createImagePath(imageName);
 		InputStream in = new FileInputStream(path);
 		httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
@@ -164,8 +164,16 @@ public class ProductServiceImpl implements ProductService {
 	public Response deleteProductImage(String imageName) {
 		int rowsAffected = productRepository.deleteProductImage(imageName);
 		if (rowsAffected == 0) {
-			return new Response(false, "no product image found with name " + imageName);
+			return new Response(false, "no image found with name " + imageName);
 		}
+		
+		//remove the image from the file system
+		String imagePath = createImagePath(imageName);
+		boolean deleted = FileUtil.deleteImageFromFileSystem(imagePath);
+		if (!deleted) {
+			throw new RuntimeException("failed to delete image from file system");
+		}
+		
 		return new Response(true, "image deleted successfully");
 	}
 

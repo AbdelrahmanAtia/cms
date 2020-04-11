@@ -38,7 +38,7 @@ CREATE TABLE cmsapp.category (
 	name varchar(255) not null,
 	description varchar(255),
 	product_count int,
-	image CLOB
+	IMAGE_NAME VARCHAR2(255 BYTE) NOT NULL
 );
 -- ------------------------------------------------------------------------------------------------
 CREATE TABLE cmsapp.product (

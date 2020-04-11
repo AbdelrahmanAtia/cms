@@ -3,6 +3,7 @@ export class Category {
     id: number;
     name: string;
     description: string;
-    image: string | ArrayBuffer;
+    base64Image: string | ArrayBuffer;
     productCount: number;
+    imageName: string;
 }

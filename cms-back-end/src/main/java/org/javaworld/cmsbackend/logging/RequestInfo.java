@@ -76,13 +76,19 @@ public class RequestInfo {
 	}
 
 	public void setPayload(String payload) {
+		
+		//remove new line characters
+		payload = payload.replace("\r", "")
+				         .replace("\n", "")
+				         .replace("\r\n", "");
+		
 		this.payload = payload;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("*************************** Request Info ***************************");
+		builder.append("*************************** Request Info **************************");
 		builder.append("\n");
 		builder.append("requestTime = " + requestTime);
 		builder.append("\n");

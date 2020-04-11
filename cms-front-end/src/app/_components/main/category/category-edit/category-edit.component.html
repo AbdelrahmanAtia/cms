@@ -1,5 +1,5 @@
 <br>
-<form [formGroup]="categoryForm" (ngSubmit)="submitCategoryForm()">
+<form *ngIf="categoryForm" [formGroup]="categoryForm" (ngSubmit)="submitCategoryForm()">
 
     <div class="form-group" [ngClass]="{'has-error': categoryForm.get('categoryName').invalid 
                                        && categoryForm.get('categoryName').touched}">
@@ -54,24 +54,26 @@
     <div class="form-group">
         <div class="row">
             <div class="col-sm-3">
-                <label for="categoryImage">Image</label>
+                <label for="categoryImageName">Image</label>
             </div>
             <div class="col-sm-9">
-                <input id="categoryImage" 
+                <input id="categoryImageName" 
                        type="file" 
                        class="form-control"
-                       formControlName="categoryImage"
+                       formControlName="categoryImageName"
                        (change)="readUrl($event)" />
-                <br>
-                <div *ngIf="base64CategoryImage && base64CategoryImage.length > 0">
-                    <img [src]="base64CategoryImage" width="165px" height="84px" class="col-sm-4" style="padding-left: 0%;"> 
-                    <span (click)="deleteCategoryImage()">
+
+                <br> 
+                <div *ngIf="editMode && imageName != 'no_image.png'">
+                    <img src="{{imageBaseUrl}}/{{imageName}}" width="165px" height="84px" class="col-sm-4" style="padding-left: 0%;"> 
+                    <span class="delete-icon" (click)="deleteCategoryImage()">
                         <i class="fa fa-window-close fa-2x"></i>
                     </span>
                 </div>
             </div>
         </div>
     </div>
+
     
     <div class="row">
         <div class="col-sm-8"></div>

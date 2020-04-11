@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -32,17 +33,21 @@ public class Category {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "image")
-	private String image; // base64 string
-
 	@Column(name = "product_count")
 	private int productCount;
+	
+	@Column(name = "image_name")
+	private String imageName;
+	
+	@Transient
+	private String base64Image;
 
+	
 	public Category() {
-
+		
 	}
-
-	public Category(int id) {
+	
+	public Category(Integer id) {	
 		this.id = id;
 	}
 
@@ -70,14 +75,6 @@ public class Category {
 		this.description = description;
 	}
 
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 	public int getProductCount() {
 		return productCount;
 	}
@@ -86,10 +83,39 @@ public class Category {
 		this.productCount = productCount;
 	}
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", description=" + description + ", productCount="
-				+ productCount + "]";
+	public String getImageName() {
+		return imageName;
 	}
 
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getBase64Image() {
+		return base64Image;
+	}
+
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Category [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", productCount=");
+		builder.append(productCount);
+		builder.append(", imageName=");
+		builder.append(imageName);
+		builder.append(", base64ImageLength=");
+		builder.append((base64Image != null)?base64Image.length(): 0);
+		builder.append("]");
+		return builder.toString();
+	}
+	
 }

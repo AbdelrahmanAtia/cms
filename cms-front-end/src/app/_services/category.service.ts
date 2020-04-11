@@ -54,8 +54,8 @@ export class CategoryService {
     return this.http.delete<Response>(url);
   }
 
-  deleteCategoryImage(categoryId: number): Observable<Response> {
-    let url: string = this.baseUrl + "/categories/image/" + categoryId;
+  deleteCategoryImage(categoryName: string): Observable<Response> {
+    let url: string = this.baseUrl + "/categories/deleteImage/" + categoryName;
     return this.http.delete<Response>(url);
   }
 

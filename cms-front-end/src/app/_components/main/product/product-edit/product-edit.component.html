@@ -103,7 +103,7 @@
                 <br>
                 <div *ngIf="editMode && imageName != 'no_image.png'">
                     <img src="{{imageBaseUrl}}/{{imageName}}" width="165px" height="84px" class="col-sm-4" style="padding-left: 0%;"> 
-                    <span (click)="deleteProductImage()">
+                    <span class="delete-icon" (click)="deleteProductImage()">
                         <i class="fa fa-window-close fa-2x"></i>
                     </span>
                 </div>

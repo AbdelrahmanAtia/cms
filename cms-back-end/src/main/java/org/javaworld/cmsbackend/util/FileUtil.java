@@ -9,6 +9,10 @@ import java.util.Date;
 
 public class FileUtil {
 
+	/**
+	 * 
+	 * @return a unique number 
+	 */
 	public static String getUniqueFileName() {
 		return new Date().getTime() + "" + (int) (Math.random() * Integer.MAX_VALUE);
 	}
