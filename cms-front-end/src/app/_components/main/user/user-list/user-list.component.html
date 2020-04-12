@@ -68,11 +68,11 @@
             </td>
             <td>{{(u.active)? 'active': 'Inactive'}}</td>
             <td>
-                <span (click)="editUser(u.id)">
+                <span (click)="editUser(u.id)" style="cursor: pointer;">
                     <i class="fa fa-edit fa-2x col-sm-5"></i>
                 </span>
                 
-                <span (click)="deleteUser(u.id)">
+                <span (click)="deleteUser(u.id)" style="cursor: pointer;">
                     <i class="fa fa-trash fa-2x col-sm-3" aria-hidden="true"></i>
                 </span>
                 

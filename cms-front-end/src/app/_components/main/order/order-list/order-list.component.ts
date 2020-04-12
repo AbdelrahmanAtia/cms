@@ -77,20 +77,19 @@ export class OrderListComponent implements OnInit {
         if (response.status) {
           if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.orders.length == 1){
             //go to the previous page 
-            this.router.navigate(['main', 'orders', 'ALL', this.pageNumber - 1]);
+            this.router.navigate(['main', 'orders', this.orderStatus, this.pageNumber - 1]);
           } else {
-            //stay in the same page and remove the deleted record from the list
-            let updatedOrdersList:Order[] = this.orders.filter((element:Order, index:number, list:Order[])=> {
-              return (element.id != orderId);
-            });
-           this.orders = updatedOrdersList;
+            //stay in the same page
+            this.router.navigate(['main', 'orders', this.orderStatus, this.pageNumber, new Date().getTime()]);
           }
-        }
+        }  
         else {
           throw new Error(response.message);
         }
       },
-      (error) => { console.log(error); }
+      (error) => { 
+        console.log(error); 
+      }
     );
   }
   

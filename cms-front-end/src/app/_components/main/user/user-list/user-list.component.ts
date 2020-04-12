@@ -19,8 +19,8 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
 
   constructor(private userService: UserService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.listenToRouteParamChanges();
@@ -36,16 +36,16 @@ export class UserListComponent implements OnInit {
         this.initializeUsersList();
       });
   }
- 
+
   initializeUsersList(): void {
     this.userService.getUsers(this.searchTerm, this.userStatus, this.pageNumber).subscribe(
       (response: HttpResponse<User[]>) => {
         this.totalPages = +response.headers.get('totalPages');
         this.users = response.body;
-        for(let user of this.users){
-          if(user.authority.name == 'Administrator'){
+        for (let user of this.users) {
+          if (user.authority.name == 'Administrator') {
             user.authority.name = 'admin';
-          } else if(user.authority.name == 'Editor'){
+          } else if (user.authority.name == 'Editor') {
             user.authority.name = 'editor';
           }
         }
@@ -58,24 +58,24 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['main', 'users', 'new']);
   }
 
-  editUser(userId:number):void {
+  editUser(userId: number): void {
     this.router.navigate(['main', 'users', userId, 'edit']);
   }
 
   deleteUser(userId: number): void {
-  
+
     if (!confirm("Are you sure you want to delete selected record?")) {
       return;
     }
     this.userService.deleteUser(userId).subscribe(
       (response: Response) => {
         if (response.status) {
-          if(this.pageNumber > 1 && this.totalPages == this.pageNumber && this.users.length == 1){
+          if (this.pageNumber > 1 && this.totalPages == this.pageNumber && this.users.length == 1) {
             //go to the previous page 
-            this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber - 1]);
+            this.router.navigate(['main', 'users', (this.searchTerm.length > 0) ? this.searchTerm : " ", this.userStatus, this.pageNumber - 1]);
           } else {
             //stay in the same page
-            this.router.navigate(['users',  this.searchTerm + " ", this.userStatus, this.pageNumber]);
+            this.router.navigate(['main', 'users', (this.searchTerm.length > 0) ? this.searchTerm : " ", this.userStatus, this.pageNumber, new Date().getTime()]);
           }
         } else {
           throw new Error(response.message);
@@ -86,18 +86,18 @@ export class UserListComponent implements OnInit {
   }
 
   onSearchChange(event) {
-    if(event.keyCode == 13){      // enter key pressed
-      this.router.navigate(['main', 'users', this.searchTerm, 'All','1']);
+    if (event.keyCode == 13) {      // enter key pressed
+      this.router.navigate(['main', 'users', (this.searchTerm.length > 0) ? this.searchTerm : " ", 'All', '1']);
     }
-  } 
+  }
 
   onPageChange(i: number): void {
-    let pageNumber:number = this.pageNumber + i;
-    this.router.navigate(['main', 'users', this.searchTerm, this.userStatus, pageNumber]);
+    let pageNumber: number = this.pageNumber + i;
+    this.router.navigate(['main', 'users', (this.searchTerm.length > 0) ? this.searchTerm : " ", this.userStatus, pageNumber]);
   }
 
-  onStatusChange(status:string):void {
+  onStatusChange(status: string): void {
     this.router.navigate(['main', 'users', ' ', status, '1']);
   }
-  
+
 }

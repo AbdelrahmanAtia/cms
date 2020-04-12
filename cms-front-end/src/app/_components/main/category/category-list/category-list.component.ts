@@ -62,13 +62,10 @@ export class CategoryListComponent implements OnInit {
         if (response.status) {
           if (this.pageNumber > 1 && this.totalPages == this.pageNumber && this.categories.length == 1) {
             //go to the previous page 
-            this.router.navigate(['main', 'categories', ' ', this.pageNumber - 1]);
-          } else {
-            //stay in the same page and remove the deleted record from the list
-            let updatedCategoriesList: Category[] = this.categories.filter((element: Category, index: number, list: Category[]) => {
-              return (element.id != categoryId);
-            });
-            this.categories = updatedCategoriesList;
+            this.router.navigate(['main', 'categories', (this.searchTerm.length > 0) ? this.searchTerm : " ", this.pageNumber - 1]);
+          } else { 
+            //stay in the same page
+            this.router.navigate(['main', 'categories', (this.searchTerm.length > 0) ? this.searchTerm : " ", this.pageNumber, new Date().getTime()]);
           }
         } else {
           throw new Error(response.message);

@@ -14,6 +14,11 @@ drop table if exists category;
 CREATE SEQUENCE cmsapp.user_seq START WITH 2 INCREMENT BY 1;
 CREATE SEQUENCE cmsapp.category_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE cmsapp.product_seq START WITH 1 INCREMENT BY 1;
+
+CREATE SEQUENCE cmsapp.client_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE cmsapp.client_order_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE cmsapp.orderline_seq START WITH 1 INCREMENT BY 1;
+
 -- ------------------------------------------------------------------------------------------------
 create table cmsapp.user_authority(
 	id int primary key,
@@ -52,12 +57,12 @@ CREATE TABLE cmsapp.product (
   FOREIGN KEY (category_id) REFERENCES cmsapp.category (id) ON DELETE SET NULL
 );
 -- ------------------------------------------------------------------------------------------------
-create table client (
-	id int primary key auto_increment,
+create table cmsapp.client (
+	id int primary key,
     title varchar(255), 
-    name varchar(255),
-    email varchar(255),
-    phone varchar(255),
+    name varchar(255) NOT NULL,
+    email varchar(255) NOT NULL CHECK (email like '%_@_%'),
+    phone varchar(255) NOT NULL,
     company varchar(255),
     address varchar(255),
     city varchar(255),
@@ -66,61 +71,52 @@ create table client (
     country varchar(255),
     special_instructions varchar(255)
 );
-
-ALTER TABLE client CHANGE COLUMN name name VARCHAR(255) NOT NULL;
-ALTER TABLE client CHANGE COLUMN phone phone VARCHAR(255) NOT NULL;
-ALTER TABLE client CHANGE COLUMN email email VARCHAR(255) NOT NULL;
-ALTER TABLE client ADD CHECK (email like '%_@_%');
-ALTER TABLE client_order CHANGE COLUMN status status ENUM ('PENDING','CONFIRMED','CANCELLED') NOT NULL;
 -- ------------------------------------------------------------------------------------------------
-CREATE TABLE client_order (
-  id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  delivery_date bigint(20) NOT NULL,
-  tax double NOT NULL CHECK (tax > 0),
-  subtotal double NOT NULL CHECK (subtotal > 0),
-  total_price double NOT NULL CHECK (total_price > 0),
-  status enum('PENDING','CONFIRMED','CANCELLED') NOT NULL,
+CREATE TABLE cmsapp.client_order (
+  id NUMBER PRIMARY KEY NOT NULL,
+  delivery_date NUMBER NOT NULL,
+  tax NUMBER NOT NULL CHECK (tax > 0),
+  subtotal NUMBER NOT NULL CHECK (subtotal > 0),
+  total_price NUMBER NOT NULL CHECK (total_price > 0),
+  status varchar(255) NOT NULL,
   payment_method varchar(50) NOT NULL,
   ip_address varchar(50) DEFAULT NULL,
-  client_id int(11) NOT NULL,
-  created_at bigint(20) NOT NULL,
-  FOREIGN KEY (client_id) REFERENCES client (id)
+  client_id NUMBER NOT NULL,
+  created_at NUMBER NOT NULL,
+  FOREIGN KEY (client_id) REFERENCES cmsapp.client (id)
 );
 -- ------------------------------------------------------------------------------------------------
-CREATE TABLE order_line (
-  id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  quantity int(11) NOT NULL CHECK (quantity > 0),
-  price double NOT NULL CHECK (price > 0),
-  total_price double NOT NULL CHECK(total_price > 0),
-  product_id int(11) NOT NULL,
-  order_id int(11) NOT NULL,
-  FOREIGN KEY (product_id) REFERENCES product(id),
-  FOREIGN KEY (order_id)   REFERENCES client_order (id)
+CREATE TABLE cmsapp.order_line (
+  id NUMBER PRIMARY KEY NOT NULL,
+  quantity NUMBER NOT NULL CHECK (quantity > 0),
+  price NUMBER NOT NULL CHECK (price > 0),
+  total_price NUMBER NOT NULL CHECK(total_price > 0),
+  product_id NUMBER NOT NULL,
+  order_id NUMBER NOT NULL,
+  FOREIGN KEY (product_id) REFERENCES cmsapp.product(id),
+  FOREIGN KEY (order_id)   REFERENCES cmsapp.client_order (id)
 );
--- ------------------------------------------------------------------------------------------------
-
-
 -- ------------------------------------------------------------------------------------------------
 -- triggers
-delimiter $$
-create trigger after_product_insert after insert on product for each row
-begin
-	update category set product_count = product_count + 1 where id = new.category_id;
-end$$
 
-delimiter $$
-create trigger after_product_update after update on product for each row
-begin
-	update category set product_count = product_count - 1 where id = old.category_id;
-	update category set product_count = product_count + 1 where id = new.category_id;
-end$$
+CREATE TRIGGER cmsapp.after_product_insert AFTER INSERT ON cmsapp.product FOR EACH ROW
+BEGIN    
+	UPDATE cmsapp.category SET product_count = (product_count + 1) where id = :NEW.category_id;
+END;
+/
 
-delimiter $$
-create trigger after_product_delete after delete on product for each row
-begin
-	update category set product_count = product_count - 1 where id = old.category_id;
-end$$
-delimiter ;
+CREATE TRIGGER cmsapp.after_product_update AFTER UPDATE ON cmsapp.product FOR EACH ROW
+BEGIN
+	UPDATE cmsapp.category SET product_count = product_count - 1 WHERE id = :OLD.category_id;
+	UPDATE cmsapp.category SET product_count = product_count + 1 WHERE id = :NEW.category_id;
+END;
+/
+
+CREATE trigger cmsapp.after_product_delete AFTER DELETE ON cmsapp.product FOR EACH ROW
+BEGIN
+	UPDATE cmsapp.category SET product_count = product_count - 1 WHERE id = :OLD.category_id;
+END;
+/
 -- ------------------------------------------------------------------------------------------------
 -- reset data base tables
 delete  from order_line where id > 0;

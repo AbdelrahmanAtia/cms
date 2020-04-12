@@ -36,9 +36,11 @@ const routes: Routes = [
         {
           path: 'products', component: ProductComponent, children:
             [
-              { path: ':searchTerm/:categoryId/:pageNumber', component: ProductListComponent },
               { path: 'new', component: ProductEditComponent },
-              { path: ':id/edit', component: ProductEditComponent }
+              { path: ':id/edit', component: ProductEditComponent },
+              { path: ':searchTerm/:categoryId/:pageNumber', component: ProductListComponent },
+              //this route to make current time stamp an optional parameter 
+              { path: ':searchTerm/:categoryId/:pageNumber/:currentTimeStamp', component: ProductListComponent }
             ]
         },
 
@@ -47,7 +49,10 @@ const routes: Routes = [
             [
               { path: 'new', component: CategoryEditComponent },
               { path: ':id/edit', component: CategoryEditComponent },
-              { path: ':searchTerm/:pageNumber', component: CategoryListComponent }
+              { path: ':searchTerm/:pageNumber', component: CategoryListComponent },
+                //this route to make current time stamp an optional parameter 
+              { path: ':searchTerm/:pageNumber/:currentTimeStamp', component: CategoryListComponent }
+
             ]
         },
 
@@ -56,7 +61,9 @@ const routes: Routes = [
             [
               { path: 'new', component: OrderEditComponent },
               { path: ':id/edit', component: OrderEditComponent },
-              { path: ':orderStatus/:pageNumber', component: OrderListComponent }
+              { path: ':orderStatus/:pageNumber', component: OrderListComponent },
+              //this route to make current time stamp an optional parameter 
+              { path: ':orderStatus/:pageNumber/:currentTime', component: OrderListComponent },
             ]
         },
       
@@ -65,7 +72,9 @@ const routes: Routes = [
             [
               { path: 'new', component: UserEditComponent },
               { path: ':id/edit', component: UserEditComponent },
-              { path: ':searchTerm/:userStatus/:pageNumber', component: UserListComponent }
+              { path: ':searchTerm/:userStatus/:pageNumber', component: UserListComponent },
+              //this route to make current time stamp an optional parameter
+              { path: ':searchTerm/:userStatus/:pageNumber/:currentTimeStamp', component: UserListComponent }
             ]
         }
       ]

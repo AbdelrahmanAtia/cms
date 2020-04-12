@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -29,8 +30,9 @@ import org.javaworld.cmsbackend.validator.OnUpdate;
 public class Order {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_order_seq_gen")
+	@SequenceGenerator(sequenceName = "client_order_seq", allocationSize = 1, name = "client_order_seq_gen")
 	@NotNull(groups = { OnUpdate.class })
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 

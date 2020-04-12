@@ -83,13 +83,10 @@ export class ProductListComponent implements OnInit {
         if (response.status) { 
           if (this.pageNumber > 1 && this.totalPages == this.pageNumber && this.products.length == 1) {
             //go to the previous page 
-            this.router.navigate(['main', 'products', this.searchTerm, this.categoryId, this.pageNumber - 1]);
+            this.router.navigate(['main', 'products', (this.searchTerm.length > 0) ? this.searchTerm : " ", this.categoryId, this.pageNumber - 1]);
           } else {
-            //stay in the same page and remove the deleted record from the list
-            let updatedProductsList: Product[] = this.products.filter((element: Product, index: number, list: Product[]) => {
-              return (element.id != productId);
-            });
-            this.products = updatedProductsList;
+            //stay in the same page 
+            this.router.navigate(['main', 'products', (this.searchTerm.length > 0) ? this.searchTerm : " ", this.categoryId, this.pageNumber, new Date().getTime()]);
           }
         }
         else {
