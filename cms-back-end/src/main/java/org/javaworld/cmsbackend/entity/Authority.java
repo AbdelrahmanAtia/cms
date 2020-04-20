@@ -7,9 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
 @Table(name = "user_authority")
-public class Authority {
+public class Authority implements GrantedAuthority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +39,11 @@ public class Authority {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getAuthority() {
+		return this.name;
 	}
 
 	@Override

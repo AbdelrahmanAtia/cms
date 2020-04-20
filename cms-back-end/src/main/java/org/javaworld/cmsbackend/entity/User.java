@@ -1,6 +1,8 @@
 package org.javaworld.cmsbackend.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -132,13 +134,18 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		/*
+		 * the relationship between user and authority should be one to 
+		 * many which means that that user should have a list of authorities 
+		 * but i make it a one to one relationship for simplicity..
+		 */
+		List<GrantedAuthority> authorityList = new ArrayList<>();
+		authorityList.add(this.authority);
+		return authorityList;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return this.getName();
 	}
 
