@@ -25,6 +25,8 @@ import { OrderComponent } from './_components/main/order/order.component';
 import { OrderListComponent } from './_components/main/order/order-list/order-list.component';
 import { OrderEditComponent } from './_components/main/order/order-edit/order-edit.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { ProfileComponent } from './_components/main/profile/profile.component';
+import { AdminGuard } from './_guards/admin.guard';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { AuthGuard } from './_guards/auth.guard';
     UserEditComponent,
     LoginComponent,
     DashBoardComponent,
-    MainComponent
+    MainComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,7 @@ import { AuthGuard } from './_guards/auth.guard';
   providers: [
     DatePipe,
     AuthGuard,
+    AdminGuard,
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

@@ -2,15 +2,18 @@ package org.javaworld.cmsbackend.logging;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.javaworld.cmsbackend.util.DateUtil;
+import org.javaworld.cmsbackend.util.StringUtil;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 import org.springframework.web.util.WebUtils;
+
+import com.google.gson.stream.MalformedJsonException;
 
 public class LoggableDispatcherServlet extends DispatcherServlet {
 
@@ -39,40 +42,53 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		finally {
 			logRequest(request);
 			logResponse(response);
-            updateResponse(response);
+			updateResponse(response);
 		}
 	}
 
 	private void logRequest(HttpServletRequest requestToCache) {
-		RequestInfo requestInfo = new RequestInfo();
-		requestInfo.setRequestTime(DateUtil.getCurrentDate("dd/MM/yyyy HH:mm:ss"));
-		requestInfo.setMethod(requestToCache.getMethod());
-		requestInfo.setRemoteAddr(requestToCache.getRemoteAddr());
-		requestInfo.setLocalAddr(requestToCache.getLocalAddr());
-		requestInfo.setAuthType(getAuthType(requestToCache));
-		requestInfo.setContentType(requestToCache.getContentType());
-		requestInfo.setUrl(requestToCache.getRequestURL().toString());
-		requestInfo.setPayload(getRequestPayload(requestToCache));
+		System.out.println("******************************** Request Info *****************************");
+
+		// print request type and full url
+		StringBuilder requestInfo = new StringBuilder();
+		String requestMethod = requestToCache.getMethod();
+
+		requestInfo.append(requestMethod);
+		requestInfo.append("  " + requestToCache.getRequestURL());
+
+		String requestParams = requestToCache.getQueryString();
+		if (requestParams != null) {
+			requestInfo.append("?" + requestParams);
+		}
+
 		System.out.println(requestInfo);
+
+		// print request body
+		if (requestMethod.equals("POST") || requestMethod.equals("PUT")) {
+			System.out.println("PAYLOAD: ");
+			System.out.println(StringUtil.prettyJson(getRequestPayload(requestToCache)));
+		}
+
+		// print request headers
+		System.out.println("HEADERS: ");
+		Enumeration<String> headerNames = requestToCache.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String headerName = headerNames.nextElement();
+			String headerValue = requestToCache.getHeader(headerName);
+			if (headerName.toLowerCase().equals("authorization")) {
+				String[] splittedStr = headerValue.split(" ");
+				headerValue = (splittedStr.length > 0) ? splittedStr[0] : "";
+			}
+			System.out.println("	" + headerName + " = " + headerValue);
+		}
 	}
 
 	private void logResponse(HttpServletResponse response) {
-		ResponseInfo responseInfo = new ResponseInfo();
-		responseInfo.setStatusCode(response.getStatus());
-		responseInfo.setPayload(getResponsePayload(response));
-		System.out.println(responseInfo);
-	}
-
-	private String getAuthType(HttpServletRequest requestToCache) {
-		String authType = null;
-		String authHeader = requestToCache.getHeader("Authorization");
-		if (authHeader != null) {
-			String[] authHeaderSplitted = authHeader.split(" ");
-			if (authHeaderSplitted.length > 1) {
-				authType = authHeaderSplitted[0];
-			}
-		}
-		return authType;
+		System.out.println("******************************** Response Info ****************************");
+		System.out.println("STATUS CODE = " + response.getStatus());
+		System.out.println("PAYLOAD: ");
+		System.out.println(StringUtil.prettyJson(getResponsePayload(response)));
+		System.out.println("***************************************************************************");
 	}
 
 	private String getRequestPayload(HttpServletRequest request) {
@@ -114,10 +130,11 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		}
 		return "";
 	}
-	
+
 	private void updateResponse(HttpServletResponse response) throws IOException {
-        ContentCachingResponseWrapper responseWrapper =
-            WebUtils.getNativeResponse(response, ContentCachingResponseWrapper.class);
-        responseWrapper.copyBodyToResponse();
-    }
+		ContentCachingResponseWrapper responseWrapper = WebUtils.getNativeResponse(response,
+				ContentCachingResponseWrapper.class);
+		responseWrapper.copyBodyToResponse();
+	}
+
 }

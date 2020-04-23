@@ -31,9 +31,7 @@ export class LoginComponent implements OnInit {
 
     this.authenticationService.login(user).subscribe(
       (response:User) => {
-        // set user name and password in local storage
-        localStorage.setItem('currentUser', window.btoa(response.name + ':' + response.password));
-        
+        this.authenticationService.updateAuthenticationTokenAndAuthority(response.name, response.password, response.authority.name);
         //redirect to dashboard..
         this.router.navigate(['main/dashboard']);
       }

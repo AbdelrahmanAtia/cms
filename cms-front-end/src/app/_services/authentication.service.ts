@@ -18,13 +18,29 @@ export class AuthenticationService {
     return localStorage.getItem('currentUser');
   }
 
+  public getCurrentUserAuthority():string {
+    return localStorage.getItem('currentUserAuthority');
+  }
+
   login(user:User):Observable<User> {
     let url: string = this.baseUrl + "/authentication/login";
     return this.http.post<User>(url, user);
   }
 
-  logout() {
-      // remove user from local storage to log user out
-      localStorage.removeItem('currentUser');
+  updateAuthenticationTokenAndAuthority(username:string, password:string, authority:string):void {
+    localStorage.setItem('currentUser', window.btoa(username + ':' + password));
+    localStorage.setItem('currentUserAuthority' , authority);
   }
+
+  updateAuthenticationToken(username:string, password:string):void {
+    localStorage.setItem('currentUser', window.btoa(username + ':' + password));
+  }
+
+  logout():void {
+      // remove user info from local storage to log user out
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('currentUserAuthority');
+  }
+
+  
 }

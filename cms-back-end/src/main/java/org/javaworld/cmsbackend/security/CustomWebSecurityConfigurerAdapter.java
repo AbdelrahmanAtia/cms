@@ -28,7 +28,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 							.antMatchers("/api/authentication/login").permitAll()
 							.antMatchers("/api/products/getImage/*").permitAll()
 							.antMatchers("/api/categories/getImage/*").permitAll()
-							.antMatchers("/api/users").hasAuthority("Administrator")
+							.antMatchers("/api/users/**").hasAuthority("Administrator")
 					.anyRequest().authenticated()
 					.and().httpBasic(); // basic authentication
 		

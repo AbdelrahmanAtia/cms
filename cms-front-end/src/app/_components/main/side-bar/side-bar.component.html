@@ -7,7 +7,16 @@
 <br>
 <button type="button" class="btn btn-default btn-block" (click)="viewProducts()">Products</button> 
 <br>
-<button type="button" class="btn btn-default btn-block" (click)="viewUsers()">Users</button> 
+
+<button *ngIf="userAuthority == 'Administrator'"
+         type="button" 
+         class="btn btn-default btn-block" (click)="viewUsers()">Users</button> 
+         
+         
+<button *ngIf="userAuthority == 'Editor'"
+         type="button" 
+         class="btn btn-default btn-block" (click)="viewUserProfile()">Profile</button> 
+
 <br>
 <button type="button" class="btn btn-default btn-block" (click)="logout()">Logout</button>
 <br>

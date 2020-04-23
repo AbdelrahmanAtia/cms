@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMin;
@@ -25,8 +24,7 @@ import org.javaworld.cmsbackend.validator.OnUpdate;
 public class Product {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
-	@SequenceGenerator(sequenceName = "product_seq", allocationSize = 1, name = "product_seq_gen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull(groups = { OnUpdate.class })
 	@Column(name = "id")
 	private Integer id;

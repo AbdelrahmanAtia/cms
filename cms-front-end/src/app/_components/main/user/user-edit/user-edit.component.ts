@@ -42,7 +42,6 @@ export class UserEditComponent implements OnInit {
       //populate user form in case of edit mode
       this.userService.getUser(this.userId).subscribe(
         (response: User) => {
-          console.log(response);
           this.registerDate = response.registerDate;
           this.initializeUsersForm(response.email,
             response.password,
@@ -67,7 +66,7 @@ export class UserEditComponent implements OnInit {
     userName: string,
     userPhone: string,
     userState: string,
-    userAuthority: string): void {
+    userAuthority: string): void { 
 
     this.userForm = new FormGroup({
       'userEmail': new FormControl(userEmail, [Validators.required, Validators.email],CustomValidator.uniqueEmail(this.userService, this.userId)),
@@ -78,7 +77,7 @@ export class UserEditComponent implements OnInit {
       'userAuthority': new FormControl(userAuthority, Validators.required)
     });
   }
-
+ 
   submitUserForm(): void {
     let user = new User();
     user.id = this.userId;

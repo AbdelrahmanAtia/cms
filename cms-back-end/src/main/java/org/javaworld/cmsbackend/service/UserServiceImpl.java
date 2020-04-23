@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.UserRepository;
 import org.javaworld.cmsbackend.entity.User;
 import org.javaworld.cmsbackend.model.Response;
@@ -121,16 +120,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByName(username);
-		user.setPassword(user.getPassword().trim()); //temp soln
-		return user;
+		return userRepository.findByName(username);
 	}
-	
+
 	@Override
 	public UserDetails loadUserByEmail(String email) {
-		User user = userRepository.findByEmail(email);
-		user.setPassword(user.getPassword().trim());  //temp soln
-		return user;
+		return userRepository.findByEmail(email);
 	}
 
 }

@@ -9,10 +9,14 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 })
 export class SideBarComponent implements OnInit {
 
+
+  userAuthority:string;
+
   constructor(private router: Router,
               private authenticationService:AuthenticationService) { }
 
   ngOnInit() {
+    this.userAuthority = localStorage.getItem('currentUserAuthority');
   }
 
   viewDashboard(): void {
@@ -33,6 +37,10 @@ export class SideBarComponent implements OnInit {
 
   viewUsers(): void {
     this.router.navigate(['main', 'users', ' ', "All", 1]);
+  }
+
+  viewUserProfile(): void {
+    this.router.navigate(['main', 'profile']);
   }
 
   logout(): void {

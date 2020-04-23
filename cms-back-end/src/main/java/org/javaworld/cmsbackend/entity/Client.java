@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -22,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Client {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_seq_gen")
-	@SequenceGenerator(sequenceName = "client_seq", allocationSize = 1, name = "client_seq_gen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull(groups = { OnUpdate.class })
 	@Column(name = "id")
 	private Integer id;

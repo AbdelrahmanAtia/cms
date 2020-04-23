@@ -16,6 +16,9 @@ import { OrderComponent } from './_components/main/order/order.component';
 import { OrderListComponent } from './_components/main/order/order-list/order-list.component';
 import { OrderEditComponent } from './_components/main/order/order-edit/order-edit.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { ProfileComponent } from './_components/main/profile/profile.component';
+
+import { AdminGuard } from './_guards/admin.guard';
 
  
 const routes: Routes = [
@@ -24,7 +27,7 @@ const routes: Routes = [
   {
     path: 'login', component: LoginComponent
   },
-
+  
   {
     path: 'main', component: MainComponent, canActivate: [AuthGuard], children: 
       [
@@ -68,7 +71,7 @@ const routes: Routes = [
         },
       
         {
-          path: 'users', component: UserComponent, children:
+          path: 'users', component: UserComponent, canActivate:[AdminGuard], children:
             [
               { path: 'new', component: UserEditComponent },
               { path: ':id/edit', component: UserEditComponent },
@@ -76,6 +79,10 @@ const routes: Routes = [
               //this route to make current time stamp an optional parameter
               { path: ':searchTerm/:userStatus/:pageNumber/:currentTimeStamp', component: UserListComponent }
             ]
+        },
+
+        {
+          path: 'profile', component: ProfileComponent
         }
       ]
   }
