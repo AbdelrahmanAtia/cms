@@ -14,6 +14,7 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 export class ProfileComponent implements OnInit {
 
   profileForm: FormGroup;
+  hiddenAlert:boolean = true;
 
   constructor(private profileService: ProfileService,
               private router: Router,
@@ -53,18 +54,24 @@ export class ProfileComponent implements OnInit {
     profile.password = this.profileForm.value.userPassword;
     profile.name = this.profileForm.value.userName;
     profile.phone = this.profileForm.value.userPhone;
-
+ 
     this.profileService.updateCurrentUserProfile(profile).subscribe(
       (response: Profile) => {
-        console.log('profile info updated..')
+        console.log('profile info updated..');
+        this.hiddenAlert = false;
         //update authentication token
         this.authenticationService.updateAuthenticationToken(response.name, response.password);
+        //view a message that profile is updated
       },
       (error) => {
         console.log(error);
       }
     );
 
+  }
+
+  hideAlert():void {
+    this.hiddenAlert = true;
   }
 
 

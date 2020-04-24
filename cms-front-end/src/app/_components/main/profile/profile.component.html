@@ -1,5 +1,14 @@
 <br>
 
+<div *ngIf="!hiddenAlert" class="alert alert-info alert-dismissable" role="alert">
+    <button type="button" class="close" (click)='hideAlert()'>  
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <img style="float: left;margin-right: 10px;" width='40px' height='40px' src="../../../../assets/images/info-image.png">
+    Profile updated!<br>
+    All the changes made to your profile have been saved.
+</div>
+
 <form [formGroup]="profileForm" (ngSubmit)="submitProfileForm()">
 
     <div class="form-group" [ngClass]="{'has-error': profileForm.get('userEmail').invalid 

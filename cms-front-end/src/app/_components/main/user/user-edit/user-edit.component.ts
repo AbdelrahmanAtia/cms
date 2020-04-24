@@ -6,6 +6,7 @@ import { User } from 'src/app/_models/User';
 import { AuthorityService } from 'src/app/_services/authority.service';
 import { Authority } from 'src/app/_models/Authority';
 import { CustomValidator } from 'src/app/_validators/CustomValidator';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -23,6 +24,7 @@ export class UserEditComponent implements OnInit {
   registerDate:string;
 
   constructor(private userService: UserService,
+    private authenticationService:AuthenticationService,
     private authorityService: AuthorityService,
     private route: ActivatedRoute,
     private router: Router) { }
@@ -107,8 +109,13 @@ export class UserEditComponent implements OnInit {
   }
 
   private updateUser(user: User): void {
+
     this.userService.updateUser(user).subscribe(
-      (response: User) => this.router.navigate(['main', 'users', ' ','All', '1'])
+      (response: User) => {
+        //update authentication token
+        this.authenticationService.updateAuthenticationToken(response.name, response.password);
+        this.router.navigate(['main', 'users', ' ','All', '1']);
+      }
       , (error) => console.log(error)
     );
   }

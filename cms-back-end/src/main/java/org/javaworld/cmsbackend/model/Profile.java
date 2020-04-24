@@ -1,10 +1,24 @@
 package org.javaworld.cmsbackend.model;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class Profile {
 
+	@Email
+	@NotNull
+	@NotBlank
 	private String email;
+
+	@NotNull
+	@NotBlank
 	private String password;
+
+	@NotNull
+	@NotBlank
 	private String name;
+	
 	private String phone;
 
 	public Profile() {
