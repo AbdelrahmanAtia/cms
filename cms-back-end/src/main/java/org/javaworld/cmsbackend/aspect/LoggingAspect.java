@@ -20,10 +20,14 @@ public class LoggingAspect {
 	@Pointcut("execution(* org.javaworld.cmsbackend.service.*.*(..))")
 	private void forServicePackage() {}
 	
+	@Pointcut("execution(* org.javaworld.cmsbackend.exception.*.*(..))")
+	private void forExceptionPackage() {}
+
+	
 	@Pointcut("execution(* org.javaworld.cmsbackend.util.*.*(..))")
 	private void forUtilPackage() {}
 	
-	@Pointcut("forControllerPackage() || forServicePackage() || forUtilPackage()")
+	@Pointcut("forControllerPackage() || forServicePackage() || forExceptionPackage() || forUtilPackage()")
 	private void forAppFlow() {}
 	
 	@Before("forAppFlow()")

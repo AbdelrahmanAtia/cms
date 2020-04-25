@@ -13,8 +13,6 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 import org.springframework.web.util.WebUtils;
 
-import com.google.gson.stream.MalformedJsonException;
-
 public class LoggableDispatcherServlet extends DispatcherServlet {
 
 	private static final long serialVersionUID = 1L;

@@ -8,8 +8,10 @@ import org.javaworld.cmsbackend.service.UserService;
 import org.javaworld.cmsbackend.validator.OnCreate;
 import org.javaworld.cmsbackend.validator.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,40 +32,36 @@ public class UserRestController {
 	public List<User> getAllUsers() {
 		return userService.findAll();
 	}
-	
+
 	@GetMapping("/users")
-	public List<User> getUsers(@RequestParam String searchTerm, 
-			                   @RequestParam String userStatus,
-							   @RequestParam int pageNumber,
-							   @RequestParam int pageSize) {
+	public List<User> getUsers(@RequestParam String searchTerm, @RequestParam String userStatus,
+			@RequestParam int pageNumber, @RequestParam int pageSize) {
 		return userService.getUsers(searchTerm, pageNumber, pageSize, userStatus);
 	}
-	
+
 	@GetMapping("/users/{userId}")
 	public User getUser(@PathVariable int userId) {
 		return userService.findById(userId);
 	}
-	
+
 	@PostMapping("/users")
-	public User addUser(@Validated(value = {OnCreate.class})
-	                    @RequestBody User user) {
+	public User addUser(@Validated(value = { OnCreate.class }) @RequestBody User user) {
 		return userService.save(user);
 	}
-	
+
 	@PutMapping("/users")
-	public User updateUser(@Validated(value = {OnUpdate.class})
-			               @RequestBody User user) {
-		return userService.update(user);		
+	public User updateUser(@Validated(value = { OnUpdate.class }) @RequestBody User user) {
+		return userService.update(user);
 	}
-	
+
 	@DeleteMapping("/users/{userId}")
 	public Response deleteUser(@PathVariable int userId) {
 		return userService.deleteById(userId);
 	}
-	
+
 	@GetMapping("/users/isEmailExist/{email}/{userId}")
 	public boolean isUniqueEmail(@PathVariable String email, @PathVariable int userId) {
 		return userService.isUniqueEmail(email, userId);
 	}
-
+	
 }

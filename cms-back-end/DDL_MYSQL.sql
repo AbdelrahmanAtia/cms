@@ -106,6 +106,25 @@ create trigger after_product_delete after delete on product for each row
 begin
 	update category set product_count = product_count - 1 where id = old.category_id;
 end$$
+
+delimiter $$
+create trigger before_user_details_delete before delete on user_details for each row
+begin
+	if old.id = 1 then -- Abort when trying to remove this record
+		 -- 4500 means a generic sql state  value
+		 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'you can not delete this user'; 
+	end if;
+end$$
+
+delimiter $$
+create trigger before_user_details_update before update on user_details for each row
+begin
+	if (old.id = 1 and new.authority_id <> 1) then
+		 -- 4500 means a generic sql state  value
+		 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'you can not update this user authority'; 
+	end if;
+end$$
+
 delimiter ;
 -- ------------------------------------------------------------------------------------------------
 -- reset data base tables

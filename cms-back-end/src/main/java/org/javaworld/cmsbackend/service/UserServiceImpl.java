@@ -3,15 +3,14 @@ package org.javaworld.cmsbackend.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.UserRepository;
 import org.javaworld.cmsbackend.entity.User;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -102,11 +101,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public Response deleteById(int userId) {
-		try {
-			userRepository.deleteById(userId);
-		} catch (EmptyResultDataAccessException ex) {
-			return new Response(false, "user id not found - " + userId);
+		// the user with id = 1 can't be deleted
+		if (userId == Constants.SUPER_ADMIN_USER_ID) {
+			return new Response(false, "you can't delete this user");
 		}
+		userRepository.deleteById(userId);
 		return new Response(true, "Deleted user id - " + userId);
 	}
 	
@@ -127,5 +126,5 @@ public class UserServiceImpl implements UserService {
 	public UserDetails loadUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
-
+	
 }

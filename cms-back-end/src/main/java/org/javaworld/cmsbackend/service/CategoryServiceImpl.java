@@ -16,7 +16,6 @@ import org.javaworld.cmsbackend.CmsBackEndApplication;
 import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.CategoryRepository;
 import org.javaworld.cmsbackend.entity.Category;
-import org.javaworld.cmsbackend.entity.Product;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
