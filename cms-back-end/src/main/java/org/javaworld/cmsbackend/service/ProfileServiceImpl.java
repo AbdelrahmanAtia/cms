@@ -3,6 +3,7 @@ package org.javaworld.cmsbackend.service;
 import org.javaworld.cmsbackend.entity.User;
 import org.javaworld.cmsbackend.model.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Override
 	public Profile getCurrentUserProfile() {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -37,6 +38,13 @@ public class ProfileServiceImpl implements ProfileService {
 		updatedProfile.setName(updatedUser.getName());
 		updatedProfile.setPhone(updatedUser.getPhone());
 		return updatedProfile;
+	}
+
+	@Override
+	public boolean isUniqueEmail(String email) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = (User) authentication.getPrincipal();
+		return userService.isUniqueEmail(email, currentUser.getId());
 	}
 
 }

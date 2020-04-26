@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -57,9 +58,10 @@ public class User implements UserDetails {
 	@Column(name = "register_date")
 	private String registerDate;
 
-	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@Valid
 	@ManyToOne
 	@JoinColumn(name = "authority_id")
+	@NotNull(groups = { OnCreate.class, OnUpdate.class })
 	private Authority authority;
 
 	public User() {

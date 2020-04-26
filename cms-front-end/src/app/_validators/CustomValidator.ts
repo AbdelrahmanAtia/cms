@@ -1,6 +1,7 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { CategoryService } from '../_services/category.service';
+import { ProfileService } from '../_services/profile.service';
 
 export function GreaterThanZero(control: AbstractControl) {
   if (control.value <= 0) {
@@ -39,6 +40,13 @@ export class CustomValidator {
     }
   }
 
+  static uniqueProfileEmail(profileService: ProfileService) {
+    return (control: AbstractControl) => {
+      let email: string = control.value;
+      return profileService.isUniqueProfileEmail(email);
+    }
+  }
+
   static notBlank(control: AbstractControl): ValidationErrors {
     if (control.value && control.value.trim().length > 0) {
       return null;  //validation passes
@@ -57,7 +65,5 @@ export class CustomValidator {
       return { inValidDate: true }  //validation fails
     }
   }
-
-
 
 }

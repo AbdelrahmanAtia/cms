@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
       'userPassword': new FormControl(null, Validators.required)
     });
   }
-
+ 
   submitLoginForm(): void {
     let user = new User();
     user.email = this.loginForm.value.userEmail;
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
     this.authenticationService.login(user).subscribe(
       (response:User) => {
-        this.authenticationService.updateAuthenticationTokenAndAuthority(response.name, response.password, response.authority.name);
+        this.authenticationService.setAuthToken(response);
         //redirect to dashboard..
         this.router.navigate(['main/dashboard']);
       }

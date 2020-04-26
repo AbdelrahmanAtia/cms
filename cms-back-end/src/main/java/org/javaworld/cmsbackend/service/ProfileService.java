@@ -8,4 +8,6 @@ public interface ProfileService {
 
 	public Profile updateCurrentUserProfile(Profile profile);
 
+	public boolean isUniqueEmail(String email);
+
 }

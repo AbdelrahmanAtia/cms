@@ -2,6 +2,7 @@ package org.javaworld.cmsbackend.logging;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,6 +85,15 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 	private void logResponse(HttpServletResponse response) {
 		System.out.println("******************************** Response Info ****************************");
 		System.out.println("STATUS CODE = " + response.getStatus());
+		
+		// print response headers
+		System.out.println("HEADERS: ");
+		Collection<String> headerNames = response.getHeaderNames();
+		for(String headerName : headerNames) {
+			String headerVal = response.getHeader(headerName);
+			System.out.println("	" + headerName + " = " + headerVal);
+		}
+		
 		System.out.println("PAYLOAD: ");
 		System.out.println(StringUtil.prettyJson(getResponsePayload(response)));
 		System.out.println("***************************************************************************");

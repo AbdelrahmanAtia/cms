@@ -89,10 +89,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public User update(User user) {
-		if(!isUniqueEmail(user.getEmail(), user.getId())) {
+		if (!isUniqueEmail(user.getEmail(), user.getId())) {
 			throw new RuntimeException("email already exists");
 		}
+
+		//prevent updating the authority of the super admin user
+		if (user.getId() == Constants.SUPER_ADMIN_USER_ID
+				&& user.getAuthority().getId() != Constants.SUPER_ADMIN_USER_AUTHORITY_ID) {
+			throw new RuntimeException("you can't update this user authority");
+		}
+
 		String registerDate = this.findById(user.getId()).getRegisterDate();
 		user.setRegisterDate(registerDate);
 		return userRepository.save(user);

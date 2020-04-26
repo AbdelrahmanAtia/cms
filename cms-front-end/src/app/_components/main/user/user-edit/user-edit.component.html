@@ -9,17 +9,19 @@
             </div>
 
             <div class="col-sm-3">
-                <select id="userAuthority"  
-                        class="form-control"
-                        formControlName="userAuthority">
-                    <option *ngFor="let ua of userAuthorities" [value]="ua.name" [selected]="userForm.value.userAuthority == ua.name">
-                            {{ua.name}}
-                    </option>
-                </select>
-                <span *ngIf="userForm.get('userAuthority').invalid &&  
-                             userForm.get('userAuthority').touched && 
-                             userForm.get('userAuthority').errors['required']" class="help-block"> Please fill out this field.</span>
-
+                <div *ngIf='userId != superAdminUserId'>
+                    <select id="userAuthority"  class="form-control" formControlName="userAuthority">
+                        <option *ngFor="let ua of userAuthorities" [value]="ua.name" [selected]="userForm.value.userAuthority == ua.name">
+                                {{ua.name}}
+                        </option>
+                    </select>
+                    <span *ngIf="userForm.get('userAuthority').invalid &&  
+                                 userForm.get('userAuthority').touched && 
+                                 userForm.get('userAuthority').errors['required']" class="help-block"> Please fill out this field.</span>
+                </div>
+                <div *ngIf='userId == superAdminUserId'>
+                   {{userForm.value.userAuthority }}
+                </div>
             </div>
         </div>
     </div>

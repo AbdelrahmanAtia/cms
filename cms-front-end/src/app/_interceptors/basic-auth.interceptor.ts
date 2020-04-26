@@ -1,17 +1,19 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
 
 export class BasicAuthInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router) {}
+    constructor(private router: Router,
+                private authenticationService:AuthenticationService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         //don't add authorization header for login
         if (req.url.search('login') === -1) {
             req = req.clone({
-                setHeaders: {
-                    'Authorization': 'Basic ' + localStorage.getItem('currentUser')
+                setHeaders: { 
+                    'Authorization': 'Basic ' + this.authenticationService.getAuthToken()
                 }
             });
         }

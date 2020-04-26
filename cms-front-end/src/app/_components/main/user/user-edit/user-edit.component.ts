@@ -7,6 +7,7 @@ import { AuthorityService } from 'src/app/_services/authority.service';
 import { Authority } from 'src/app/_models/Authority';
 import { CustomValidator } from 'src/app/_validators/CustomValidator';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { Config } from 'src/app/_models/Config ';
 
 @Component({
   selector: 'app-user-edit',
@@ -22,6 +23,8 @@ export class UserEditComponent implements OnInit {
   userAuthorities: Authority[] = [];
   userStates: string[] = ['Active', 'InActive'];
   registerDate:string;
+
+  superAdminUserId = new Config().superAdminUserId;
 
   constructor(private userService: UserService,
     private authenticationService:AuthenticationService,
@@ -110,10 +113,14 @@ export class UserEditComponent implements OnInit {
 
   private updateUser(user: User): void {
 
+    console.log('updating the user..');
+    console.log(user);
     this.userService.updateUser(user).subscribe(
       (response: User) => {
-        //update authentication token
-        this.authenticationService.updateAuthenticationToken(response.name, response.password);
+        //update authentication token if current user is the updated user
+        if(user.id == this.authenticationService.getCurrentUserId()){
+          this.authenticationService.updateAuthenticationToken(response.name, response.password);
+        }
         this.router.navigate(['main', 'users', ' ','All', '1']);
       }
       , (error) => console.log(error)

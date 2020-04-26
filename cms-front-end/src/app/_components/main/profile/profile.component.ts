@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
   initializeProfileForm(userEmail: string, userPassword: string, userName: string, userPhone: string) {
     this.profileForm = new FormGroup(
       {
-        'userEmail': new FormControl(userEmail, [Validators.required, Validators.email]),
+        'userEmail': new FormControl(userEmail, [Validators.required, Validators.email], [CustomValidator.uniqueProfileEmail(this.profileService)]),
         'userPassword': new FormControl(userPassword, [Validators.required, CustomValidator.notBlank]),
         'userName': new FormControl(userName, [Validators.required, CustomValidator.notBlank]),
         'userPhone': new FormControl(userPhone)

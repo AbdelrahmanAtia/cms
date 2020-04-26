@@ -29,6 +29,10 @@
                              profileForm.get('userEmail').touched && 
                              profileForm.get('userEmail').errors['email']" class="help-block">Please enter a valid email address.</span>
 
+                <span *ngIf="profileForm.get('userEmail').invalid &&  
+                             profileForm.get('userEmail').touched && 
+                             profileForm.get('userEmail').errors['uniqueProfileEmail']" class="help-block">User with such email address exists.</span>
+
             </div>
         </div>
     </div> 
