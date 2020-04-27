@@ -16,14 +16,14 @@ CREATE TABLE category (
 	name varchar(255) not null,
 	description varchar(255),
 	product_count int,
-	image longblob
+	image_name varchar(255) NOT NULL
 );
 -- ------------------------------------------------------------------------------------------------
 CREATE TABLE product (
   id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   active bit(1) NOT NULL,
   description varchar(1000) DEFAULT NULL,
-  image longblob,
+  image_name varchar(255) not null,
   name varchar(255) NOT NULL,
   price double NOT NULL check (price > 0),
   category_id int(11) DEFAULT NULL,
@@ -149,7 +149,9 @@ SET foreign_key_checks = 1;
 -- add check constrain that field > 0
 ALTER TABLE table_name ADD CHECK (col_name > 0);
 
-
+-- dump a certain table to an sql file
+mysqldump -u root -p System cms_db category > C:\Users\Abdelrahman_Attya\Desktop\dump.sql
+-- ------------------------------------------------------------------------------------------------
 
 
 

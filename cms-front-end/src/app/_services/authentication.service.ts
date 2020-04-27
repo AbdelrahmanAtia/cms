@@ -21,8 +21,6 @@ export class AuthenticationService {
 
   // this method is called after login to set auth token and other info in local storage
   setAuthToken(user:User){
-    console.log('starting setAuthToken()')
-    console.log(user);
     localStorage.setItem('authToken', window.btoa(user.name + ':' + user.password));
     localStorage.setItem('currentUserAuthority' , user.authority.name);
     localStorage.setItem('currentUserId', user.id + '');
