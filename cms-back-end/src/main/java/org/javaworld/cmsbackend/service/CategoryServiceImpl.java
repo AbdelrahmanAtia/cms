@@ -19,7 +19,6 @@ import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	HttpServletResponse httpServletResponse;
-	
+
 	@Autowired
 	CmsBackEndApplication cmsBackEndApplication;
 
@@ -68,31 +67,40 @@ public class CategoryServiceImpl implements CategoryService {
 			theCategory = result.get();
 		} else {
 			// we didn't find the employee
-			throw new RuntimeException("Did not find category id - " + id);
+			throw new RuntimeException("Did not find a category with id  " + id);
 		}
 		return theCategory;
 	}
 
 	@Override
+	@Transactional
 	public Category save(Category category) {
+		
 		category.setId(0); // force creating a new entity
+		
 		String base64Image = category.getBase64Image();
+		String uniqueImageName = null;
+		
 		if (base64Image != null) {
-
 			// generate unique file name
-			String uniqueImageName = FileUtil.getUniqueFileName() + ".jpg";
+			uniqueImageName = FileUtil.getUniqueFileName() + ".jpg";
 			category.setImageName(uniqueImageName);
+		} else {
+			category.setImageName(Constants.NOT_FOUND_IMAGE_NAME);
+		}
+		
+		Category savedCategory = categoryRepository.save(category);
 
-			// save image to file system
+		// save image to file system
+		if (uniqueImageName != null) {
 			String path = createImagePath(uniqueImageName);
 			boolean saved = FileUtil.saveImageToFileSystem(path, base64Image);
 			if (!saved) {
 				throw new RuntimeException("failed to save the image to file system");
 			}
-		} else {
-			category.setImageName(Constants.NOT_FOUND_IMAGE_NAME);
 		}
-		return categoryRepository.save(category);
+
+		return savedCategory;
 	}
 
 	@Override
@@ -130,12 +138,26 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public Response deleteById(int categoryId) {
-		try {
-			categoryRepository.deleteById(categoryId);
-		} catch (EmptyResultDataAccessException ex) {
-			return new Response(false, "category id not found - " + categoryId);
+
+		Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
+		Category category = optionalCategory.get();
+		if (category == null) {
+			throw new RuntimeException("category with id " + categoryId + " not found");
+		}		
+		
+		categoryRepository.deleteById(categoryId);
+
+		// remove the image [if exists] from the file system
+		String categoryImageName = category.getImageName();
+		if(!categoryImageName.equals(Constants.NOT_FOUND_IMAGE_NAME)) {
+			String imagePath = createImagePath(categoryImageName);
+			boolean deleted = FileUtil.deleteImageFromFileSystem(imagePath);
+			if (!deleted) {
+				throw new RuntimeException("failed to delete the image from the file system");
+			}
 		}
-		return new Response(true, "Deleted category id - " + categoryId);
+		
+		return new Response(true, "Deleted the category with id  " + categoryId);
 	}
 
 	@Override
@@ -145,17 +167,17 @@ public class CategoryServiceImpl implements CategoryService {
 		if (rowsAffected == 0) {
 			return new Response(false, "no image found with name " + imageName);
 		}
-		
-		//remove the image from the file system
+
+		// remove the image from the file system
 		String imagePath = createImagePath(imageName);
 		boolean deleted = FileUtil.deleteImageFromFileSystem(imagePath);
 		if (!deleted) {
 			throw new RuntimeException("failed to delete the image from the file system");
 		}
-		
+
 		return new Response(true, "image deleted successfully");
 	}
-	
+
 	@Override
 	public void getCategoryImage(String imageName) throws IOException {
 		String path = createImagePath(imageName);
@@ -173,12 +195,10 @@ public class CategoryServiceImpl implements CategoryService {
 			return true;
 		return false;
 	}
-	
+
 	private String createImagePath(String imageName) {
 		return cmsBackEndApplication.getProjectFilesLocation() + File.separator + "categories_images" + File.separator
 				+ imageName;
 	}
-
-
 
 }

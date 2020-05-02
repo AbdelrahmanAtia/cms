@@ -20,7 +20,6 @@ import org.javaworld.cmsbackend.entity.Product;
 import org.javaworld.cmsbackend.model.Response;
 import org.javaworld.cmsbackend.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -141,12 +140,28 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Response deleteById(int id) {
-		try {
-			productRepository.deleteById(id);
-		} catch (EmptyResultDataAccessException ex) {
-			return new Response(false, "No product with id 42 exists!");
+	@Transactional
+	public Response deleteById(int productId) {
+
+		Optional<Product> optionalProduct = productRepository.findById(productId);
+		Product product = optionalProduct.get();
+		if (product == null) {
+			throw new RuntimeException("product with id " + productId + " not found");
 		}
+
+		productRepository.deleteById(productId);
+
+		String productImageName = product.getImageName();
+
+		// remove product image [if exists] from the file system
+		if (!productImageName.equals(Constants.NOT_FOUND_IMAGE_NAME)) {
+			String productImagePath = createImagePath(productImageName);
+			boolean deleted = FileUtil.deleteImageFromFileSystem(productImagePath);
+			if (!deleted) {
+				throw new RuntimeException("failed to delete an image from the file system");
+			}
+		}
+
 		return new Response(true, "product deleted successfully");
 	}
 
@@ -166,14 +181,14 @@ public class ProductServiceImpl implements ProductService {
 		if (rowsAffected == 0) {
 			return new Response(false, "no image found with name " + imageName);
 		}
-		
-		//remove the image from the file system
+
+		// remove the image from the file system
 		String imagePath = createImagePath(imageName);
 		boolean deleted = FileUtil.deleteImageFromFileSystem(imagePath);
 		if (!deleted) {
 			throw new RuntimeException("failed to delete image from file system");
 		}
-		
+
 		return new Response(true, "image deleted successfully");
 	}
 

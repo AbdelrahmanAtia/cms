@@ -13,7 +13,7 @@ drop table if exists category;
 -- ------------------------------------------------------------------------------------------------
 CREATE TABLE category (
 	id int primary key auto_increment,
-	name varchar(255) not null,
+	name varchar(255) unique not null,
 	description varchar(255),
 	product_count int,
 	image_name varchar(255) NOT NULL
@@ -92,20 +92,20 @@ delimiter $$
 create trigger after_product_insert after insert on product for each row
 begin
 	update category set product_count = product_count + 1 where id = new.category_id;
-end$$
+end $$
 
 delimiter $$
 create trigger after_product_update after update on product for each row
 begin
 	update category set product_count = product_count - 1 where id = old.category_id;
 	update category set product_count = product_count + 1 where id = new.category_id;
-end$$
+end $$
 
 delimiter $$
 create trigger after_product_delete after delete on product for each row
 begin
 	update category set product_count = product_count - 1 where id = old.category_id;
-end$$
+end $$
 
 delimiter $$
 create trigger before_user_details_delete before delete on user_details for each row
