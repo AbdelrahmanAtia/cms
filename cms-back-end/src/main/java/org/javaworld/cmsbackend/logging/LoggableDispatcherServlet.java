@@ -55,6 +55,7 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		requestInfo.append(requestMethod);
 		requestInfo.append("  " + requestToCache.getRequestURL());
 
+		//append request params if exist
 		String requestParams = requestToCache.getQueryString();
 		if (requestParams != null) {
 			requestInfo.append("?" + requestParams);
@@ -65,7 +66,7 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		// print request body
 		if (requestMethod.equals("POST") || requestMethod.equals("PUT")) {
 			System.out.println("PAYLOAD: ");
-			System.out.println(StringUtil.prettyJson(getRequestPayload(requestToCache)));
+			System.out.println(StringUtil.removeNewLineCharacters(getRequestPayload(requestToCache)));
 		}
 
 		// print request headers
@@ -95,7 +96,7 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		}
 		
 		System.out.println("PAYLOAD: ");
-		System.out.println(StringUtil.prettyJson(getResponsePayload(response)));
+		System.out.println(StringUtil.removeNewLineCharacters(getResponsePayload(response)));
 		System.out.println("***************************************************************************");
 	}
 
