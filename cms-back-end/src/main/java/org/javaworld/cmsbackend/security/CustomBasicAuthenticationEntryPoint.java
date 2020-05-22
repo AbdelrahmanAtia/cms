@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.javaworld.cmsbackend.model.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -17,13 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
+	private static final Logger logger = LoggerFactory.getLogger(CustomBasicAuthenticationEntryPoint.class);
+
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authEx)
 			throws IOException, ServletException {
 
-		System.out.println("statrting CustomBasicAuthenticationEntryPoint.commence()");
-		System.out.println("An error during authentication happened");
-		System.out.println("request url = " + request.getRequestURL());
+		logger.info("statrting CustomBasicAuthenticationEntryPoint.commence()");
+		logger.info("An error during authentication happened");
+		logger.info("request url = " + request.getRequestURL());
 		Response customResponse = new Response();
 		customResponse.setStatus(false);
 		customResponse.setMessage("invalid username or password");
@@ -33,7 +37,7 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType("application/json");
-		
+
 		PrintWriter writer = response.getWriter();
 		writer.println(jsonString);
 	}

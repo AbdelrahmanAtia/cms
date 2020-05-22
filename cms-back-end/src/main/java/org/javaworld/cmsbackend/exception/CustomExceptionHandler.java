@@ -1,6 +1,8 @@
 package org.javaworld.cmsbackend.exception;
 
 import org.javaworld.cmsbackend.model.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+	
 
+	private static final Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class);
+	
 	/**
 	 * this method handles exceptions thrown inside controllers
 	 */
@@ -43,7 +48,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
-		System.out.println(">> rest-api: inside method: handleExceptionInternal(..)");
+		logger.info(">> rest-api: inside method: handleExceptionInternal(..)");
 		ex.printStackTrace();
 		Response customResponse = new Response();
 		customResponse.setStatus(false);

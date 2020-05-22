@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.javaworld.cmsbackend.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -17,11 +19,13 @@ import org.springframework.web.util.WebUtils;
 public class LoggableDispatcherServlet extends DispatcherServlet {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = LoggerFactory.getLogger(LoggableDispatcherServlet.class);
 
 	@Override
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("starting doDispatch..");
-		System.out.println(request.getRequestURL().toString());
+		logger.info("starting doDispatch..");
+		logger.info(request.getRequestURL().toString());
 
 		if (!(request instanceof ContentCachingRequestWrapper)) {
 			request = new ContentCachingRequestWrapper(request);
@@ -35,7 +39,7 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 			super.doDispatch(request, response);
 		}
 		// catch(Exception e) {
-		// System.out.println("message = " + e.getMessage());
+		// logger.info("message = " + e.getMessage());
 		// e.printStackTrace();
 		// }
 		finally {
@@ -46,7 +50,7 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 	}
 
 	private void logRequest(HttpServletRequest requestToCache) {
-		System.out.println("******************************** Request Info *****************************");
+		logger.info("******************************** Request Info *****************************");
 
 		// print request type and full url
 		StringBuilder requestInfo = new StringBuilder();
@@ -61,16 +65,16 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 			requestInfo.append("?" + requestParams);
 		}
 
-		System.out.println(requestInfo);
+		logger.info(requestInfo.toString());
 
 		// print request body
 		if (requestMethod.equals("POST") || requestMethod.equals("PUT")) {
-			System.out.println("PAYLOAD: ");
-			System.out.println(StringUtil.removeNewLineCharacters(getRequestPayload(requestToCache)));
+			logger.info("PAYLOAD: ");
+			logger.info(StringUtil.removeNewLineCharacters(getRequestPayload(requestToCache)));
 		}
 
 		// print request headers
-		System.out.println("HEADERS: ");
+		logger.info("HEADERS: ");
 		Enumeration<String> headerNames = requestToCache.getHeaderNames();
 		while (headerNames.hasMoreElements()) {
 			String headerName = headerNames.nextElement();
@@ -79,25 +83,25 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 				String[] splittedStr = headerValue.split(" ");
 				headerValue = (splittedStr.length > 0) ? splittedStr[0] : "";
 			}
-			System.out.println("	" + headerName + " = " + headerValue);
+			logger.info("	" + headerName + " = " + headerValue);
 		}
 	}
 
 	private void logResponse(HttpServletResponse response) {
-		System.out.println("******************************** Response Info ****************************");
-		System.out.println("STATUS CODE = " + response.getStatus());
+		logger.info("******************************** Response Info ****************************");
+		logger.info("STATUS CODE = " + response.getStatus());
 		
 		// print response headers
-		System.out.println("HEADERS: ");
+		logger.info("HEADERS: ");
 		Collection<String> headerNames = response.getHeaderNames();
 		for(String headerName : headerNames) {
 			String headerVal = response.getHeader(headerName);
-			System.out.println("	" + headerName + " = " + headerVal);
+			logger.info("	" + headerName + " = " + headerVal);
 		}
 		
-		System.out.println("PAYLOAD: ");
-		System.out.println(StringUtil.removeNewLineCharacters(getResponsePayload(response)));
-		System.out.println("***************************************************************************");
+		logger.info("PAYLOAD: ");
+		logger.info(StringUtil.removeNewLineCharacters(getResponsePayload(response)));
+		logger.info("***************************************************************************");
 	}
 
 	private String getRequestPayload(HttpServletRequest request) {

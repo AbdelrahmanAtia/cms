@@ -3,6 +3,8 @@ package org.javaworld.cmsbackend.controller;
 import org.javaworld.cmsbackend.model.CustomResponse;
 import org.javaworld.cmsbackend.model.LoginInfo;
 import org.javaworld.cmsbackend.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +23,16 @@ public class AuthenticationRestController {
 
 	@Autowired
 	CustomResponse customResponse;
+	
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationRestController.class);
+
 
 	@PostMapping("/authentication/login")
 	public UserDetails login(@Validated @RequestBody LoginInfo loginInfo) {
 		String email = loginInfo.getEmail();
 		String password = loginInfo.getPassword();
 		UserDetails userDetails = userService.loadUserByEmail(email);
-		System.out.println("userDetails = " + userDetails);
+		logger.info("userDetails = " + userDetails);
 		if (userDetails != null && userDetails.getPassword().equals(password)) {
 			return userDetails;
 		} else {

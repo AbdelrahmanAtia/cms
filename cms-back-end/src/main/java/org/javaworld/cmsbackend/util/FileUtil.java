@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileUtil {
 
+	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 	/**
 	 * 
 	 * @return a unique number 
@@ -48,11 +52,11 @@ public class FileUtil {
 	 * @return  true if the file deleted successfully, false otherwise
 	 */
 	public static boolean deleteImageFromFileSystem(String path) {
-		System.out.println("starting deleteImageFromFileSystem() with path = " + path);
+		logger.info("starting deleteImageFromFileSystem() with path = " + path);
 		File file = new File(path);
-		System.out.println("exists = " + file.exists());
+		logger.info("exists = " + file.exists());
 		boolean deleted = file.delete();
-		System.out.println("deleted = " + deleted);
+		logger.info("deleted = " + deleted);
 		return deleted;
 	}
 

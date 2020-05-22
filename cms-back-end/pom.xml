@@ -36,11 +36,14 @@
 		</dependency>
 
 		<!-- oracle jdbc driver -->
+				
+		<!-- 
 		<dependency>
 			<groupId>com.oracle.jdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
 			<version>12.2.0.1</version>
 		</dependency>
+		 -->
 
 		<!-- mysql jdbc driver -->
 		<dependency>

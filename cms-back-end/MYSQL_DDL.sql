@@ -149,6 +149,12 @@ SET foreign_key_checks = 1;
 -- add check constrain that field > 0
 ALTER TABLE table_name ADD CHECK (col_name > 0);
 
+-- change user password to >> System
+ alter user 'root'@'localhost' identified by 'System';
+ 
+ --show triggers in well formatted way 
+show triggers \G;
+
 -- dump a certain table to an sql file
 mysqldump -u root -p System cms_db category > C:\Users\Abdelrahman_Attya\Desktop\dump.sql
 -- ------------------------------------------------------------------------------------------------
