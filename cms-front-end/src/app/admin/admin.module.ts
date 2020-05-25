@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 import { SideBarComponent } from './_components/main/side-bar/side-bar.component';
@@ -25,8 +24,7 @@ import { BasicAuthInterceptor } from './_interceptors/basic-auth.interceptor';
 import { AuthGuard } from './_guards/auth.guard';
 import { AdminGuard } from './_guards/admin.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { SharedModule } from '../shared/shared/shared.module';
 
 
 
@@ -53,10 +51,8 @@ import { BrowserModule } from '@angular/platform-browser';
     ProfileComponent
   ],
   imports: [
-    CommonModule,
     AdminRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
+    SharedModule 
   ],
   providers: [
     DatePipe,

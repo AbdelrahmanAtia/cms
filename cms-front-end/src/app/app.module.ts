@@ -3,25 +3,19 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AdminModule } from './admin/admin.module';
-import { CommonModule } from '@angular/common';
-
+import { ClientModule } from './client/client.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
-  imports: [
-    CommonModule,
+  imports: [ 
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AngularFontAwesomeModule,
-    AdminModule
+    AdminModule,
+    ClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

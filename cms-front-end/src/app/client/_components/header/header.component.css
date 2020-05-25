@@ -1,0 +1,9 @@
+
+.header{
+    border: 1px solid black; 
+    height: 60px; 
+    background-color: black;
+    color: red;
+    font-size: 22px;
+    padding-top: 9px;
+}
