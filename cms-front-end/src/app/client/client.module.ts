@@ -6,13 +6,15 @@ import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { ClientComponent } from './client.component';
 import { HeaderComponent } from './_components/header/header.component';
 import { CategoryListComponent } from './_components/category-list/category-list.component';
+import { ProductListComponent } from './_components/product-list/product-list.component';
 
 
 @NgModule({
   declarations: [
     ClientComponent,
     HeaderComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    ProductListComponent
   ],
   imports: [
     CommonModule,

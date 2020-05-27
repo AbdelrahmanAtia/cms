@@ -1,6 +1,41 @@
 
 .category-image {
-    width: 370px;
+    width: 365px;
     height: 230px;
-    padding-bottom: 30px;
+    filter: brightness(80%);
+    cursor: pointer;
+}
+
+.category-title{
+    background-color: #000000;
+    color: #fff;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    width: 365px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.head-title{
+    font-family: 'Helvetica Neue Lt Pro Ultra Light', Helvetica, Arial, sans-serif;
+    font-size: 35px;
+    text-align: center;
+    color: #d0391c;
+    margin-bottom: 13px;
+}
+
+.separator{
+    background: #d0391c;
+    width: 36px;
+    height: 4px;
+    margin-left: 49%;
+    margin-bottom: 30px;
+}
+
+.head-content{
+    color: #565b5e;
+    font-size: 17px;
+    text-align: center;
+    margin-bottom: 60px;
 }

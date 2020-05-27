@@ -1,7 +1,21 @@
-<div class="row">
+<br>
+<div class="row head-title"> Our Menu</div>
+
+<div class="row separator"></div>
+
+<div class="row head-content">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
+    incididunt ut labore et dolore <br>
+    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea    
+</div>
+
+<div class="row">  
     <div *ngFor='let c of categoryList'>
-        <div class='col-md-4' style="border: 1px solid green;">
+        <div class='col-md-4' style="padding-bottom: 30px;">
             <img class="category-image" src="{{imageBaseUrl}}/{{c.imageName}}">
+            <div  class="category-title">
+                {{c.name}} <br>
+            </div> 
         </div>
     </div>
 </div>
