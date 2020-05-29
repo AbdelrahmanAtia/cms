@@ -1,1 +1,14 @@
-<p>product-list works!</p>
+
+<br>
+<div class="row">
+
+    <div class="product-item" *ngFor='let p of products' >
+        <div class="product-item-name">{{p.name}}</div>
+        <div>
+            <img class="product-item-img" src="{{imageBaseUrl}}/{{p.imageName}}">
+            555
+        </div>
+        <div class="product-item-desc">{{p.description}}</div>
+    </div>
+       
+</div>
