@@ -31,3 +31,25 @@
     line-height: 1.63;
     margin-bottom: 30px;
 }
+
+.product-price {
+    float: right; 
+    margin-top: 50px;    
+    color: #d0391c;
+    font-size: 25px;
+    line-height: 1.2;
+    display: block;
+    float: right;
+}
+
+.product-form {
+    float: right; 
+    padding-top: 45px; 
+    margin-right: 10px; 
+    margin-left: 5px;
+}
+
+.qty-field {
+    margin-bottom: 7px; 
+    width: 90px;
+}
