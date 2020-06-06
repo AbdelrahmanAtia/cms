@@ -4,8 +4,8 @@ import { ProductService } from 'src/app/admin/_services/product.service';
 import { HttpResponse } from '@angular/common/http';
 import { Product } from 'src/app/admin/_models/Product';
 import { Config } from 'src/app/admin/_models/Config ';
-import { Cart } from '../../_models/Cart';
 import { CartItem } from '../../_models/CartItem';
+import { CartService } from '../../_services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -21,7 +21,8 @@ export class ProductListComponent implements OnInit {
   imageBaseUrl: string = new Config().baseUrl + "/products/getImage";
 
   constructor(private activatedRoute: ActivatedRoute,
-    private productService: ProductService) { }
+              private productService: ProductService,
+              private cartService:CartService) { }
 
   ngOnInit() {
     this.listenToRouteParamChanges();
@@ -51,25 +52,13 @@ export class ProductListComponent implements OnInit {
 
     let qty: number = +(document.getElementById(productId.toString()).getAttribute('value'));
 
-    let itemExist:boolean = false;
-    Cart.cartItemList.forEach(item => {
-      if (item.productId == productId) {
-        item.productQuantity = qty;
-        itemExist = true;
-        return;
-      }
-    });
-
-    if(!itemExist){
-      let cartItem: CartItem = new CartItem();
-      cartItem.productId = productId;
-      cartItem.productName = productName;
-      cartItem.productPrice = productPrice;
-      cartItem.productQuantity = qty;
-      Cart.cartItemList.push(cartItem);
-    }
+    let cartItem: CartItem = new CartItem();
+    cartItem.productId = productId;
+    cartItem.productName = productName;
+    cartItem.productPrice = productPrice;
+    cartItem.productQuantity = qty;
     
-    console.log(Cart.cartItemList);
+    this.cartService.addToCart(cartItem);
   }
 
   onQuantityChange(event, productId: number): void {

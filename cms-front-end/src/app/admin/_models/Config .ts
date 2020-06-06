@@ -37,6 +37,11 @@ export class Config {
     
     //login component
     static loginRoute = ['/admin/login'];
+
+    // client categories component
+    static clientCategoriesRoute = ['/client/categories'];  
     
+    //client cart component
+    static clientCartRoute = ['/client/cart']; 
 
 }

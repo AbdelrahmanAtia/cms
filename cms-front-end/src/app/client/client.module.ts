@@ -7,6 +7,7 @@ import { ClientComponent } from './client.component';
 import { HeaderComponent } from './_components/header/header.component';
 import { CategoryListComponent } from './_components/category-list/category-list.component';
 import { ProductListComponent } from './_components/product-list/product-list.component';
+import { CartComponent } from './_components/cart/cart.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ProductListComponent } from './_components/product-list/product-list.co
     ClientComponent,
     HeaderComponent,
     CategoryListComponent,
-    ProductListComponent
+    ProductListComponent,
+    CartComponent
   ],
   imports: [
     CommonModule,

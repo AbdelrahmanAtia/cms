@@ -1,0 +1,50 @@
+<br>
+<div class='row'>
+    
+    <div class="col-sm-3">
+        <strong>Product</strong>
+    </div>
+    
+    <div class="col-sm-3 text-center">
+        <strong>Size & Price</strong>
+    </div>
+    
+    <div class="col-sm-2 text-center">
+        <strong>Quantity</strong>
+    </div>
+
+    <div class="col-sm-3 text-center">
+        <strong>Total price</strong>    
+    </div>
+
+    <div class="col-sm-1"></div>
+
+</div>
+<br>
+
+<div class="row cart-item" *ngFor='let cartItem of cartItemList'>
+
+    <div class="col-sm-3">
+        {{cartItem.productName}}
+    </div>
+
+    <div class="col-sm-3 text-center">
+        {{cartItem.productPrice}}
+    </div>
+
+    <div class="col-sm-2 text-center">
+        <input type="number" 
+               value="{{cartItem.productQuantity}}" 
+               class="form-control qty-field" 
+               onkeydown="return false">
+    </div>
+
+    <div class="col-sm-3 text-center">
+        $ {{cartItem.productPrice * cartItem.productQuantity}}
+    </div>
+
+    <div class="col-sm-1">X</div>
+
+
+
+</div>
