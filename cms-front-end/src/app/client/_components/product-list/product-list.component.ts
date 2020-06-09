@@ -17,6 +17,7 @@ export class ProductListComponent implements OnInit {
   categoryId: number;
   searchTerm: string = '';
   pageNumber: number = 1;
+  pageSize:number = -1; // disable pagging
   products: Product[] = [];
   imageBaseUrl: string = new Config().baseUrl + "/products/getImage";
 
@@ -38,7 +39,7 @@ export class ProductListComponent implements OnInit {
   }
 
   initializeProductsList(): void {
-    this.productService.getProducts(this.searchTerm, this.categoryId, this.pageNumber).subscribe(
+    this.productService.getProducts(this.searchTerm, this.categoryId, this.pageNumber, this.pageSize).subscribe(
       (response: HttpResponse<Product[]>) => {
         //this.totalPages = +response.headers.get('totalPages');
         this.products = response.body;

@@ -45,30 +45,24 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> getProducts(String name, int categoryId, int pageNumber, int pageSize) {
-
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		
+		Pageable pageable = null;
+		
+		if(pageSize != -1) {
+			pageable = PageRequest.of(pageNumber, pageSize);
+		}
+		
 		Category category = new Category(categoryId);
 		name = name.trim();
 		Page<Product> page = null;
 
 		if (categoryId == 0) {
-
-			if (name.length() == 0)
-				page = productRepository.findAll(pageable);
-			else
-				page = productRepository.findByNameIgnoreCaseContaining(name, pageable);
-
+			page = productRepository.findByNameIgnoreCaseContaining(name, pageable);
 		} else {
-
-			if (name.length() == 0)
-				page = productRepository.findByCategory(category, pageable);
-			else
-				page = productRepository.findByCategoryAndNameIgnoreCaseContaining(category, name, pageable);
-
+			page = productRepository.findByCategoryAndNameIgnoreCaseContaining(category, name, pageable);
 		}
 
 		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());
-
 		return page.hasContent() ? page.getContent() : new ArrayList<Product>();
 
 	}
@@ -196,5 +190,7 @@ public class ProductServiceImpl implements ProductService {
 		return cmsBackEndApplication.getProjectFilesLocation() + File.separator + "products_images" + File.separator
 				+ imageName;
 	}
+
+	
 
 }

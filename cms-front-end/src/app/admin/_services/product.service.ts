@@ -18,7 +18,7 @@ export class ProductService {
     return this.http.get<Product[]>(url);
   }
 
-  getProducts(searchTerm: string, categoryId: number, pageNumber: number): Observable<HttpResponse<Product[]>> {
+  getProducts(searchTerm: string, categoryId: number, pageNumber: number, pageSize: number): Observable<HttpResponse<Product[]>> {
     pageNumber--; // cause pageNumber starts at zero not 1 according to backend..
     let url: string = this.baseUrl + "/products";
 
@@ -27,7 +27,7 @@ export class ProductService {
         searchTerm: searchTerm,
         categoryId: categoryId.toString(),
         pageNumber: pageNumber.toString(),
-        pageSize: new Config().pageSize.toString()
+        pageSize: pageSize.toString()
       }
       , observe: 'response'
     });

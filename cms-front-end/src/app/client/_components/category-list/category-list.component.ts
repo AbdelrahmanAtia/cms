@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/admin/_services/category.service';
 import { Category } from 'src/app/admin/_models/Category';
 import { Config } from 'src/app/admin/_models/Config ';
@@ -11,27 +11,30 @@ import { Config } from 'src/app/admin/_models/Config ';
 })
 export class CategoryListComponent implements OnInit {
 
-  categoryList:Category[] = [];
-  imageBaseUrl:string = new Config().baseUrl + "/categories/getImage";
+  categoryList: Category[] = [];
+  imageBaseUrl: string = new Config().baseUrl + "/categories/getImage";
 
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private categoryService: CategoryService) { }
+  constructor(private router: Router,
+    private categoryService: CategoryService) { }
 
   ngOnInit() {
     this.initializeCategoriesList();
   }
 
   initializeCategoriesList() {
-      console.log('initializing category list..');
 
-      this.categoryService.getAllCategories().subscribe(
-        (response: Category[]) => {
-         this.categoryList = response;
-         console.log(this.categoryList);
-        },
-        (error) => { console.log(error) }
-      );
+    this.categoryService.getAllCategories().subscribe(
+      (response: Category[]) => {
+        this.categoryList = response;
+      },
+      (error) => { console.log(error) }
+    );
   }
-   
+
+  viewCategoryProducts(categoryId: number): void {
+    this.router.navigate(Config.clientProductsRoute(categoryId));
+  }
+
+
 }

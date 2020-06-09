@@ -57,7 +57,7 @@ export class ProductListComponent implements OnInit {
   }
 
   initializeProductsList(): void {
-    this.productService.getProducts(this.searchTerm, this.categoryId, this.pageNumber).subscribe(
+    this.productService.getProducts(this.searchTerm, this.categoryId, this.pageNumber, new Config().pageSize).subscribe(
       (response:HttpResponse<Product []>) => {
         this.totalPages = +response.headers.get('totalPages');
         this.products = response.body;

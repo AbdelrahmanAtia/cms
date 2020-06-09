@@ -1,6 +1,17 @@
 <div class="container" style="padding-left: 0px; padding-right: 0px;"> 
     <div class="row" class="header">
-        <div class="col-sm-1" (click)="viewCategories()">Menu</div>
-        <div class="col-sm-1" (click)="viewCart()">Cart</div>
+        <div class="col-sm-1 header-element" 
+             [ngClass]="{'active': selectedNav === 'menu'}"
+             (click)="viewCategories()">
+            <i class="fa fa-file-text-o" aria-hidden="true">&nbsp;Menu</i>
+        </div>
+
+        <div class="col-sm-1 header-element"  
+             [ngClass]="{'active': selectedNav === 'cart'}"
+             (click)="viewCart()">
+            <i class="fa fa-shopping-cart" aria-hidden="true">&nbsp;Cart</i>
+        </div>
+
+        <div class="col-sm-10"></div>
     </div>
-</div> 
+</div>  

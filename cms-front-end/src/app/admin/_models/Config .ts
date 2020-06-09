@@ -44,4 +44,8 @@ export class Config {
     //client cart component
     static clientCartRoute = ['/client/cart']; 
 
+    static clientProductsRoute(categoryId: number) {
+        return ['/client/categories/' + categoryId + '/products'];
+    }
+
 }

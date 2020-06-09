@@ -11,11 +11,11 @@
 
 <div class="row">  
     <div *ngFor='let c of categoryList'>
-        <div class='col-md-4' style="padding-bottom: 30px;">
+        <div class='col-md-4' style="padding-bottom: 30px;" (click)='viewCategoryProducts(c.id)'>
             <img class="category-image" src="{{imageBaseUrl}}/{{c.imageName}}">
             <div  class="category-title">
                 {{c.name}} <br>
             </div> 
-        </div>
+        </div> 
     </div>
 </div>

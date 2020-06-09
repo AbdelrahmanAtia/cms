@@ -1,9 +1,30 @@
 
 .header{
     border: 1px solid black; 
-    height: 60px; 
-    background-color: black;
-    color: red;
+    height: 60px;
+    background-color: #3D3938;
+    color: #F34C2A;
     font-size: 22px;
-    padding-top: 9px;
+    /*padding-top: 9px;*/
 }
+
+.header-element{
+    cursor: pointer;
+    /*border: 1px solid green;*/
+    margin-right: 4px;
+    height: 100%;
+    padding-top: 13px;
+}
+
+.header-element:hover{
+    background-color: black;
+    color: white;
+    border-bottom: 3px solid #D0391C;
+}
+
+.active{
+    background-color: black;
+    color: white;
+    border-bottom: 3px solid #D0391C;
+}
+
