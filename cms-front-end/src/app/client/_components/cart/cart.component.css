@@ -12,3 +12,8 @@
 .qty-field {
     background-color: #eee;
 }
+
+.fa-times{
+    color:#d0391c;
+    cursor: pointer;
+}

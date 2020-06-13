@@ -29,7 +29,7 @@
     </div>
 
     <div class="col-sm-3 text-center">
-        {{cartItem.productPrice}}
+        $ {{cartItem.productPrice}}
     </div>
 
     <div class="col-sm-2 text-center">
@@ -43,8 +43,116 @@
         $ {{cartItem.productPrice * cartItem.productQuantity}}
     </div>
 
-    <div class="col-sm-1">X</div>
-
-
-
+    <div class="col-sm-1" >
+        <i class="fa fa-times" (click)="deleteCartItem(cartItem.productId)"></i>
+    </div>
 </div>
+
+
+<form [formGroup]="orderForm" (ngSubmit)="submitOrderForm()">
+    <div class="row">
+        <div class="col-sm-4">
+            <label for="orderDate">Delivery date & time</label>
+            <input id="orderDate"
+                    type="datetime-local" 
+                    class="form-control" 
+                    formControlName="orderDate"/> 
+        </div>
+
+        <div class="col-sm-4">
+            <label for="clientName">Name</label>
+            <input id="clientName" 
+                   type="text" 
+                   class="form-control"  
+                   formControlName="clientName">
+        </div>
+
+        <div class="col-sm-4">
+            <label for="clientEmail">Email</label>
+            <input id="clientEmail" 
+                   type="text" 
+                   class="form-control"  
+                   formControlName="clientEmail">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+
+        <div class="col-sm-4">
+            <label for="clientPhone">Phone</label>
+            <input id="clientPhone" 
+                   type="text" 
+                   class="form-control"  
+                   formControlName="clientPhone">
+        </div>
+
+        <div class="col-sm-4">
+            <label for="clientCompany">Company</label>
+            <input id="clientCompany" 
+                    type="text" 
+                    class="form-control"  
+                    formControlName="clientCompany">
+        </div>
+
+        <div class="col-sm-4">
+            <label for="clientAddress">Address</label>
+            <input id="clientAddress" 
+                   type="text" 
+                   class="form-control"  
+                   formControlName="clientAddress">
+        </div>
+
+       
+    </div> 
+    <br>
+    <div class="row">
+
+        <div class="col-sm-4">
+            <label for="clientCity">City</label>
+            <input id="clientCity" 
+                   type="text" 
+                   class="form-control"  
+                   formControlName="clientCity">
+        </div>
+
+
+        <div class="col-sm-4">
+            <label for="clientState">State</label>
+            <input id="clientState" 
+                   type="text" 
+                   class="form-control"  
+                   formControlName="clientState">
+        </div>
+
+        <div class="col-sm-4">
+            <label for="clientZip">Zip</label>
+            <input id="clientZip" 
+                   type="text" 
+                   class="form-control"  
+                   formControlName="clientZip">
+        </div>       
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <label for="clientSpecialInstructions">Special instructions</label>    
+            <textarea id="clientSpecialInstructions" 
+                      type="text" 
+                      class="form-control"  
+                      formControlName="clientSpecialInstructions"
+                      rows="6"> </textarea>
+        </div>
+
+        <div class="col-sm-4">
+            <label for="orderPaymentMethod">Payment method</label>
+            <select id="orderPaymentMethod"
+                    class="form-control"
+                    formControlName="orderPaymentMethod">
+
+                <option>Cash</option>
+                <option>PayPal</option>
+            </select>
+        </div>
+    </div>
+</form>

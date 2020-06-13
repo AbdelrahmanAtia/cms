@@ -1,5 +1,6 @@
 
 <br>
+
 <div class="row">
 
     <div class="product-item" *ngFor='let p of products' >
@@ -11,17 +12,24 @@
                 <input id='{{p.id}}' 
                        type="number" 
                        step="1" 
-                       min="0"   
+                       min="0"
+                       value="0"
                        onkeypress="return event.charCode != 45"
                        class="form-control qty-field" 
                        (change)="onQuantityChange($event, p.id)">
-                <button type="button" class="btn btn-danger btn-block" (click)='addToCart(p.id, p.name, p.price)'>Order</button>
+               <button type="button" class="btn btn-danger btn-block" (click)='addToCart(p.id, p.name, p.price)'>Order</button>
             </div>
 
-            <div class="product-price">$ {{p.price}} x </div>
+            <div class="product-price"> 
+                $ {{p.price}} x <br> 
+                <span id='success_msg_{{p.id}}' 
+                      class="text-muted hidden">Added to cart</span>
+                
+                <span id='error_msg_{{p.id}}' 
+                      class="text-muted hidden">Enter quantity</span>
+            </div>
 
         </div>
         <div class="product-item-desc">{{p.description}}</div>
-    </div>
-       
+    </div>       
 </div>

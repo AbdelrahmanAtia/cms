@@ -10,6 +10,7 @@ export class CartService {
 
   constructor() {
 
+    /*
     let cartItem = new CartItem();
     cartItem.productName = 'Croissants';
     cartItem.productPrice = 1.2;
@@ -24,9 +25,13 @@ export class CartService {
 
     this.cartItemList.push(cartItem);
     this.cartItemList.push(cartItem2);
-    
-   }
+    */
 
+  }
+
+  getItems(): CartItem[] {
+    return this.cartItemList;
+  }
 
   addToCart(cartItem: CartItem): void {
     let itemExist: boolean = false;
@@ -43,9 +48,23 @@ export class CartService {
     }
   }
 
-  getItems(): CartItem[] {
-    return this.cartItemList;
+  deleteCartItem(productId:number){
+    this.cartItemList.forEach((item, index) => {
+      console.log("index = " + index);
+      if(item.productId == productId){
+        this.cartItemList.splice(index, 1);
+        return;
+      }
+    });
   }
 
+  getProductQuantity(productId: number): number {
+    for (let item of this.cartItemList) {
+      if (item.productId == productId) {
+        return item.productQuantity;
+      }
+    }
+    return 0;
+  }
 
 }
