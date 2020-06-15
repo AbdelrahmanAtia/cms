@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CartItem } from '../../_models/CartItem';
 import { CartService } from '../../_services/cart.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CustomValidator } from 'src/app/admin/_validators/CustomValidator';
 
 @Component({
   selector: 'app-cart',
@@ -11,8 +12,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class CartComponent implements OnInit {
 
   cartItemList: CartItem[] = [];
-
   orderForm:FormGroup;
+  minDate: string = this.formattedDate();
+
   
   constructor(private cartService:CartService) { }
 
@@ -20,7 +22,17 @@ export class CartComponent implements OnInit {
     this.cartItemList = this.cartService.getItems();
     this.orderForm = new FormGroup(
       {
-        'orderDate': new FormControl()
+        'orderDate': new FormControl(null, [Validators.required, CustomValidator.DateAfterNow(false)]),
+        'clientName': new FormControl(null, CustomValidator.notBlank),
+        'clientEmail': new FormControl(),
+        'clientPhone': new FormControl(),
+        'clientCompany': new FormControl(),
+        'clientAddress': new FormControl(),
+        'clientCity': new FormControl(),
+        'clientState': new FormControl(),
+        'clientZip': new FormControl(),
+        'clientSpecialInstructions': new FormControl(),
+        'orderPaymentMethod': new FormControl()
 
       }
     );
@@ -29,6 +41,39 @@ export class CartComponent implements OnInit {
   deleteCartItem(productId:number): void {
     console.log('starting deleteCartItem()')
     this.cartService.deleteCartItem(productId);
+  }
+
+  private formattedDate(): string {
+    let current_datetime = new Date();
+    let year: number = current_datetime.getFullYear();
+
+    let month: string = (current_datetime.getMonth() + 1).toString();
+    if (month.length == 1) {
+      month = '0' + month;
+    }
+
+    let day: string = current_datetime.getDate().toString();
+    if (day.length == 1) {
+      day = '0' + day;
+    }
+
+    let hours: string = current_datetime.getHours().toString();
+    if (hours.length == 1) {
+      hours = '0' + hours;
+    }
+
+    let minutes: string = current_datetime.getMinutes().toString();
+    if (minutes.length == 1) {
+      minutes = '0' + minutes;
+    }
+
+    let formattedDateTime = year + "-" + month + "-" + day + 'T' + hours + ':' + minutes;
+    return formattedDateTime;
+  }
+
+  submitOrderForm() {
+    console.log("order submitted");
+    console.log(this.orderForm);
   }
 
 }

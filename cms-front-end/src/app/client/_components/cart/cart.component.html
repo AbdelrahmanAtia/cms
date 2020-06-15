@@ -51,20 +51,45 @@
 
 <form [formGroup]="orderForm" (ngSubmit)="submitOrderForm()">
     <div class="row">
-        <div class="col-sm-4">
+
+        
+        <div class="col-sm-4" [ngClass] = "{'has-error': orderForm.get('orderDate').invalid 
+                                                                 && orderForm.get('orderDate').touched}">
+
             <label for="orderDate">Delivery date & time</label>
+
             <input id="orderDate"
                     type="datetime-local" 
                     class="form-control" 
+                    [attr.min]="minDate"                      
                     formControlName="orderDate"/> 
-        </div>
+            
+            <span *ngIf="orderForm.get('orderDate').invalid &&  
+                         orderForm.get('orderDate').touched && 
+                         orderForm.get('orderDate').errors['required']"
+                         class="help-block">This field is required.</span>
 
-        <div class="col-sm-4">
+            <span *ngIf="orderForm.get('orderDate').invalid &&  
+                         orderForm.get('orderDate').touched && 
+                         orderForm.get('orderDate').errors['inValidDate'] &&
+                         !orderForm.get('orderDate').errors['required']"
+                         class="help-block">The date and time should be greater than the current.</span>
+
+        </div>
+        
+        
+        <div class="col-sm-4"  [ngClass] = "{'has-error': orderForm.get('clientName').invalid 
+                                                       && orderForm.get('clientName').touched}">
             <label for="clientName">Name</label>
             <input id="clientName" 
                    type="text" 
                    class="form-control"  
                    formControlName="clientName">
+            
+            <span *ngIf="orderForm.get('clientName').invalid &&  
+                         orderForm.get('clientName').touched && 
+                         orderForm.get('clientName').errors['blank']"
+                         class="help-block">This field is required.</span>
         </div>
 
         <div class="col-sm-4">
@@ -75,6 +100,7 @@
                    formControlName="clientEmail">
         </div>
     </div>
+    
     <br>
     <div class="row">
 
@@ -155,4 +181,12 @@
             </select>
         </div>
     </div>
+
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-danger btn-block" [disabled]="orderForm.invalid">Submit Order</button>
+        </div>
+    </div>
+
 </form>
