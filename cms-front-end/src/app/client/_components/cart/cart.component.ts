@@ -24,13 +24,13 @@ export class CartComponent implements OnInit {
       {
         'orderDate': new FormControl(null, [Validators.required, CustomValidator.DateAfterNow(false)]),
         'clientName': new FormControl(null, CustomValidator.notBlank),
-        'clientEmail': new FormControl(),
-        'clientPhone': new FormControl(),
-        'clientCompany': new FormControl(),
-        'clientAddress': new FormControl(),
-        'clientCity': new FormControl(),
-        'clientState': new FormControl(),
-        'clientZip': new FormControl(),
+        'clientEmail': new FormControl(null, [Validators.email, Validators.required]),
+        'clientPhone': new FormControl(null, CustomValidator.notBlank),
+        'clientCompany': new FormControl(null),
+        'clientAddress': new FormControl(null),
+        'clientCity': new FormControl(null),
+        'clientState': new FormControl(null),
+        'clientZip': new FormControl(null),
         'clientSpecialInstructions': new FormControl(),
         'orderPaymentMethod': new FormControl()
 

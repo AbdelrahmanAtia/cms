@@ -1,5 +1,5 @@
 <br>
-<div class='row'>
+<div class='row'> 
     
     <div class="col-sm-3">
         <strong>Product</strong>
@@ -92,24 +92,46 @@
                          class="help-block">This field is required.</span>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-4" [ngClass] = "{'has-error': orderForm.get('clientEmail').invalid 
+                                                      && orderForm.get('clientEmail').touched}">
+
             <label for="clientEmail">Email</label>
+
             <input id="clientEmail" 
                    type="text" 
                    class="form-control"  
                    formControlName="clientEmail">
+            
+            <span *ngIf="orderForm.get('clientEmail').invalid &&  
+                         orderForm.get('clientEmail').touched && 
+                         orderForm.get('clientEmail').errors['email']"
+                         class="help-block">Please enter a valid email address.</span>
+      
+            <span *ngIf="orderForm.get('clientEmail').invalid &&  
+                         orderForm.get('clientEmail').touched && 
+                         orderForm.get('clientEmail').errors['required']"
+                         class="help-block">This field is required.</span>
+            
+            
         </div>
     </div>
     
     <br>
     <div class="row">
 
-        <div class="col-sm-4">
+        <div class="col-sm-4" [ngClass] = "{'has-error': orderForm.get('clientPhone').invalid 
+                                                      && orderForm.get('clientPhone').touched}">
             <label for="clientPhone">Phone</label>
+            
             <input id="clientPhone" 
                    type="text" 
                    class="form-control"  
                    formControlName="clientPhone">
+            
+            <span *ngIf="orderForm.get('clientPhone').invalid &&  
+                         orderForm.get('clientPhone').touched && 
+                         orderForm.get('clientPhone').errors['blank']"
+                         class="help-block">This field is required.</span>
         </div>
 
         <div class="col-sm-4">
