@@ -1,5 +1,10 @@
+
+
+<div class="empty-cart" *ngIf="cartItemList.length == 0" >
+    Your cart is still empty.
+</div>
 <br>
-<div class='row'> 
+<div class='row' *ngIf="cartItemList.length > 0"> 
     
     <div class="col-sm-3">
         <strong>Product</strong>
@@ -36,11 +41,13 @@
         <input type="number" 
                value="{{cartItem.productQuantity}}" 
                class="form-control qty-field" 
-               onkeydown="return false">
+               onkeydown="return false"
+               min="1"
+               (change)="onQuantityChange($event, cartItem.productId)">
     </div>
 
     <div class="col-sm-3 text-center">
-        $ {{cartItem.productPrice * cartItem.productQuantity}}
+        $ {{cartItem.productPrice * cartItem.productQuantity | number : '1.2-2'}}
     </div>
 
     <div class="col-sm-1" >
@@ -48,8 +55,8 @@
     </div>
 </div>
 
-
-<form [formGroup]="orderForm" (ngSubmit)="submitOrderForm()">
+ 
+<form [formGroup]="orderForm" (ngSubmit)="submitOrderForm()" *ngIf="cartItemList.length > 0">
     <div class="row">
 
         
@@ -126,7 +133,7 @@
             <input id="clientPhone" 
                    type="text" 
                    class="form-control"  
-                   formControlName="clientPhone">
+                   formControlName="clientPhone"> 
             
             <span *ngIf="orderForm.get('clientPhone').invalid &&  
                          orderForm.get('clientPhone').touched && 
@@ -192,16 +199,27 @@
                       rows="6"> </textarea>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-4" [ngClass] = "{'has-error': orderForm.get('orderPaymentMethod').invalid 
+                                                      && orderForm.get('orderPaymentMethod').touched}">
+                                                      
             <label for="orderPaymentMethod">Payment method</label>
             <select id="orderPaymentMethod"
                     class="form-control"
                     formControlName="orderPaymentMethod">
+            
+                <option disabled [attr.selected] = "true">-- Choose --</option>
+                <option *ngFor="let paymentMethod of paymentMethods" [attr.value]="paymentMethod">
+                    {{paymentMethod}}
+                </option>
 
-                <option>Cash</option>
-                <option>PayPal</option>
             </select>
+            
+            <span *ngIf="orderForm.get('orderPaymentMethod').invalid &&  
+                         orderForm.get('orderPaymentMethod').touched && 
+                         orderForm.get('orderPaymentMethod').errors['required']"
+                   class="help-block">This field is required.</span>
         </div>
+
     </div>
 
     <br>

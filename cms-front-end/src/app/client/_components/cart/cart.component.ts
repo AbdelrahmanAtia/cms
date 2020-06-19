@@ -3,6 +3,7 @@ import { CartItem } from '../../_models/CartItem';
 import { CartService } from '../../_services/cart.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CustomValidator } from 'src/app/admin/_validators/CustomValidator';
+import { HttpEvent } from '@angular/common/http';
 
 @Component({
   selector: 'app-cart',
@@ -10,15 +11,16 @@ import { CustomValidator } from 'src/app/admin/_validators/CustomValidator';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-
+ 
   cartItemList: CartItem[] = [];
   orderForm:FormGroup;
   minDate: string = this.formattedDate();
-
+  paymentMethods: string[] = ["Cash"];
   
   constructor(private cartService:CartService) { }
 
   ngOnInit() { 
+    
     this.cartItemList = this.cartService.getItems();
     this.orderForm = new FormGroup(
       {
@@ -31,9 +33,8 @@ export class CartComponent implements OnInit {
         'clientCity': new FormControl(null),
         'clientState': new FormControl(null),
         'clientZip': new FormControl(null),
-        'clientSpecialInstructions': new FormControl(),
-        'orderPaymentMethod': new FormControl()
-
+        'clientSpecialInstructions': new FormControl(null),
+        'orderPaymentMethod': new FormControl(null, [Validators.required])
       }
     );
   }
@@ -74,6 +75,15 @@ export class CartComponent implements OnInit {
   submitOrderForm() {
     console.log("order submitted");
     console.log(this.orderForm);
+  }
+
+  onQuantityChange(event, productId:number){
+    let newQuantity:number = event.target.value;
+    this.cartItemList.forEach((item:CartItem)=>{
+      if(item.productId == productId){
+        item.productQuantity = newQuantity;
+      }
+    });    
   }
 
 }
