@@ -1,0 +1,168 @@
+<div class="success-msg" *ngIf="orderSubmitted">
+    
+    <h2>Order completed!</h2>
+    <br>
+    <span class="text-success">
+        Thank you! Your order has been sent successfully. Please, click on the "Start over" 
+        button if you wish to make a new order.
+    </span>
+    <br><br>
+    <button class="btn btn-danger" (click)="startOver()">Start over</button>
+</div>
+
+<br>
+<div *ngIf="order">
+    <div class='row'> 
+        
+        <div class="col-sm-3">
+            <strong>Product</strong>
+        </div>
+        
+        <div class="col-sm-3 text-center">
+            <strong>Size & Price</strong>
+        </div>
+        
+        <div class="col-sm-2 text-center">
+            <strong>Quantity</strong>
+        </div>
+
+        <div class="col-sm-3 text-center">
+            <strong>Total price</strong>    
+        </div>
+
+        <div class="col-sm-1"></div>
+
+    </div>
+    <br>
+
+    <div class="row cart-item" *ngFor='let cartItem of cartItemList'>
+
+        <div class="col-sm-3">
+            {{cartItem.productName}}
+        </div>
+
+        <div class="col-sm-3 text-center">
+            $ {{cartItem.productPrice}}
+        </div>
+
+        <div class="col-sm-2 text-center">
+            <input value="{{cartItem.productQuantity}}"
+                   class="form-control"
+                   readonly="true">
+        </div>
+
+        <div class="col-sm-3 text-center">
+            $ {{cartItem.productPrice * cartItem.productQuantity | number : '1.2-2'}}
+        </div>
+
+        <div class="col-sm-1" >
+            <!-- no delete icon-->
+        </div>
+    </div>
+
+    <br>
+    <div class="row" *ngIf="cartItemList.length > 0">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2" style="text-align: right;">
+            <strong>Sub total</strong><br><br>
+            <strong>Tax (10.00%)</strong><br><br>
+            <strong>Total</strong>
+        </div>
+
+        <div class="col-sm-3">
+            <strong>$ {{order.subtotal | number : '1.2-2'}}</strong><br><br>
+            <strong>$ {{0.1 * order.subtotal | number : '1.2-2'}}</strong><br><br>
+            <strong>$ {{(order.subtotal + 0.1 * order.subtotal)| number : '1.2-2'}}</strong>
+        </div>
+    </div>
+
+
+
+    <div>
+        <h2>Your details</h2><br><br>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Delivery Date</div>
+        <div class="col-sm-2 client-info">{{order.deliveryDate | date: 'dd-MM-yyyy, HH:mm'}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Name</div>
+        <div class="col-sm-2 client-info">{{order.client.name}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Email</div>
+        <div class="col-sm-2 client-info">{{order.client.email}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Phone</div>
+        <div class="col-sm-2 client-info">{{order.client.phone}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Company</div>
+        <div class="col-sm-2 client-info">{{order.client.company}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Address</div>
+        <div class="col-sm-2 client-info">{{order.client.address}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">City</div>
+        <div class="col-sm-2 client-info">{{order.client.city}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">State</div>
+        <div class="col-sm-2 client-info">{{order.client.state}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Zip</div>
+        <div class="col-sm-2 client-info">{{order.client.zip}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Special Instructions</div>
+        <div class="col-sm-2 client-info">{{order.client.specialInstructions}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2 details-label">Payment Method</div>
+        <div class="col-sm-2 client-info">{{order.paymentMethod}}</div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-danger btn-block" (click)="submitOrder()">Submit Order</button>
+        </div>
+
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-secondary btn-block" (click)="cancelOrder()">Cancel Order</button>
+        </div>
+    </div>
+    <br>
+</div> 
+
+<div *ngIf="order == undefined && !orderSubmitted">
+    No content to preview
+</div>
+
+

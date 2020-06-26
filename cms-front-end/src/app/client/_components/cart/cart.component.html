@@ -55,11 +55,32 @@
     </div>
 </div>
 
+
+<div class="row" *ngIf="cartItemList.length > 0">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-2" style="text-align: right;">
+        <strong>Sub total</strong><br><br>
+        <strong>Tax (10.00%)</strong><br><br>
+        <strong>Total</strong>
+    </div>
+
+    <div class="col-sm-3">
+        <strong>$ {{cartSubtotal | number : '1.2-2'}}</strong><br><br>
+        <strong>$ {{0.1 * cartSubtotal | number : '1.2-2'}}</strong><br><br>
+        <strong>$ {{(cartSubtotal + 0.1 * cartSubtotal)| number : '1.2-2'}}</strong>
+    </div>
+</div>
+
+<div *ngIf="cartItemList.length > 0">
+    <h2>Your details</h2><br><br>
+</div>
+
+
  
 <form [formGroup]="orderForm" (ngSubmit)="submitOrderForm()" *ngIf="cartItemList.length > 0">
     <div class="row">
 
-        
         <div class="col-sm-4" [ngClass] = "{'has-error': orderForm.get('orderDate').invalid 
                                                                  && orderForm.get('orderDate').touched}">
 
@@ -228,5 +249,6 @@
             <button type="submit" class="btn btn-danger btn-block" [disabled]="orderForm.invalid">Submit Order</button>
         </div>
     </div>
+    <br>
 
 </form>

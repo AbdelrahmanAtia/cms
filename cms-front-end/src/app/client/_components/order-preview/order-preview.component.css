@@ -1,0 +1,29 @@
+.details-label {
+    font-weight: 700;
+}
+
+.client-info{
+    color: #777;
+    font-weight: 700;
+}
+
+.cart-item {
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.success-msg {
+    background-color: #F3F1F2;
+    text-align: center;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.text-success{
+    color: #3c763d;
+    
+}

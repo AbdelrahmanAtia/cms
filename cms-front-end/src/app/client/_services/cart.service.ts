@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CartItem } from '../_models/CartItem';
+import { Order } from 'src/app/admin/_models/Order';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { CartItem } from '../_models/CartItem';
 export class CartService {
 
   cartItemList: CartItem[] = [];
+  order:Order;
 
   constructor() {
 
@@ -48,10 +50,10 @@ export class CartService {
     }
   }
 
-  deleteCartItem(productId:number){
+  deleteCartItem(productId: number) {
     this.cartItemList.forEach((item, index) => {
       console.log("index = " + index);
-      if(item.productId == productId){
+      if (item.productId == productId) {
         this.cartItemList.splice(index, 1);
         return;
       }
@@ -65,6 +67,16 @@ export class CartService {
       }
     }
     return 0;
+  }
+
+  getSubtotal(): number {
+    console.log("starting getSubtotal()")
+    let sum: number = 0;
+    this.cartItemList.forEach((item: CartItem) => {
+      sum = sum + item.productQuantity * item.productPrice;
+    });
+    console.log('sum = ' + sum);
+    return sum;
   }
 
 }

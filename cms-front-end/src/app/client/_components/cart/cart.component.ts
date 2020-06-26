@@ -3,7 +3,12 @@ import { CartItem } from '../../_models/CartItem';
 import { CartService } from '../../_services/cart.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CustomValidator } from 'src/app/admin/_validators/CustomValidator';
-import { HttpEvent } from '@angular/common/http';
+import { Order } from 'src/app/admin/_models/Order';
+import { Client } from 'src/app/admin/_models/Client';
+import { OrderLine } from 'src/app/admin/_models/OrderLine';
+import { OrderService } from 'src/app/admin/_services/order.service';
+import { Router } from '@angular/router';
+import { Config } from 'src/app/admin/_models/Config ';
 
 @Component({
   selector: 'app-cart',
@@ -16,12 +21,15 @@ export class CartComponent implements OnInit {
   orderForm:FormGroup;
   minDate: string = this.formattedDate();
   paymentMethods: string[] = ["Cash"];
+  cartSubtotal:number;
   
-  constructor(private cartService:CartService) { }
+  constructor(private cartService:CartService,
+              private orderService:OrderService,
+              private router: Router) { }
 
   ngOnInit() { 
-    
     this.cartItemList = this.cartService.getItems();
+    this.cartSubtotal = this.cartService.getSubtotal();
     this.orderForm = new FormGroup(
       {
         'orderDate': new FormControl(null, [Validators.required, CustomValidator.DateAfterNow(false)]),
@@ -42,6 +50,7 @@ export class CartComponent implements OnInit {
   deleteCartItem(productId:number): void {
     console.log('starting deleteCartItem()')
     this.cartService.deleteCartItem(productId);
+    this.cartSubtotal = this.cartService.getSubtotal();
   }
 
   private formattedDate(): string {
@@ -73,8 +82,42 @@ export class CartComponent implements OnInit {
   }
 
   submitOrderForm() {
-    console.log("order submitted");
-    console.log(this.orderForm);
+    let order: Order = new Order();
+    let client: Client = new Client();
+
+    order.subtotal = this.cartSubtotal;
+    order.tax = this.orderForm.value.orderTax;
+    //order.totalPrice = this.orderForm.value.orderTotalPrice;
+
+    order.deliveryDate = new Date(this.orderForm.value.orderDate).getTime(); //time stamp
+    order.orderStatus = "PENDING";
+    order.paymentMethod = this.orderForm.value.orderPaymentMethod;
+
+    client.name = this.orderForm.value.clientName;
+    client.email = this.orderForm.value.clientEmail;
+    client.phone = this.orderForm.value.clientPhone;
+    client.company = this.orderForm.value.clientCompany;
+    client.address = this.orderForm.value.clientAddress;
+    client.city = this.orderForm.value.clientCity;
+    client.state = this.orderForm.value.clientState;
+    client.zip = this.orderForm.value.clientZip;
+    client.specialInstructions = this.orderForm.value.clientSpecialInstructions;
+
+    order.client = client;
+
+    for (let cartItem of this.cartItemList) {
+        let orderLine:OrderLine = new OrderLine();
+        orderLine.price = cartItem.productPrice;
+        orderLine.product.id = cartItem.productId;
+        orderLine.quantity = cartItem.productQuantity;
+        order.orderLines.push(orderLine);
+    }
+ 
+    this.cartService.order = order;
+    
+    //navigate to order preview component..
+    this.router.navigate(Config.clientOrderPreviewRoute);
+
   }
 
   onQuantityChange(event, productId:number){
@@ -83,7 +126,9 @@ export class CartComponent implements OnInit {
       if(item.productId == productId){
         item.productQuantity = newQuantity;
       }
-    });    
+    });
+    //update sub total value
+    this.cartSubtotal = this.cartService.getSubtotal();
   }
 
 }
