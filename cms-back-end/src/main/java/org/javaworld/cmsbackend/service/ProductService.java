@@ -1,6 +1,5 @@
 package org.javaworld.cmsbackend.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Product;
@@ -20,8 +19,6 @@ public interface ProductService {
 
 	public Response deleteById(int id);
 
-	public void getProductImage(String imageName) throws IOException;
-	
 	public Response deleteProductImage(String imageName);
 
 }

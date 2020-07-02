@@ -1,9 +1,6 @@
 package org.javaworld.cmsbackend.service;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +8,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javaworld.cmsbackend.CmsBackEndApplication;
 import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.ProductRepository;
@@ -23,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -157,15 +152,6 @@ public class ProductServiceImpl implements ProductService {
 		}
 
 		return new Response(true, "product deleted successfully");
-	}
-
-	@Override
-	public void getProductImage(String imageName) throws IOException {
-		String path = createImagePath(imageName);
-		InputStream in = new FileInputStream(path);
-		httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		IOUtils.copy(in, httpServletResponse.getOutputStream());
-		in.close();
 	}
 
 	@Override

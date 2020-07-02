@@ -1,6 +1,5 @@
 package org.javaworld.cmsbackend.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Category;
@@ -19,8 +18,6 @@ public interface CategoryService {
 	public Category update(Category category);
 
 	public Response deleteById(int id);
-
-	public void getCategoryImage(String imageName) throws IOException;
 
 	public Response deleteCategoryImage(String imageName);
 

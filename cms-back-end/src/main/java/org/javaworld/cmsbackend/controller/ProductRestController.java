@@ -5,6 +5,7 @@ import java.util.List;
 import org.javaworld.cmsbackend.CmsBackEndApplication;
 import org.javaworld.cmsbackend.entity.Product;
 import org.javaworld.cmsbackend.model.Response;
+import org.javaworld.cmsbackend.service.AttachmentService;
 import org.javaworld.cmsbackend.service.ProductService;
 import org.javaworld.cmsbackend.validator.OnCreate;
 import org.javaworld.cmsbackend.validator.OnUpdate;
@@ -29,6 +30,9 @@ public class ProductRestController {
 
 	@Autowired
 	CmsBackEndApplication cmsBackEndApplication;
+	
+	@Autowired
+	private AttachmentService attachmentService;
 
 	@GetMapping("/products/all")
 	public List<Product> getAllProducts() {
@@ -66,9 +70,9 @@ public class ProductRestController {
 		return productService.deleteById(productId);
 	}
 
-	@GetMapping("/products/getImage/{imageName}")
-	public void getProductImage(@PathVariable String imageName) throws IOException {
-		productService.getProductImage(imageName);
+	@GetMapping("/products/products_images/{imageName}")
+	public void getProductImage() throws IOException {
+		attachmentService.getAttachment();
 	}
 
 	@DeleteMapping("/products/deleteImage/{imageName}")

@@ -179,15 +179,6 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void getCategoryImage(String imageName) throws IOException {
-		String path = createImagePath(imageName);
-		InputStream in = new FileInputStream(path);
-		httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		IOUtils.copy(in, httpServletResponse.getOutputStream());
-		in.close();
-	}
-
-	@Override
 	public boolean isUniqueCategoryName(String categoryName, int categoryId) {
 		Category category = categoryRepository.findByName(categoryName);
 		// the 2nd condition is for edit mode

@@ -24,7 +24,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler({ BadCredentialsException.class, Exception.class })
 	public ResponseEntity<Object> handleExceptionController(Exception ex, WebRequest request) {
-		ex.printStackTrace();
+		//ex.printStackTrace();
+		
+		logger.error("mmmmm", ex);
 
 		Response customResponse = new Response();
 		customResponse.setStatus(false);

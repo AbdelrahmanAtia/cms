@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.javaworld.cmsbackend.entity.Category;
 import org.javaworld.cmsbackend.model.Response;
+import org.javaworld.cmsbackend.service.AttachmentService;
 import org.javaworld.cmsbackend.service.CategoryService;
 import org.javaworld.cmsbackend.validator.OnCreate;
 import org.javaworld.cmsbackend.validator.OnUpdate;
@@ -26,6 +27,9 @@ public class CategoryRestController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private AttachmentService attachmentService;
 
 	@GetMapping("/categories/all")
 	public List<Category> getAllCategories() {
@@ -61,9 +65,9 @@ public class CategoryRestController {
 		return categoryService.deleteById(categoryId);
 	}
 	
-	@GetMapping("/categories/getImage/{imageName}")
-	public void getCategoryImage(@PathVariable String imageName) throws IOException {
-		categoryService.getCategoryImage(imageName);
+	@GetMapping("/categories/categories_images/{imageName}")
+	public void getCategoryImage() throws IOException {
+		attachmentService.getAttachment();
 	}
 
 	@DeleteMapping("/categories/deleteImage/{imageName}")
