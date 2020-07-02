@@ -1,35 +1,51 @@
-<configuration>
+<!--  schema validation not officially supported -->
 
-	<timestamp key="byDay" datePattern="yyyyMMdd'T'HHmmss" />
+<!--  
+<configuration
+    xmlns="http://ch.qos.logback/xml/ns/logback"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+ -->
+ 
+<configuration> 
 
-	<appender name="STDOUT"
-		class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
+	<appender name="OUTPUT-TO-CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>
-				%d{"yyyy-MM-dd HH:mm:ss.SSS"}  %-5level --- [%thread] %msg%n
+				%d{"yyyy-MM-dd HH:mm:ss.SSS"}  %-5level [%X{transactionId}] --- [%thread] %30logger{0} %msg%n
 			</pattern>
-			<!-- 
-			<pattern>
-				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
-			</pattern>
-			 -->
 		</encoder>
 	</appender>
-
+	
+	<appender name="OUTPUT-TO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/app_configs/cms/logs/project.log</file>
+		<encoder>
+			<pattern>
+				%d{"yyyy-MM-dd HH:mm:ss.SSS"}  %-5level [%X{transactionId}] --- [%thread] %30logger{0} %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${user.home}/app_configs/cms/logs/project.log.%d{"yyyy-MM-dd"}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	
+	<!-- u can change level to debug for more information -->
 	<root level="info">
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="OUTPUT-TO-CONSOLE" />
+		<appender-ref ref="OUTPUT-TO-FILE" />
 	</root>
 
 </configuration>
-
 <!-- 
 pattern explanation
 =====================
 
 date and time >> %d{"yyyy-MM-dd HH:mm:ss.SSS"}
 logging level >> %-5level
+transactionId >> [%X{transactionId}]
 three dashes  >> separator
 [%thread]     >> thread name
 log message   >> %msg
 new line      >> %n
  -->
+
