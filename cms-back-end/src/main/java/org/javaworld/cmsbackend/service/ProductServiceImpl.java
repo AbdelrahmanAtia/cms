@@ -173,7 +173,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	private String createImagePath(String imageName) {
-		return cmsBackEndApplication.getProjectFilesLocation() + File.separator + "products_images" + File.separator
+		return cmsBackEndApplication.getProjectFilesLocation() + File.separator +"products/products_images" + File.separator
 				+ imageName;
 	}
 

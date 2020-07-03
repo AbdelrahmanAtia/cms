@@ -14,6 +14,9 @@ export class Config {
         this.superAdminUserId = 1;
     }
 
+    static categoriesImagesBaseURL = "http://localhost:8080/cms/rest/api/categories/categories_images";
+    static productsImagesBaseURL = "http://localhost:8080/cms/rest/api/products/products_images";
+
     //dash-board component
     static dashBoardRoute = ['/admin/main/dashboard'];
 

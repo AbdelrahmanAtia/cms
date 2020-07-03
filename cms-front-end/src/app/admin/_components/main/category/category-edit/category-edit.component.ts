@@ -19,9 +19,9 @@ export class CategoryEditComponent implements OnInit {
   categoryId: number;
   categoryForm: FormGroup;
   base64CategoryImage: string | ArrayBuffer = null;
-  imageBaseUrl:string = new Config().baseUrl + "/categories/getImage";
+  categoriesImagesBaseURL:string = Config.categoriesImagesBaseURL;
   imageName:string = null;  //only set in case edit mode
-
+ 
 
   constructor(private categoryService: CategoryService,
               private route: ActivatedRoute,

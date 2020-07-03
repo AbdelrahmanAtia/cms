@@ -23,7 +23,8 @@ export class ProductListComponent implements OnInit {
   products: Product[] = []; 
   categories: Category[] = [];
 
-  imageBaseUrl:string = new Config().baseUrl + "/products/getImage";
+  productsImagesBaseURL:string = Config.productsImagesBaseURL;
+
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService,

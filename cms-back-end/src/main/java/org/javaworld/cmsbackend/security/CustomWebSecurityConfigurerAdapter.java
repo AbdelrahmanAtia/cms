@@ -26,8 +26,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 		httpSecurity.authorizeRequests()
 							.antMatchers(HttpMethod.OPTIONS).permitAll()  // no need for authorization token for options request
 							.antMatchers("/api/authentication/login").permitAll()
-							.antMatchers("/api/products/getImage/*").permitAll()
-							.antMatchers("/api/categories/getImage/*").permitAll()
+							.antMatchers("/api/products/products_images/*").permitAll()
+							.antMatchers("/api/categories/categories_images/*").permitAll()
 							.antMatchers("/api/users/**").hasAuthority("Administrator")
 					.anyRequest().authenticated()
 					.and().httpBasic(); // basic authentication

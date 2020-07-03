@@ -22,7 +22,7 @@ export class ProductEditComponent implements OnInit {
   productForm: FormGroup;
   categories: Category[] = [];
   base64ProductImage: string | ArrayBuffer = null;
-  imageBaseUrl:string = new Config().baseUrl + "/products/getImage";
+  productsImagesBaseURL:string = Config.productsImagesBaseURL;
   imageName:string = null;  //only set in case edit mode
 
   constructor(private productService: ProductService,

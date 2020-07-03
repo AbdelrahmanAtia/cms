@@ -188,7 +188,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	private String createImagePath(String imageName) {
-		return cmsBackEndApplication.getProjectFilesLocation() + File.separator + "categories_images" + File.separator
+		return cmsBackEndApplication.getProjectFilesLocation() + File.separator + "categories/categories_images" + File.separator
 				+ imageName;
 	}
 
