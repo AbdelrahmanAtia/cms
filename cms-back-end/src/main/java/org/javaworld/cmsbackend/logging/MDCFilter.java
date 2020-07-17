@@ -21,12 +21,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class MDCFilter extends OncePerRequestFilter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MDCFilter.class);
-
-
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		MDC.put("transactionId", UUID.randomUUID().toString());
+		String transactionId = UUID.randomUUID().toString();
+		MDC.put("transactionId", transactionId);
+		response.setHeader("transactionId", transactionId);
 		logger.info(">> rest-api: inside method: MDCFilter.doFilterInternal()");
 		filterChain.doFilter(request, response);
 	}

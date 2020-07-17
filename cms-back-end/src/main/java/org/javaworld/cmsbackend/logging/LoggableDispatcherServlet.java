@@ -43,9 +43,12 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		// e.printStackTrace();
 		// }
 		finally {
-			logRequest(request);
-			logResponse(response);
+			if (!request.getRequestURI().contains("/configs/logs/")) {
+				logRequest(request);
+				logResponse(response);
+			}
 			updateResponse(response);
+
 		}
 	}
 
@@ -149,5 +152,5 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 				ContentCachingResponseWrapper.class);
 		responseWrapper.copyBodyToResponse();
 	}
-
+	
 }

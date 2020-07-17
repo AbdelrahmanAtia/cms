@@ -23,5 +23,9 @@ public class CmsBackEndApplication {
 		return System.getProperty("user.home") + File.separator + "app_configs" + File.separator
 				+ this.getProjectName();
 	}
+	
+	public String getLogsFilesPath() {
+		return getProjectFilesLocation() + File.separator + "logs";
+	}
 
 }
