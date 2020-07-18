@@ -23,12 +23,16 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 	protected void configure(HttpSecurity httpSecurity) throws Exception {	
 		
 		httpSecurity.csrf().disable();
+        httpSecurity.headers().frameOptions().disable();
+
 		httpSecurity.authorizeRequests()
 							.antMatchers(HttpMethod.OPTIONS).permitAll()  // no need for authorization token for options request
 							.antMatchers("/api/authentication/login").permitAll()
 							.antMatchers("/api/products/products_images/*").permitAll()
 							.antMatchers("/api/categories/categories_images/*").permitAll()
 							.antMatchers("/api/configs/logs/*").permitAll()
+			                .antMatchers("/h2-console/**").permitAll()
+			                .antMatchers("/actuator/**").permitAll()
 							.antMatchers("/api/users/**").hasAuthority("Administrator")
 					.anyRequest().authenticated()
 					.and().httpBasic(); // basic authentication

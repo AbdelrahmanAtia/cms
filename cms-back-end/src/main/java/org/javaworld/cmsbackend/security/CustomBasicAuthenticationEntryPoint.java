@@ -2,6 +2,7 @@ package org.javaworld.cmsbackend.security;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,19 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 		logger.info("statrting CustomBasicAuthenticationEntryPoint.commence()");
 		logger.info("An error during authentication happened");
 		logger.info("request url = " + request.getRequestURL());
+		// print request headers
+		logger.info("HEADERS: ");
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String headerName = headerNames.nextElement();
+			String headerValue = request.getHeader(headerName);
+			if (headerName.toLowerCase().equals("authorization")) {
+				String[] splittedStr = headerValue.split(" ");
+				headerValue = (splittedStr.length > 0) ? splittedStr[0] : "";
+			}
+			logger.info("	" + headerName + " = " + headerValue);
+		}
+		
 		Response customResponse = new Response();
 		customResponse.setStatus(false);
 		customResponse.setMessage("invalid username or password");
