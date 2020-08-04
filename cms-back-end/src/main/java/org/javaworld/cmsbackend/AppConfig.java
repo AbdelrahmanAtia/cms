@@ -47,7 +47,7 @@ public class AppConfig {
 			ds = dataSourceBuilder.build();
 			ds.getConnection(); // to throw an exception if there is something wrong
 		} catch (Exception ex) {
-			// prevent using embeded data base in case os is not windows[production env]
+			// prevent using embedded data base in case OS is not windows[production env]
 			if (!OsDetector.isWindows()) {
 				return ds;
 			}
