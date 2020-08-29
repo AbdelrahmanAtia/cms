@@ -7,19 +7,19 @@ import org.javaworld.cmsbackend.model.Response;
 
 public interface CategoryService {
 
-	public List<Category> findAll();
+	List<Category> findAll();
 
-	public List<Category> getCategories(String searchTerm, int pageNumber, int pageSize);
+	List<Category> getCategories(String searchTerm, int pageNumber, int pageSize);
 
-	public Category findById(int id);
+	Category getCategoryById(int categoryId);
 
-	public Category save(Category category);
+	Category saveCategory(Category category);
 
-	public Category update(Category category);
+	Category updateCategory(Category category);
 
-	public Response deleteById(int id);
+	Response deleteCategoryById(int id);
 
-	public Response deleteCategoryImage(String imageName);
+	Response deleteCategoryImage(String imageName);
 
 	boolean isUniqueCategoryName(String categoryName, int categoryId);
 

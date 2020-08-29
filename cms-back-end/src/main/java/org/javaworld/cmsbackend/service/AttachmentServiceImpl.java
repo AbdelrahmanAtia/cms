@@ -44,11 +44,14 @@ public class AttachmentServiceImpl implements AttachmentService {
 		
 		logger.info("path = " + path);
 		
-		InputStream in = new FileInputStream(path);
-		httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		IOUtils.copy(in, httpServletResponse.getOutputStream());
-		in.close();
-
+		InputStream in = null;
+		try {
+			in = new FileInputStream(path);
+			httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
+			IOUtils.copy(in, httpServletResponse.getOutputStream());
+		} finally {
+			if(in != null) in.close();
+		}		
 	}
 
 }

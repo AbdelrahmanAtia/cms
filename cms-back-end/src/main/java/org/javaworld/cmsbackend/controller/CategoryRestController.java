@@ -45,24 +45,24 @@ public class CategoryRestController {
 
 	@GetMapping("/categories/{categoryId}")
 	public Category getCategory(@PathVariable int categoryId) {
-		return categoryService.findById(categoryId);
+		return categoryService.getCategoryById(categoryId);
 	}
 
 	@PostMapping("/categories")
 	public Category addCategory(@Validated(value = {OnCreate.class}) 
 			                    @RequestBody Category category) {
-		return categoryService.save(category);
+		return categoryService.saveCategory(category);
 	}
 
 	@PutMapping("/categories")
 	public Category updateCategory(@Validated(value = {OnUpdate.class})
 			                       @RequestBody Category category) {
-		return categoryService.update(category);
+		return categoryService.updateCategory(category);
 	}
 
 	@DeleteMapping("/categories/{categoryId}")
 	public Response deleteCategory(@PathVariable int categoryId) {
-		return categoryService.deleteById(categoryId);
+		return categoryService.deleteCategoryById(categoryId);
 	}
 	
 	@GetMapping("/categories/categories_images/{imageName}")

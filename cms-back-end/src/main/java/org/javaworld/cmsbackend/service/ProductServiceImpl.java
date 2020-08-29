@@ -57,98 +57,90 @@ public class ProductServiceImpl implements ProductService {
 			page = productRepository.findByCategoryAndNameIgnoreCaseContaining(category, name, pageable);
 		}
 
-		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());
+		httpServletResponse.addIntHeader("totalPages", page.getTotalPages());		
 		return page.hasContent() ? page.getContent() : new ArrayList<Product>();
-
 	}
 
 	@Override
-	public Product findById(int id) {
-		Optional<Product> result = productRepository.findById(id);
-		Product product = null;
-		if (result.isPresent())
-			product = result.get();
-		else
-			throw new RuntimeException("Did not find product id - " + id);
-		return product;
-	}
-
-	@Override
-	public Product save(Product product) {
-		product.setId(0); // force creating a new entity
-		String base64Image = product.getBase64Image();
-		if (base64Image != null) {
-
-			// generate unique file name
-			String uniqueImageName = FileUtil.getUniqueFileName() + ".jpg";
-			product.setImageName(uniqueImageName);
-
-			// save image to file system
-			String path = createImagePath(uniqueImageName);
-			boolean saved = FileUtil.saveImageToFileSystem(path, base64Image);
-			if (!saved) {
-				throw new RuntimeException("failed to save the image to file system");
-			}
-		} else {
-			product.setImageName(Constants.NOT_FOUND_IMAGE_NAME);
-		}
-		return productRepository.save(product);
-	}
-
-	@Override
-	public Product update(Product product) {
-
-		Product tempProduct = productRepository.findById(product.getId()).get();
-
-		if (product.getBase64Image() == null) {
-			// keep the old image
-			product.setImageName(tempProduct.getImageName());
-		} else {
-
-			// save the new image to the file system and update image name in data base
-			String uniqueImageName = FileUtil.getUniqueFileName() + ".jpg";
-			product.setImageName(uniqueImageName);
-
-			String path = createImagePath(uniqueImageName);
-			boolean saved = FileUtil.saveImageToFileSystem(path, product.getBase64Image());
-			if (!saved) {
-				throw new RuntimeException("failed to save the image to file system");
-			}
-
-			// delete old image from file system except no-image.png
-			if (!tempProduct.getImageName().equals(Constants.NOT_FOUND_IMAGE_NAME)) {
-				String oldImagePath = createImagePath(tempProduct.getImageName());
-				boolean deleted = FileUtil.deleteImageFromFileSystem(oldImagePath);
-				if (!deleted) {
-					throw new RuntimeException("failed to delete image from file system");
-				}
-			}
-		}
-
-		return productRepository.save(product);
+	public Product getProductById(int id) {
+		Optional<Product> optionalProduct = productRepository.findById(id);
+		return optionalProduct.orElseThrow(() -> {
+			return new RuntimeException("product with id " + id + " not found");
+		});
 	}
 
 	@Override
 	@Transactional
-	public Response deleteById(int productId) {
+	public Product saveProduct(Product product) {
+		
+		// force creating a new entity
+		product.setId(0); 
 
-		Optional<Product> optionalProduct = productRepository.findById(productId);
-		Product product = optionalProduct.get();
-		if (product == null) {
-			throw new RuntimeException("product with id " + productId + " not found");
+		//set product image name
+		String base64Image = product.getBase64Image();
+		String productImageName = (base64Image == null) ? 
+			Constants.NOT_FOUND_IMAGE_NAME : FileUtil.getUniqueFileName() + ".jpg";		
+		product.setImageName(productImageName);
+
+		//save product to the data base
+		Product savedProduct = productRepository.save(product);
+		
+		// save product image to file system
+		if (product.getBase64Image() != null) {
+			String path = createImagePath(savedProduct.getImageName());
+			FileUtil.saveImageToFileSystem(path, base64Image);
 		}
 
-		productRepository.deleteById(productId);
+		return savedProduct;
+	}
 
-		String productImageName = product.getImageName();
-
-		// remove product image [if exists] from the file system
-		if (!productImageName.equals(Constants.NOT_FOUND_IMAGE_NAME)) {
-			String productImagePath = createImagePath(productImageName);
-			boolean deleted = FileUtil.deleteImageFromFileSystem(productImagePath);
-			if (!deleted) {
-				throw new RuntimeException("failed to delete an image from the file system");
+	@Override
+	@Transactional
+	public Product updateProduct(Product product) {
+		
+		//get old product details
+		Optional<Product> optionalProduct = productRepository.findById(product.getId());
+		String oldImageName = optionalProduct.orElseThrow(() -> {
+			throw new RuntimeException("product with id " + product.getId() + " not found");
+		}).getImageName();
+		
+		//set product image name  >> keep old image in case base64Image is null
+		String productImageName = (product.getBase64Image() == null) ? 
+				oldImageName : FileUtil.getUniqueFileName() + ".jpg";		
+		product.setImageName(productImageName);
+		
+		//save product details to the data base
+		Product updatedProduct = productRepository.save(product);
+		
+		//save product image to file system and delete old image
+		if(product.getBase64Image() != null) {
+			String newImagePath = createImagePath(updatedProduct.getImageName());
+			FileUtil.saveImageToFileSystem(newImagePath, product.getBase64Image());
+			
+			if(!oldImageName.equals(Constants.NOT_FOUND_IMAGE_NAME)) {
+				FileUtil.deleteImageFromFileSystem(createImagePath(oldImageName));
 			}
+		}
+		
+		return updatedProduct;
+	}
+
+	@Override
+	@Transactional
+	public Response deleteProductById(int productId) {
+
+		//get product details
+		Optional<Product> optionalProduct = productRepository.findById(productId);
+		String productImageName = optionalProduct.orElseThrow(() -> {
+			return new RuntimeException("product with id " + productId + " not found");
+		}).getImageName();
+		
+		//delete product from data base
+		productRepository.deleteById(productId);
+		
+		//delete product image from file system
+		if (!productImageName.equals(Constants.NOT_FOUND_IMAGE_NAME)) {
+			FileUtil.deleteImageFromFileSystem(createImagePath(productImageName));
 		}
 
 		return new Response(true, "product deleted successfully");
@@ -157,26 +149,23 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional
 	public Response deleteProductImage(String imageName) {
+		
+		//delete image from data base
 		int rowsAffected = productRepository.deleteProductImage(imageName);
 		if (rowsAffected == 0) {
 			return new Response(false, "no image found with name " + imageName);
 		}
 
-		// remove the image from the file system
-		String imagePath = createImagePath(imageName);
-		boolean deleted = FileUtil.deleteImageFromFileSystem(imagePath);
-		if (!deleted) {
-			throw new RuntimeException("failed to delete image from file system");
-		}
-
+		// delete the image from the file system
+		FileUtil.deleteImageFromFileSystem(createImagePath(imageName));
+		
 		return new Response(true, "image deleted successfully");
 	}
 
 	private String createImagePath(String imageName) {
-		return cmsBackEndApplication.getProjectFilesLocation() + File.separator +"products/products_images" + File.separator
-				+ imageName;
+		return cmsBackEndApplication.getProjectFilesLocation()
+				+ File.separator + "products/products_images" 
+				+ File.separator + imageName;
 	}
-
-	
 
 }

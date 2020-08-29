@@ -33,19 +33,18 @@ public class Category {
 
 	@Column(name = "product_count")
 	private int productCount;
-	
+
 	@Column(name = "image_name")
 	private String imageName;
-	
+
 	@Transient
 	private String base64Image;
 
-	
 	public Category() {
-		
+
 	}
-	
-	public Category(Integer id) {	
+
+	public Category(int id) {
 		this.id = id;
 	}
 
@@ -110,10 +109,10 @@ public class Category {
 		builder.append(productCount);
 		builder.append(", imageName=");
 		builder.append(imageName);
-		builder.append(", base64ImageLength=");
-		builder.append((base64Image != null)?base64Image.length(): 0);
+		builder.append(", base64Image=");
+		builder.append(base64Image);
 		builder.append("]");
 		return builder.toString();
 	}
-	
+
 }

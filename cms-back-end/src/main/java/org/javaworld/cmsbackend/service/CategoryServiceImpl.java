@@ -1,9 +1,6 @@
 package org.javaworld.cmsbackend.service;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +8,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javaworld.cmsbackend.CmsBackEndApplication;
 import org.javaworld.cmsbackend.constants.Constants;
 import org.javaworld.cmsbackend.dao.CategoryRepository;
@@ -22,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -60,101 +55,85 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Category findById(int id) {
-		Optional<Category> result = categoryRepository.findById(id);
-		Category theCategory = null;
-		if (result.isPresent()) {
-			theCategory = result.get();
-		} else {
-			// we didn't find the employee
-			throw new RuntimeException("Did not find a category with id  " + id);
-		}
-		return theCategory;
+	public Category getCategoryById(int categoryId) {
+		Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
+		return optionalCategory.orElseThrow(() -> {
+			return new RuntimeException("Did not find a category with id  " + categoryId);
+		});
 	}
 
 	@Override
 	@Transactional
-	public Category save(Category category) {
-		
-		category.setId(0); // force creating a new entity
-		
+	public Category saveCategory(Category category) {
+
+		// force creating a new entity
+		category.setId(0);
+
+		// set category image name
 		String base64Image = category.getBase64Image();
-		String uniqueImageName = null;
-		
-		if (base64Image != null) {
-			// generate unique file name
-			uniqueImageName = FileUtil.getUniqueFileName() + ".jpg";
-			category.setImageName(uniqueImageName);
-		} else {
-			category.setImageName(Constants.NOT_FOUND_IMAGE_NAME);
-		}
-		
+		String categoryImageName = (base64Image == null) ? 
+				Constants.NOT_FOUND_IMAGE_NAME : FileUtil.getUniqueFileName() + ".jpg";
+		category.setImageName(categoryImageName);
+
+		// save category details to the data base
 		Category savedCategory = categoryRepository.save(category);
 
-		// save image to file system
-		if (uniqueImageName != null) {
-			String path = createImagePath(uniqueImageName);
-			boolean saved = FileUtil.saveImageToFileSystem(path, base64Image);
-			if (!saved) {
-				throw new RuntimeException("failed to save the image to file system");
-			}
+		// save category image to file system
+		if (base64Image != null) {
+			String path = createImagePath(savedCategory.getImageName());
+			FileUtil.saveImageToFileSystem(path, base64Image);
 		}
 
 		return savedCategory;
 	}
 
 	@Override
-	public Category update(Category category) {
-		Category tempCategory = categoryRepository.findById(category.getId()).get();
+	@Transactional
+	public Category updateCategory(Category category) {
+		
+		//get old category details
+		Optional<Category> optionalCategory = categoryRepository.findById(category.getId());
+		String oldImageName = optionalCategory.orElseThrow(() -> {
+			return new RuntimeException("Did not find a category with id  " + category.getId());
+		}).getImageName();		
+		
+		//set category image name  >> keep old image in case base64Image is null
+		String categoryImageName = (category.getBase64Image() == null) ? 
+				oldImageName : FileUtil.getUniqueFileName() + ".jpg";		
+		category.setImageName(categoryImageName);
+		
+		//save category details to the data base
+		Category updatedCategory = categoryRepository.save(category);
 
-		if (category.getBase64Image() == null) {
-			// keep the old image
-			category.setImageName(tempCategory.getImageName());
-		} else {
-
-			// save the new image to the file system and update image name in data base
-			String uniqueImageName = FileUtil.getUniqueFileName() + ".jpg";
-			category.setImageName(uniqueImageName);
-
-			String path = createImagePath(uniqueImageName);
-			boolean saved = FileUtil.saveImageToFileSystem(path, category.getBase64Image());
-			if (!saved) {
-				throw new RuntimeException("failed to save the image to the file system");
-			}
-
-			// delete old image from file system except no-image.png
-			if (!tempCategory.getImageName().equals(Constants.NOT_FOUND_IMAGE_NAME)) {
-				String oldImagePath = createImagePath(tempCategory.getImageName());
-				boolean deleted = FileUtil.deleteImageFromFileSystem(oldImagePath);
-				if (!deleted) {
-					throw new RuntimeException("failed to delete image from file system");
-				}
+		//save category image to file system and delete old image
+		if(category.getBase64Image() != null) {
+			String newImagePath = createImagePath(updatedCategory.getImageName());
+			FileUtil.saveImageToFileSystem(newImagePath, category.getBase64Image());
+			
+			if(!oldImageName.equals(Constants.NOT_FOUND_IMAGE_NAME)) {
+				FileUtil.deleteImageFromFileSystem(createImagePath(oldImageName));
 			}
 		}
-
-		return categoryRepository.save(category);
+		
+		return updatedCategory;
 	}
 
 	@Override
 	@Transactional
-	public Response deleteById(int categoryId) {
+	public Response deleteCategoryById(int categoryId) {
 
+		//get category details
 		Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
-		Category category = optionalCategory.get();
-		if (category == null) {
+		String categoryImageName = optionalCategory.orElseThrow(() -> {
 			throw new RuntimeException("category with id " + categoryId + " not found");
-		}		
+		}).getImageName();
 		
+		//delete category details from the data base
 		categoryRepository.deleteById(categoryId);
 
-		// remove the image [if exists] from the file system
-		String categoryImageName = category.getImageName();
+		// delete category image from the file system
 		if(!categoryImageName.equals(Constants.NOT_FOUND_IMAGE_NAME)) {
-			String imagePath = createImagePath(categoryImageName);
-			boolean deleted = FileUtil.deleteImageFromFileSystem(imagePath);
-			if (!deleted) {
-				throw new RuntimeException("failed to delete the image from the file system");
-			}
+			FileUtil.deleteImageFromFileSystem(createImagePath(categoryImageName));
 		}
 		
 		return new Response(true, "Deleted the category with id  " + categoryId);
@@ -163,17 +142,15 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public Response deleteCategoryImage(String imageName) {
+		
+		//delete image from data base
 		int rowsAffected = categoryRepository.deleteCategoryImage(imageName);
 		if (rowsAffected == 0) {
 			return new Response(false, "no image found with name " + imageName);
 		}
 
-		// remove the image from the file system
-		String imagePath = createImagePath(imageName);
-		boolean deleted = FileUtil.deleteImageFromFileSystem(imagePath);
-		if (!deleted) {
-			throw new RuntimeException("failed to delete the image from the file system");
-		}
+		// delete the image from the file system
+		FileUtil.deleteImageFromFileSystem(createImagePath(imageName));
 
 		return new Response(true, "image deleted successfully");
 	}
@@ -188,8 +165,9 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	private String createImagePath(String imageName) {
-		return cmsBackEndApplication.getProjectFilesLocation() + File.separator + "categories/categories_images" + File.separator
-				+ imageName;
+		return cmsBackEndApplication.getProjectFilesLocation() 
+				+ File.separator + "categories/categories_images" 
+				+ File.separator + imageName;
 	}
 
 }

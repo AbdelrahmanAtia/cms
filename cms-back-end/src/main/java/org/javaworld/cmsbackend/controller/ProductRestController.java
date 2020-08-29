@@ -50,24 +50,24 @@ public class ProductRestController {
 
 	@GetMapping("/products/{productId}")
 	public Product getProduct(@PathVariable int productId) {
-		return productService.findById(productId);
+		return productService.getProductById(productId);
 	}
 
 	@PostMapping("/products")
 	public Product addProduct(@Validated(value = { OnCreate.class }) 
 	                          @RequestBody Product product) {
-		return productService.save(product);
+		return productService.saveProduct(product);
 	}
 
 	@PutMapping("/products")
 	public Product updateProduct(@Validated(value = { OnUpdate.class }) 
 	                             @RequestBody Product product) {
-		return productService.update(product);
+		return productService.updateProduct(product);
 	}
 
 	@DeleteMapping("/products/{productId}")
 	public Response deleteProduct(@PathVariable int productId) {		
-		return productService.deleteById(productId);
+		return productService.deleteProductById(productId);
 	}
 
 	@GetMapping("/products/products_images/{imageName}")

@@ -1,6 +1,7 @@
 package org.javaworld.cmsbackend.exception;
 
 import org.javaworld.cmsbackend.model.Response;
+import org.javaworld.cmsbackend.util.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -24,20 +25,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler({ BadCredentialsException.class, Exception.class })
 	public ResponseEntity<Object> handleExceptionController(Exception ex, WebRequest request) {
-		//ex.printStackTrace();
 		
-		logger.error("mmmmm", ex);
-
+		ExceptionUtil.logExceptionDetails(ex);
+		
 		Response customResponse = new Response();
 		customResponse.setStatus(false);
 		customResponse.setMessage(ex.getMessage());
-
-		HttpStatus httpStatus = null;
-		if (ex instanceof BadCredentialsException) {
-			httpStatus = HttpStatus.UNAUTHORIZED;
-		} else {
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+		
+		HttpStatus httpStatus = (ex instanceof BadCredentialsException) ? 
+				HttpStatus.UNAUTHORIZED : HttpStatus.INTERNAL_SERVER_ERROR;		
 
 		return new ResponseEntity<>(customResponse, httpStatus);
 	}
@@ -51,11 +47,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		logger.info(">> rest-api: inside method: handleExceptionInternal(..)");
-		ex.printStackTrace();
+		
+		ExceptionUtil.logExceptionDetails(ex);
+
 		Response customResponse = new Response();
 		customResponse.setStatus(false);
 		customResponse.setMessage(ex.getMessage());
 		return new ResponseEntity<>(customResponse, headers, status);
 	}
+	
 
 }

@@ -11,13 +11,13 @@ public interface ProductService {
 
 	public List<Product> getProducts(String name, int categoryId, int pageNumber, int pageSize);
 
-	public Product findById(int id);
+	public Product getProductById(int id);
 
-	public Product save(Product product);
+	public Product saveProduct(Product product);
 
-	public Product update(Product product);
+	public Product updateProduct(Product product);
 
-	public Response deleteById(int id);
+	public Response deleteProductById(int id);
 
 	public Response deleteProductImage(String imageName);
 

@@ -48,7 +48,7 @@ public class Product {
 
 	@Column(name = "image_name")
 	private String imageName;
-	
+
 	@Transient
 	private String base64Image;
 
@@ -59,13 +59,6 @@ public class Product {
 
 	public Product() {
 
-	}
-
-	public Product(String name, String description, double price, boolean active) {
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.active = active;
 	}
 
 	public Integer getId() {
@@ -123,7 +116,7 @@ public class Product {
 	public void setBase64Image(String base64Image) {
 		this.base64Image = base64Image;
 	}
-	
+
 	public Category getCategory() {
 		return category;
 	}
@@ -147,14 +140,10 @@ public class Product {
 		builder.append(active);
 		builder.append(", imageName=");
 		builder.append(imageName);
-		builder.append(", base64ImageLength=");
-		builder.append((base64Image != null)?base64Image.length(): 0);
-		builder.append(", categoryId=");
-		builder.append(category.getId());
+		builder.append(", base64Image=");
+		builder.append(base64Image);
 		builder.append("]");
 		return builder.toString();
 	}
-
-	
 
 }
