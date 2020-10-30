@@ -1,12 +1,11 @@
 package org.javaworld.cmsbackend.config;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.javaworld.cmsbackend.CmsBackEndApplication;
@@ -26,7 +25,8 @@ public class ConfigController {
 
 	@Autowired
 	private CmsBackEndApplication cmsBackEndApplication;
-		
+	
+	/*
 	@GetMapping("/logs/{transactionId}")
 	public String getLogs(@PathVariable String transactionId) throws FileNotFoundException {
 		String logsFilePath = cmsBackEndApplication.getLogsFilesPath() + File.separator + "project.log";
@@ -46,6 +46,18 @@ public class ConfigController {
 		in.close();
 		return logs.toString();
 	}
+	*/
 	
-
+	//using streams
+	@GetMapping("/logs/{transactionId}")
+	public String getLogs_v2(@PathVariable String transactionId) throws IOException {
+		String logsFilePath = cmsBackEndApplication.getLogsFilesPath() + File.separator + "project.log";
+		Path path = Paths.get(logsFilePath);
+		try(Stream<String> lines = Files.lines(path)){
+			return lines.filter((line) -> {
+				return line.contains(transactionId);
+			}).collect(Collectors.joining(System.lineSeparator()));
+		}	
+	}
+	
 }
