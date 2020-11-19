@@ -125,7 +125,7 @@ public class CategoryServiceImpl implements CategoryService {
 		//get category details
 		Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
 		String categoryImageName = optionalCategory.orElseThrow(() -> {
-			throw new RuntimeException("category with id " + categoryId + " not found");
+			return new RuntimeException("category with id " + categoryId + " not found");
 		}).getImageName();
 		
 		//delete category details from the data base

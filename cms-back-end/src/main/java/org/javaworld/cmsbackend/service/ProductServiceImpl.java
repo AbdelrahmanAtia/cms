@@ -101,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
 		//get old product details
 		Optional<Product> optionalProduct = productRepository.findById(product.getId());
 		String oldImageName = optionalProduct.orElseThrow(() -> {
-			throw new RuntimeException("product with id " + product.getId() + " not found");
+			return new RuntimeException("product with id " + product.getId() + " not found");
 		}).getImageName();
 		
 		//set product image name  >> keep old image in case base64Image is null
