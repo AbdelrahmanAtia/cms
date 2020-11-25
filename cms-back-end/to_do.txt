@@ -18,11 +18,17 @@ done
 
 >> add auth Guards for frontend routed urls
 
+>> log any request and response 
+
 ========================================================================================
 to do
 =====
 
+>> in  integration test the roll back does not occur
+
 >> add generic exception handler for not found entity
+
+>> add error messages for validation..instead of the very long exception message
 
 >> add not found page for non existing urls in front end
 
@@ -47,9 +53,6 @@ the list to it..
 
 5- configure spring boot to use diffrent authentication mechanisms for 
 example (basic auth  -  jwt auth  - ldap auth)..
-
-
-6- log any request and response 
 
 8- if there is a page that is the last and there is only one element in it, then after 
 deleting that elements ..it stays in the same page ..fix that issue

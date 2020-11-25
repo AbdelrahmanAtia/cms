@@ -26,4 +26,7 @@ public interface ProductRepository
 	@Modifying
 	@Query("UPDATE Product p SET p.imageName = 'no_image.png' WHERE p.imageName = :imageName")
 	public int deleteProductImage(@Param("imageName") String imageName);
+	
+	Product findByName(String name);  //for testing
+
 }

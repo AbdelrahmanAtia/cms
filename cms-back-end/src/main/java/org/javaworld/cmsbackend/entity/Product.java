@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import org.javaworld.cmsbackend.validator.OnCreate;
 import org.javaworld.cmsbackend.validator.OnUpdate;
+import org.springframework.validation.annotation.Validated;
 
 @Entity
 @Table(name = "product")
@@ -52,7 +54,7 @@ public class Product {
 	@Transient
 	private String base64Image;
 
-	@NotNull(groups = { OnCreate.class, OnUpdate.class })
+	@NotNull//(groups = { OnCreate.class, OnUpdate.class })
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "category_id")
 	private Category category;
