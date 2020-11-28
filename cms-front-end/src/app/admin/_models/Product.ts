@@ -9,4 +9,5 @@ export class Product {
     imageName: string;
     base64Image: string | ArrayBuffer;
     category: Category;
+    version: number;
 }

@@ -9,6 +9,7 @@ import { CustomValidator } from 'src/app/admin/_validators/CustomValidator';
 import { Config } from 'src/app/admin/_models/Config ';
 import { Response } from 'src/app/admin/_models/Response';
 import { throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-edit',
@@ -22,8 +23,9 @@ export class ProductEditComponent implements OnInit {
   productForm: FormGroup;
   categories: Category[] = [];
   base64ProductImage: string | ArrayBuffer = null;
-  productsImagesBaseURL:string = Config.productsImagesBaseURL;
-  imageName:string = null;  //only set in case edit mode
+  productsImagesBaseURL: string = Config.productsImagesBaseURL;
+  imageName: string = null;  //only set in case edit mode
+  version: number;  //to handle optimistic lock in back end
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService,
@@ -41,40 +43,41 @@ export class ProductEditComponent implements OnInit {
       this.productService.getProduct(this.productId).subscribe(
         (response: Product) => {
 
+          this.version = response.version;
           this.imageName = response.imageName; //to preview image
           let categoryName: string = response.category ? response.category.name : null;
 
-          this.initProductForm(response.name, response.description, categoryName, 
-                               response.price, null, response.active);         
-          
-        }, (error) => { console.log(error); }
+          this.initProductForm(response.name, response.description, categoryName,
+            response.price, null, response.active);
+
+        }, (error) => console.log(error)
       );
     } else {
       this.initProductForm(null, null, null, null, null, null);
     }
   }
 
-  private initCategoriesList():void{
+  private initCategoriesList(): void {
     this.categoryService.getAllCategories().subscribe((response: Category[]) => {
       this.categories = response;
     }, (error) => { console.log(error); });
   }
 
-  private initProductForm(productName:string, 
-    productDescription:string, 
-    productCategory:string,
-    productPrice:number, 
-    productImageName:string, 
-    productStatus:boolean):void {
+  private initProductForm(productName: string,
+    productDescription: string,
+    productCategory: string,
+    productPrice: number,
+    productImageName: string,
+    productStatus: boolean): void {
 
-      this.productForm = new FormGroup({
-        'productName': new FormControl(productName, Validators.required),
-        'productDescription': new FormControl(productDescription, null),
-        'productCategory': new FormControl(productCategory, Validators.required),
-        'productPrice': new FormControl(productPrice, [Validators.required, CustomValidator.greaterThanZero]),
-        'productImageName': new FormControl(productImageName, null),
-        'productStatus': new FormControl(productStatus, Validators.required)
-      });
+    this.productForm = new FormGroup({
+      'productName': new FormControl(productName, Validators.required),
+      'productDescription': new FormControl(productDescription, null),
+      'productCategory': new FormControl(productCategory, Validators.required),
+      'productPrice': new FormControl(productPrice, [Validators.required, CustomValidator.greaterThanZero]),
+      'productImageName': new FormControl(productImageName, null),
+      'productStatus': new FormControl(productStatus, Validators.required)
+    });
   }
 
   readUrl(event: any) {
@@ -87,8 +90,8 @@ export class ProductEditComponent implements OnInit {
     } else {
       // no image exist..so we need to reset image name and base 64 image
       this.productForm.patchValue({
-        "productImageName" : null
-      }); 
+        "productImageName": null
+      });
       this.base64ProductImage = null;
     }
   }
@@ -101,7 +104,7 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
-  submitProductForm(): void {    
+  submitProductForm(): void {
     let product = new Product();
     product.id = this.productId;
     product.name = this.productForm.value.productName;
@@ -114,7 +117,7 @@ export class ProductEditComponent implements OnInit {
     category.id = this.getCategoryId(this.productForm.value.productCategory);
     product.category = category;
 
-    if (this.editMode) 
+    if (this.editMode)
       this.updateProduct(product);
     else
       this.addNewProduct(product);
@@ -128,9 +131,27 @@ export class ProductEditComponent implements OnInit {
   }
 
   updateProduct(product: Product) {
+    product.version = this.version;
     this.productService.updateProduct(product).subscribe(
       (response: Product) => this.router.navigate(['admin/main', 'products', ' ', 0, 1])
-      , (error) => console.log(error)
+      , (error: HttpErrorResponse) => {
+
+        if (error.status == 409) {
+          console.log('error status is ' + 409);
+          if(confirm("this product has been updated, you need to refresh before making any new changes. Press ok to reload the page.")){
+            //reload component
+            this.ngOnInit();
+            console.log('component reloaded');
+          }else {
+            console.log("returning");
+            return;
+          }
+          
+        } else {
+          console.log(error);
+        }
+
+      }
     );
   }
 
@@ -138,22 +159,22 @@ export class ProductEditComponent implements OnInit {
     this.router.navigate(['admin/main', 'products', ' ', 0, 1]);
   }
 
-  deleteProductImage():void {
+  deleteProductImage(): void {
     if (!confirm("Are you sure that you want to delete this image?")) {
       return;
     }
-    
+
     this.productService.deleteProductImage(this.imageName).subscribe(
-      (response:Response) => {
-        if(response.status){
+      (response: Response) => {
+        if (response.status) {
           this.imageName = "no_image.png"
-        }else {
+        } else {
           throw new Error(response.message);
         }
       },
       (error) => {
-       console.log(error);
-      }  
+        console.log(error);
+      }
     )
   }
 

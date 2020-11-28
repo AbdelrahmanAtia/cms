@@ -79,6 +79,8 @@ public class ProductServiceImpl implements ProductService {
 		
 		// force creating a new entity
 		product.setId(0); 
+		
+		product.setVersion(0); //force initial value of version for optimistic locking
 
 		//set product image name
 		String base64Image = product.getBase64Image();

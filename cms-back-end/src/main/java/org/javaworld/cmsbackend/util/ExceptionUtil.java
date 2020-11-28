@@ -10,6 +10,9 @@ public class ExceptionUtil {
 	public static void logExceptionDetails(Exception ex) {
 		logger.info(">> ///////////////////--Exception Details--////////////////////////////////////////////");
 		// print exception details
+		
+		logger.info("Exception of " + ex.getClass() + "occured");
+		logger.info("stack treace follows:-");
 		StackTraceElement[] stackTraces = ex.getStackTrace();
 		for (StackTraceElement stackTraceElement : stackTraces) {
 			logger.info(">> " + stackTraceElement.toString());

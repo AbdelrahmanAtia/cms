@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,15 +26,21 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler({ BadCredentialsException.class, Exception.class })
 	public ResponseEntity<Object> handleExceptionController(Exception ex, WebRequest request) {
-		
+
 		ExceptionUtil.logExceptionDetails(ex);
-		
+
 		Response customResponse = new Response();
 		customResponse.setStatus(false);
 		customResponse.setMessage(ex.getMessage());
-		
-		HttpStatus httpStatus = (ex instanceof BadCredentialsException) ? 
-				HttpStatus.UNAUTHORIZED : HttpStatus.INTERNAL_SERVER_ERROR;		
+
+		HttpStatus httpStatus = null;
+		if (ex instanceof ObjectOptimisticLockingFailureException) {
+			httpStatus = HttpStatus.CONFLICT;
+		} else if (ex instanceof BadCredentialsException) {
+			httpStatus = HttpStatus.UNAUTHORIZED;
+		} else {
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 
 		return new ResponseEntity<>(customResponse, httpStatus);
 	}

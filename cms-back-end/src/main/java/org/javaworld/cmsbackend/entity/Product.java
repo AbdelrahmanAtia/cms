@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
@@ -58,6 +59,10 @@ public class Product {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "category_id")
 	private Category category;
+		
+	@Version
+	@Column(name="opt_lock")
+	private long version;
 
 	public Product() {
 
@@ -126,26 +131,21 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+	
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
+	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Product [id=");
-		builder.append(id);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", description=");
-		builder.append(description);
-		builder.append(", price=");
-		builder.append(price);
-		builder.append(", active=");
-		builder.append(active);
-		builder.append(", imageName=");
-		builder.append(imageName);
-		builder.append(", base64Image=");
-		builder.append(base64Image);
-		builder.append("]");
-		return builder.toString();
+		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", active=" + active + ", imageName=" + imageName + ", base64Image=" + base64Image + ", category="
+				+ category + ", version=" + version + "]";
 	}
 
+	
 }
