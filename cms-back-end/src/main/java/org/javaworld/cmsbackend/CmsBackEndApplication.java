@@ -16,6 +16,23 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseConfigurer;
 import org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping;
 
+
+/**
+ * 
+ * @author O-AbdelRahman.Attya
+ *
+ * to do
+ * ======
+ * 1- try to move audit init & persist to the extreme corners of the request & response
+ *
+ *
+ *
+ */
+
+
+
+
+
 @SpringBootApplication(exclude = {
 		//DataSourceAutoConfiguration.class
 		// SecurityAutoConfiguration.class // to disable security and make all services

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.javaworld.cmsbackend.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -19,6 +20,10 @@ import org.springframework.web.util.WebUtils;
 public class LoggableDispatcherServlet extends DispatcherServlet {
 
 	private static final long serialVersionUID = 1L;
+	
+	
+	@Autowired
+	private AuditInfo auditInfo;
 	
 	private static final Logger logger = LoggerFactory.getLogger(LoggableDispatcherServlet.class);
 
@@ -36,6 +41,7 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		}
 
 		try {
+			auditInfo.init();
 			super.doDispatch(request, response);
 		}
 		// catch(Exception e) {
@@ -43,6 +49,9 @@ public class LoggableDispatcherServlet extends DispatcherServlet {
 		// e.printStackTrace();
 		// }
 		finally {
+			
+			auditInfo.persist();
+			
 			if (!request.getRequestURI().contains("/configs/logs/")) {
 				logRequest(request);
 				logResponse(response);
