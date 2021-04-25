@@ -24,7 +24,8 @@ import org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping;
  * to do
  * ======
  * 1- try to move audit init & persist to the extreme corners of the request & response
- *
+ * 2- add swagger
+ * 3- remove data from todo.txt to this file
  *
  *
  */

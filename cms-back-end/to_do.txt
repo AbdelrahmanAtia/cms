@@ -22,7 +22,9 @@ done
 
 ========================================================================================
 to do
-=====
+=======
+
+>> prevent lost updates buy using optimistic lock
 
 >> in  integration test the roll back does not occur
 
