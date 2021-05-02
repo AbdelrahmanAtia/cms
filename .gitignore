@@ -13,3 +13,4 @@ buildNumber.properties
 .metadata/
 .recommenders/
 LeetCode/
+.m2/

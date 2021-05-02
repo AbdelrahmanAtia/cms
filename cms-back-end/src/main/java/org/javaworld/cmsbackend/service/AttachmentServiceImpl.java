@@ -7,12 +7,12 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.javaworld.cmsbackend.CmsBackEndApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +29,28 @@ public class AttachmentServiceImpl implements AttachmentService {
 	
 	@Autowired
 	CmsBackEndApplication cmsBackEndApplication;
+	
+	@Autowired
+	ResourceLoader resourceLoader;
 
 	@Override
-	public void getAttachment() throws IOException {
+	public void getAttachment() throws IOException  {
 
 		String[] segments = httpServletRequest.getRequestURL().toString().split("/");
 		
 		int len = segments.length;
-
-		String path = cmsBackEndApplication.getProjectFilesLocation()		
-				+ File.separator + segments[len - 3]
-				+ File.separator + segments[len - 2]
-				+ File.separator + segments[len - 1];
+		String attachmentName = segments[len - 1];
+		String path = null;
+		
+		if(attachmentName.startsWith("_init_")) {
+			//for initialization data
+			path = resourceLoader.getResource("classpath:static/categories_images/" + attachmentName).getFile().getPath();
+		} else {
+			path = cmsBackEndApplication.getProjectFilesLocation()		
+					+ File.separator + segments[len - 3]
+					+ File.separator + segments[len - 2]
+					+ File.separator + attachmentName;
+		}
 		
 		logger.info("path = " + path);
 		
@@ -50,8 +60,9 @@ public class AttachmentServiceImpl implements AttachmentService {
 			httpServletResponse.setContentType(MediaType.IMAGE_JPEG_VALUE);
 			IOUtils.copy(in, httpServletResponse.getOutputStream());
 		} finally {
-			if(in != null) in.close();
-		}		
+			if (in != null)
+				in.close();
+		}
 	}
 
 }
