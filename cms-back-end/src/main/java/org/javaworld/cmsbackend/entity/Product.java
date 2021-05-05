@@ -56,7 +56,7 @@ public class Product {
 	private String base64Image;
 
 	@NotNull//(groups = { OnCreate.class, OnUpdate.class })
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.REFRESH })
+	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
 		
